@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { getReadme } from "@/app/actions/getReadme";
 import { Drawer } from "vaul";
 import { Project } from "@/lib/github-projects-fetcher";
@@ -14,7 +15,7 @@ interface ProjectDrawerProps {
 }
 
 export function ProjectDrawer({ project, open, onOpenChange }: ProjectDrawerProps) {
-  const [mdxSource, setMdxSource] = useState<MDXRemoteSerializeResult | null>(null);
+  const [mdxSource, setMdxSource] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -102,7 +103,7 @@ export function ProjectDrawer({ project, open, onOpenChange }: ProjectDrawerProp
               </div>
             ) : mdxSource ? (
               <div className="prose prose-sm md:prose-base dark:prose-invert prose-headings:font-bold prose-a:text-primary prose-img:rounded-xl prose-img:border prose-img:border-border max-w-none pb-12">
-                <MDXRemote {...mdxSource} />
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>{mdxSource}</ReactMarkdown>
               </div>
             ) : (
               <div className="flex flex-col items-center justify-center h-48 space-y-4 text-muted-foreground">

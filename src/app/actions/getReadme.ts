@@ -1,8 +1,3 @@
-"use server";
-
-import { serialize } from "next-mdx-remote/serialize";
-import remarkGfm from "remark-gfm";
-
 export async function getReadme(username: string, repo: string) {
   try {
     let res = await fetch(`https://raw.githubusercontent.com/${username}/${repo}/main/README.md`);
@@ -12,15 +7,7 @@ export async function getReadme(username: string, repo: string) {
 
     if (res.ok) {
       const text = await res.text();
-      
-      // Serialize the markdown to MDX
-      const mdxSource = await serialize(text, {
-        mdxOptions: {
-          remarkPlugins: [remarkGfm],
-        },
-      });
-
-      return { source: mdxSource, error: null };
+      return { source: text, error: null };
     } else {
       return { source: null, error: "No README found for this repository." };
     }
