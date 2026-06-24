@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
-import { Send } from "lucide-react";
+import { Icon } from "@iconify/react";
 
 const COOLDOWN_MINUTES = 30;
 // We'll hardcode or use environment variable
@@ -71,7 +71,7 @@ export function ContactForm() {
       } else {
         toast.error(result.message || "Failed to send message. Please try again.");
       }
-    } catch (error) {
+    } catch {
       toast.error("Network error. Please try again later.");
     } finally {
       setIsSubmitting(false);
@@ -139,7 +139,7 @@ export function ContactForm() {
           disabled={isSubmitting}
         >
           {isSubmitting ? "Sending..." : "Send Message"}
-          {!isSubmitting && <Send className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />}
+          {!isSubmitting && <Icon icon="lucide:send" className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />}
         </button>
       </motion.div>
     </form>

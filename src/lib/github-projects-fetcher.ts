@@ -341,7 +341,37 @@ export async function fetchProjectsWithCache(
     } catch (e) {
       console.error("Error parsing cached projects:", e);
     }
-    toast.error("Failed to connect to GitHub. Please check your internet connection.");
-    return [];
+    toast.error("Failed to connect to GitHub. Showing offline fallback projects.");
+    
+    // Return hardcoded fallbacks if API and cache both fail
+    return [
+      {
+        title: "Aetheris Portfolio",
+        description: "A highly interactive, 3D-integrated personal portfolio built with Next.js, Framer Motion, and Three.js.",
+        imageUrl: "https://images.unsplash.com/photo-1618477388954-7852f32655ec?w=800&h=600",
+        liveUrl: "https://ishan0121.github.io/portfolio",
+        githubUrl: "https://github.com/Ishan0121/portfolio",
+        tags: ["TypeScript", "Next.js", "Three.js", "TailwindCSS"],
+        isLoading: false,
+      },
+      {
+        title: "Neural Network Visualizer",
+        description: "An interactive tool to visualize neural network architectures and data flows in real-time.",
+        imageUrl: "https://images.unsplash.com/photo-1526379095098-d400fd0bf935?w=800&h=600",
+        liveUrl: "https://ishan0121.github.io/neural-vis",
+        githubUrl: "https://github.com/Ishan0121/neural-vis",
+        tags: ["Python", "Machine Learning", "Data Visualization"],
+        isLoading: false,
+      },
+      {
+        title: "Terminal Dashboard",
+        description: "A developer-focused terminal dashboard with system monitoring and customizable widgets.",
+        imageUrl: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=600",
+        liveUrl: "https://ishan0121.github.io/terminal-dash",
+        githubUrl: "https://github.com/Ishan0121/terminal-dash",
+        tags: ["Rust", "CLI", "System"],
+        isLoading: false,
+      }
+    ];
   }
 }

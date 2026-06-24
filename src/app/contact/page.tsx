@@ -1,8 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Mail, MessageSquare, MapPin } from "lucide-react";
-import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
+import { Icon } from "@iconify/react";
 import { ContactForm } from "@/components/ContactForm";
 import SocialLinks from "@/components/SocialLinks";
 
@@ -30,7 +29,7 @@ export default function ContactPage() {
           <div className="space-y-6 pt-4">
             <a href="mailto:ishanmaiti1234@gmail.com" className="flex items-center gap-4 group cursor-pointer">
               <div className="w-12 h-12 rounded-full glass bg-card/40 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300">
-                <Mail className="w-5 h-5" />
+                <Icon icon="lucide:mail" className="w-5 h-5" />
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Email</p>
@@ -40,7 +39,7 @@ export default function ContactPage() {
 
             <div className="flex items-center gap-4 group cursor-pointer">
               <div className="w-12 h-12 rounded-full glass bg-card/40 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300">
-                <MapPin className="w-5 h-5" />
+                <Icon icon="lucide:map-pin" className="w-5 h-5" />
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Location</p>
@@ -65,7 +64,7 @@ export default function ContactPage() {
             <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-primary/20 rounded-full blur-3xl pointer-events-none"></div>
             <div className="p-8 relative z-10">
               <h3 className="text-2xl font-semibold mb-6 flex items-center gap-2">
-                <MessageSquare className="w-6 h-6 text-primary" />
+                <Icon icon="lucide:message-square" className="w-6 h-6 text-primary" />
                 Send a Message
               </h3>
               <ContactForm />

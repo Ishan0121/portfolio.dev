@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
-import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
 import SocialLinks from "./SocialLinks";
 
 const navLinks = [
@@ -22,8 +21,8 @@ const backdropVariants = {
 
 const panelVariants = {
   hidden: { x: "100%", opacity: 0 },
-  visible: { x: 0, opacity: 1, transition: { type: "spring", stiffness: 320, damping: 32 } },
-  exit: { x: "100%", opacity: 0, transition: { duration: 0.25, ease: "easeIn" } },
+  visible: { x: 0, opacity: 1, transition: { type: "spring" as any, stiffness: 320, damping: 32 } },
+  exit: { x: "100%", opacity: 0, transition: { duration: 0.25, ease: "easeIn" as any } },
 };
 
 const itemVariants = {
@@ -32,7 +31,7 @@ const itemVariants = {
     x: 0,
     opacity: 1,
     filter: "blur(0px)",
-    transition: { delay: 0.06 + i * 0.07, duration: 0.4, ease: [0.16, 1, 0.3, 1] },
+    transition: { delay: i * 0.1, duration: 0.5, ease: [0.16, 1, 0.3, 1] as any },
   }),
 };
 
@@ -95,6 +94,19 @@ export default function MobileMenu({ open, onClose, pathname }: { open: boolean,
                   </motion.div>
                 );
               })}
+
+              <motion.div custom={navLinks.length} variants={itemVariants} initial="hidden" animate="visible" className="mt-4">
+                <button
+                  onClick={() => {
+                    document.dispatchEvent(new CustomEvent("toggle-command-menu"));
+                    onClose();
+                  }}
+                  className="flex items-center gap-3 w-full px-4 py-3 rounded-2xl text-base font-medium transition-all duration-200 text-muted-foreground hover:text-foreground hover:bg-white/5 border border-border/50 glass"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                  Search Portfolio
+                </button>
+              </motion.div>
             </nav>
 
             {/* Social + divider */}

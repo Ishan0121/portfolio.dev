@@ -2,19 +2,22 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
 
 interface LoadingScreenProps {
   progress?: number;
   message?: string;
   detail?: string;
   isComplete?: boolean;
+  fullScreen?: boolean;
 }
 
 export default function LoadingScreen({ 
   progress = 0, 
   message = "System Initialization", 
   detail = "Loading resources...",
-  isComplete = false 
+  isComplete = false,
+  fullScreen = true
 }: LoadingScreenProps) {
   
   const [show, setShow] = useState(true);
@@ -35,7 +38,12 @@ export default function LoadingScreen({
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, y: -50, filter: "blur(10px)" }}
           transition={{ duration: 0.8, ease: "easeInOut" }}
-          className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background/95 backdrop-blur-md text-foreground font-mono"
+          className={cn(
+            "z-50 flex flex-col items-center justify-center backdrop-blur-md font-mono",
+            fullScreen 
+              ? "fixed inset-0 bg-background/95 text-foreground" 
+              : "absolute inset-0 bg-[#050505]/95 text-primary rounded-3xl"
+          )}
         >
           <div className="w-full max-w-md p-8 flex flex-col gap-8">
             <div className="text-xl font-bold tracking-widest uppercase">
@@ -66,7 +74,7 @@ export default function LoadingScreen({
                   className="h-full bg-primary"
                   initial={{ width: 0 }}
                   animate={{ width: `${progress}%` }}
-                  transition={{ ease: "easeOut" }}
+                  transition={{ ease: "easeOut" } as any}
                 />
               </div>
             </div>

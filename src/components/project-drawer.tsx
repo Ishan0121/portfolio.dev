@@ -1,13 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import rehypeRaw from "rehype-raw";
+import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
+import { getReadme } from "@/app/actions/getReadme";
 import { Drawer } from "vaul";
 import { Project } from "@/lib/github-projects-fetcher";
-import { ExternalLink, Loader2, BookOpen } from "lucide-react";
-import { FaGithub } from "react-icons/fa";
+import { Icon } from "@iconify/react";
 
 interface ProjectDrawerProps {
   project: Project | null;
@@ -16,7 +14,8 @@ interface ProjectDrawerProps {
 }
 
 export function ProjectDrawer({ project, open, onOpenChange }: ProjectDrawerProps) {
-  const [readmeContent, setReadmeContent] = useState<string>("");
+  const [mdxSource, setMdxSource] = useState<MDXRemoteSerializeResult | null>(null);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -24,7 +23,8 @@ export function ProjectDrawer({ project, open, onOpenChange }: ProjectDrawerProp
 
     const fetchReadme = async () => {
       setLoading(true);
-      setReadmeContent("");
+      setMdxSource(null);
+      setErrorMsg(null);
       try {
         if (project.githubUrl) {
           const urlParts = project.githubUrl.split('/');
@@ -32,25 +32,21 @@ export function ProjectDrawer({ project, open, onOpenChange }: ProjectDrawerProp
           const repo = urlParts[urlParts.length - 1];
 
           if (username && repo) {
-            let res = await fetch(`https://raw.githubusercontent.com/${username}/${repo}/main/README.md`);
-            if (!res.ok) {
-              res = await fetch(`https://raw.githubusercontent.com/${username}/${repo}/master/README.md`);
-            }
-            if (res.ok) {
-              const text = await res.text();
-              setReadmeContent(text);
+            const result = await getReadme(username, repo);
+            if (result.source) {
+              setMdxSource(result.source);
             } else {
-              setReadmeContent("No README found for this repository.");
+              setErrorMsg(result.error || "Failed to load README.");
             }
           } else {
-            setReadmeContent("Invalid GitHub URL.");
+            setErrorMsg("Invalid GitHub URL.");
           }
         } else {
-           setReadmeContent("No GitHub URL associated with this project.");
+           setErrorMsg("No GitHub URL associated with this project.");
         }
       } catch (error) {
         console.error("Error fetching README:", error);
-        setReadmeContent("Failed to load README.");
+        setErrorMsg("Failed to load README.");
       } finally {
         setLoading(false);
       }
@@ -78,12 +74,12 @@ export function ProjectDrawer({ project, open, onOpenChange }: ProjectDrawerProp
               <div className="flex gap-2">
                 {project.githubUrl && (
                   <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="flex items-center text-sm font-medium bg-accent text-accent-foreground border border-border/50 px-4 py-2 rounded-full hover:bg-background transition-colors">
-                    <FaGithub className="w-4 h-4 mr-2" /> Code
+                    <Icon icon="mdi:github" className="w-4 h-4 mr-2" /> Code
                   </a>
                 )}
                 {project.liveUrl && !isAutoLiveUrl && (
                   <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="flex items-center text-sm font-medium bg-primary text-primary-foreground px-4 py-2 rounded-full hover:bg-primary/90 transition-colors">
-                    <ExternalLink className="w-4 h-4 mr-2" /> Live
+                    <Icon icon="lucide:external-link" className="w-4 h-4 mr-2" /> Live
                   </a>
                 )}
               </div>
@@ -101,19 +97,17 @@ export function ProjectDrawer({ project, open, onOpenChange }: ProjectDrawerProp
           <div className="flex-1 overflow-y-auto p-6 scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent">
             {loading ? (
               <div className="flex flex-col items-center justify-center h-48 space-y-4 text-muted-foreground">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
+                <Icon icon="lucide:loader-2" className="w-8 h-8 animate-spin text-primary" />
                 <p>Fetching project documentation...</p>
               </div>
-            ) : readmeContent ? (
+            ) : mdxSource ? (
               <div className="prose prose-sm md:prose-base dark:prose-invert prose-headings:font-bold prose-a:text-primary prose-img:rounded-xl prose-img:border prose-img:border-border max-w-none pb-12">
-                <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
-                  {readmeContent}
-                </ReactMarkdown>
+                <MDXRemote {...mdxSource} />
               </div>
             ) : (
               <div className="flex flex-col items-center justify-center h-48 space-y-4 text-muted-foreground">
-                <BookOpen className="w-12 h-12 opacity-20" />
-                <p>Documentation not available.</p>
+                <Icon icon="lucide:book-open" className="w-12 h-12 opacity-20" />
+                <p>{errorMsg || "Documentation not available."}</p>
               </div>
             )}
           </div>

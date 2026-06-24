@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Heart, Mail } from "lucide-react";
+import { Icon } from "@iconify/react";
 import SocialLinks from "@/components/SocialLinks";
 
 const navLinks = [
@@ -69,7 +69,7 @@ export default function Footer() {
               href={`mailto:ishanmaiti1234@gmail.com`}
               className="inline-flex items-center gap-2 text-xs text-muted-foreground hover:text-primary transition-colors duration-200"
             >
-              <Mail size={13} />
+              <Icon icon="lucide:mail" width={13} height={13} />
               ishanmaiti1234@gmail.com
             </a>
           </div>
@@ -85,7 +85,7 @@ export default function Footer() {
             whileHover={{ scale: 1.03 }}
           >
             Built with{" "}
-            <Heart size={11} className="text-red-500 fill-red-500 mx-0.5 animate-pulse" />
+            <Icon icon="lucide:heart" width={11} height={11} className="text-red-500 mx-0.5 animate-pulse" />
             using Next.js & Tailwind CSS
           </motion.p>
         </div>

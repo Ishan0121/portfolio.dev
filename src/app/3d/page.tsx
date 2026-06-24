@@ -2,23 +2,34 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { InteractProvider } from "@/context/InteractContext";
-import { SceneWrapper } from "@/components/3DScene/Scene";
-import { Database, Eye, Heart, Network, Dna } from "lucide-react";
+import dynamic from "next/dynamic";
+import { Icon } from "@iconify/react";
+
+const SceneWrapper = dynamic(
+  () => import("@/components/3DScene/Scene").then((mod) => mod.SceneWrapper),
+  { 
+    ssr: false, 
+    loading: () => (
+      <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#050505] text-primary">
+        <Icon icon="lucide:loader-2" className="w-12 h-12 animate-spin mb-4" />
+        <p className="font-mono text-sm tracking-widest uppercase text-muted-foreground">Initializing WebGL Engine...</p>
+      </div>
+    ) 
+  }
+);
 
 const models = [
-  { id: "/", name: "DNA Engine", icon: <Dna size={18} /> },
-  { id: "/about", name: "Neural Network", icon: <Network size={18} /> },
-  { id: "/skills", name: "Data Core", icon: <Database size={18} /> },
-  { id: "/projects", name: "Cyber Eye", icon: <Eye size={18} /> },
-  { id: "/contact", name: "Bionic Heart", icon: <Heart size={18} /> },
+  { id: "/", name: "DNA Engine", icon: <Icon icon="lucide:dna" width={18} height={18} /> },
+  { id: "/about", name: "Neural Network", icon: <Icon icon="lucide:network" width={18} height={18} /> },
+  { id: "/skills", name: "Data Core", icon: <Icon icon="lucide:database" width={18} height={18} /> },
+  { id: "/projects", name: "Cyber Eye", icon: <Icon icon="lucide:eye" width={18} height={18} /> },
+  { id: "/contact", name: "Bionic Heart", icon: <Icon icon="lucide:heart" width={18} height={18} /> },
 ];
 
 export default function ThreeDLabPage() {
   const [activeModel, setActiveModel] = useState("/");
 
   return (
-    <InteractProvider>
       <div className="relative w-full h-[calc(100vh-theme(spacing.24))] overflow-hidden bg-[#050505] rounded-3xl border border-border/50 mx-auto max-w-[95%]">
         <div className="absolute inset-0 z-0">
           <SceneWrapper route={activeModel} />
@@ -54,6 +65,5 @@ export default function ThreeDLabPage() {
           </p>
         </div>
       </div>
-    </InteractProvider>
   );
 }

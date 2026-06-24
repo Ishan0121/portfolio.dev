@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ProjectCard } from "./project-card";
 import { ProjectDrawer } from "./project-drawer";
 import { Project } from "@/lib/github-projects-fetcher";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Icon } from "@iconify/react";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -137,7 +137,7 @@ export function PortfolioGrid({ projects }: { projects: Project[] }) {
               disabled={currentPage === 1}
               className="rounded-full hover:bg-accent disabled:opacity-50 hover:text-foreground transition-all duration-300 text-muted-foreground w-9 h-9 sm:w-10 sm:h-10 shrink-0 flex items-center justify-center"
             >
-              <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+              <Icon icon="lucide:chevron-left" className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
             
             <div className="flex items-center gap-1 sm:gap-2 px-1 sm:px-2">
@@ -190,7 +190,7 @@ export function PortfolioGrid({ projects }: { projects: Project[] }) {
               disabled={currentPage === totalPages}
               className="rounded-full hover:bg-accent hover:text-foreground disabled:opacity-50 transition-all duration-300 text-muted-foreground w-9 h-9 sm:w-10 sm:h-10 shrink-0 flex items-center justify-center"
             >
-              <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
+              <Icon icon="lucide:chevron-right" className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
           </div>
         </motion.div>

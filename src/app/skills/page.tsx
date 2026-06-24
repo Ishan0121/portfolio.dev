@@ -2,126 +2,97 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { skillsData } from "@/data/skills";
+import { SectionHeading } from "@/components/section-heading";
+import { SkillsSection } from "@/components/skills-section";
 import { TechTree } from "@/components/tech-tree";
-import { LayoutGrid, Network } from "lucide-react";
-import { useInView } from "framer-motion";
-import { useRef } from "react";
-
-const container = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.1 } },
-};
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
-};
+import { skillsData } from "@/lib/skills-data";
+import Image from "next/image";
+import { containerVariants, fadeInUpVariants } from "@/lib/utils";
 
 export default function SkillsPage() {
-  const [view, setView] = useState<"grid" | "tree">("tree");
+  const [view, setView] = useState<"grid" | "tree">("grid");
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-12 pb-32">
-      <motion.div
-        variants={container}
+    <>
+      {/* <FloatingSplineBot splineScene="./spline/genkub.splinecode"/> */}
+
+      <motion.section
+        className="max-w-7xl mx-auto px-6 py-12 sm:py-16 flex flex-col items-center"
         initial="hidden"
         animate="visible"
-        className="space-y-10"
+        variants={containerVariants}
       >
-        <section className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 pt-10">
-          <div className="space-y-6 max-w-2xl">
-            <motion.h1 variants={fadeUp} className="text-4xl md:text-6xl font-bold font-heading text-foreground">
-              Technical Arsenal
-            </motion.h1>
-            <motion.div variants={fadeUp} className="w-20 h-1 bg-primary rounded-full" />
-            <motion.p variants={fadeUp} className="text-xl text-muted-foreground leading-relaxed">
-              A comprehensive overview of my technical skills, tools, and environments I use to build digital experiences.
-            </motion.p>
-          </div>
+        <motion.div variants={fadeInUpVariants}>
+          <SectionHeading
+            title="Skills & Expertise"
+            description="A comprehensive overview of my technical skills and proficiency levels"
+          />
+        </motion.div>
 
-          <motion.div variants={fadeUp} className="flex bg-card border border-border/50 rounded-full p-1 shadow-sm">
-            <button
-              onClick={() => setView("tree")}
-              className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                view === "tree" ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              <Network size={16} /> Tree View
-            </button>
-            <button
+        <motion.div
+          className="relative mb-10 h-[200px] lg:h-[400px] w-[200px] lg:w-[400px] mx-auto"
+          variants={fadeInUpVariants}
+        >
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-violet-600 rounded-lg opacity-20 blur-3xl" />
+          <Image
+            src="/images/skills.gif"
+            alt="skills"
+            fill
+            className="object-cover rounded-lg absolute"
+            unoptimized
+          />
+        </motion.div>
+
+        <motion.div variants={fadeInUpVariants} className="flex justify-center mb-10 w-full z-20">
+          <div className="glass p-1 rounded-full flex items-center gap-1 border border-white/10 shadow-lg relative bg-blue-900/10">
+            <button 
               onClick={() => setView("grid")}
-              className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                view === "grid" ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
-              }`}
+              className={`px-6 py-2 rounded-full text-sm font-medium transition-all z-10 w-32 ${view === "grid" ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`}
             >
-              <LayoutGrid size={16} /> Grid View
+              Grid View
             </button>
+            <button 
+              onClick={() => setView("tree")}
+              className={`px-6 py-2 rounded-full text-sm font-medium transition-all z-10 w-32 ${view === "tree" ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`}
+            >
+              Tree View
+            </button>
+            {/* Sliding background indicator */}
+            <div 
+              className={`absolute top-1 bottom-1 w-[calc(50%-4px)] bg-primary/20 border border-primary/30 rounded-full transition-transform duration-300 ease-out z-0`}
+              style={{ transform: view === "grid" ? "translateX(0)" : "translateX(calc(100% + 4px))", left: "4px" }}
+            />
+          </div>
+        </motion.div>
+
+        {view === "grid" ? (
+          <motion.div className="space-y-16 w-full" variants={containerVariants}>
+            {skillsData.map((category) => (
+              <motion.div key={category.name} variants={fadeInUpVariants}>
+                <SkillsSection category={category} />
+              </motion.div>
+            ))}
           </motion.div>
-        </section>
-
-        <motion.section variants={fadeUp}>
-          {view === "tree" ? (
+        ) : (
+          <motion.div variants={fadeInUpVariants} className="w-full max-w-7xl z-10">
             <TechTree />
-          ) : (
-            <motion.div className="space-y-16 w-full" variants={container}>
-              {skillsData.map((category, index) => (
-                <motion.div key={index} variants={fadeUp} className="space-y-6 overflow-hidden">
-                  <h3 className="text-2xl font-semibold">{category.name}</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {category.skills.map((skill, sIndex) => (
-                      <SkillAnimationWrapper key={skill.name} index={sIndex}>
-                        <div className="glass glass-hover p-4 h-full">
-                          <div className="space-y-2">
-                            <div className="flex items-center justify-between">
-                              <h3 className="font-semibold">{skill.name}</h3>
-                              <span className="text-sm text-muted-foreground">{skill.level}</span>
-                            </div>
-                            <p className="text-sm text-muted-foreground">{skill.description}</p>
-                          </div>
-                        </div>
-                      </SkillAnimationWrapper>
-                    ))}
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
-          )}
-        </motion.section>
-      </motion.div>
-    </div>
-  );
-}
+          </motion.div>
+        )}
 
-function SkillAnimationWrapper({
-  children,
-  index,
-}: {
-  children: React.ReactNode;
-  index: number;
-}) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: false, amount: 0.2 });
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={{
-        x: index % 2 === 0 ? -50 : 50,
-        opacity: 0,
-      }}
-      animate={
-        isInView
-          ? { x: 0, opacity: 1 }
-          : { x: index % 2 === 0 ? -50 : 50, opacity: 0 }
-      }
-      transition={{
-        duration: 0.6,
-        ease: "easeOut",
-      }}
-      className="overflow-hidden h-full"
-    >
-      {children}
-    </motion.div>
+        <motion.div
+          className="relative mt-10 h-[130px] lg:h-[300px] w-[300px] lg:w-[700px] mx-auto"
+          variants={fadeInUpVariants}
+        >
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-violet-600 rounded-lg opacity-20 blur-3xl" />
+          <Image
+            src="/images/js.gif"
+            alt="js"
+            fill
+            className="object-cover rounded-lg"
+            unoptimized
+          />
+        </motion.div>
+      </motion.section>
+    </>
   );
 }

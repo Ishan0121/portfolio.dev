@@ -2,32 +2,34 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useTheme } from "next-themes";
+import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
-import { Menu, X, Moon, Sun } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Icon } from "@iconify/react";
+import { CommandMenu } from "@/components/CommandMenu";
 import MobileMenu from "./MobileMenu";
+import { cn } from "@/lib/utils";
 
-const navLinks = [
-  { title: "Home", href: "/" },
-  { title: "About", href: "/about" },
-  { title: "Projects", href: "/projects" },
-  { title: "Skills", href: "/skills" },
-  { title: "3D Lab", href: "/3d" },
-  { title: "Contact", href: "/contact" },
-];
+export function Navigation() {
+  const [mounted, setMounted] = useState(false);
+  const { theme, setTheme, systemTheme } = useTheme();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [commandOpen, setCommandOpen] = useState(false);
+  const pathname = usePathname();
 
-export default function Navigation() {
-  const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
-  const [isDark, setIsDark] = useState(true); // Default dark
-  const pathname = usePathname();
 
   const { scrollY } = useScroll();
 
   useMotionValueEvent(scrollY, "change", (latest) => {
-    const previous = scrollY.getPrevious() || 0;
+    const previous = scrollY.getPrevious() ?? 0;
+    
+    // Apply styling changes when scrolled past 20px
     setScrolled(latest > 20);
+
+    // Hide navbar when scrolling down, show when scrolling up
     if (latest > previous && latest > 150) {
       setHidden(true);
     } else {
@@ -36,101 +38,122 @@ export default function Navigation() {
   });
 
   useEffect(() => {
-    document.body.style.overflow = mobileOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
-  }, [mobileOpen]);
+    setMounted(true);
+  }, []);
 
-  const toggleTheme = () => {
-    setIsDark(!isDark);
-    document.documentElement.classList.toggle("dark");
-  };
+  if (!mounted) return null;
+
+  const navLinks = [
+    { href: "/", label: "Home" },
+    { href: "/about", label: "About" },
+    { href: "/projects", label: "Projects" },
+    { href: "/skills", label: "Skills" },
+    { href: "/3d", label: "3D Lab" },
+    { href: "/contact", label: "Contact" },
+  ];
+
+  const themeToggle = (
+    <Button
+      variant="ghost"
+      size="icon"
+      suppressHydrationWarning
+      onClick={() => {
+        if (theme === "system") setTheme("dark");
+        else if (theme === "dark") setTheme("light");
+        else setTheme("system");
+      }}
+    >
+      {theme === "system" ? (
+        <Icon icon="lucide:cpu" className="h-5 w-5" />
+      ) : theme === "dark" || (theme === "system" && systemTheme === "dark") ? (
+        <Icon icon="lucide:moon" className="h-5 w-5" />
+      ) : (
+        <Icon icon="lucide:sun-dim" className="h-5 w-5" />
+      )}
+    </Button>
+  );
 
   return (
     <>
-      <motion.header
-        id="navbar"
+      <motion.nav
         variants={{
           visible: { y: 0 },
           hidden: { y: "-150%" },
         }}
+        initial="visible"
         animate={hidden ? "hidden" : "visible"}
         transition={{ duration: 0.35, ease: "easeInOut" }}
-        className={`fixed top-4 left-0 right-0 z-40 mx-auto transition-all duration-200 ${
-          scrolled ? "w-[95%] sm:w-[90%] px-0" : "w-full px-4 sm:px-6 lg:px-8"
-        }`}
+        className={cn(
+          "fixed top-4 left-0 right-0 z-50 mx-auto w-full px-4 sm:px-6 lg:px-8 transition-all duration-300",
+          scrolled ? "w-[95%] sm:w-[90%] md:w-[95%] lg:w-[95%] px-0" : "w-full"
+        )}
       >
-        <div className="glass !rounded-full shadow-lg transition-all duration-500">
-          <div className="flex items-center justify-between h-14 px-6">
-            <Link href="/" className="flex items-center group">
-              <span className="font-heading font-semibold text-foreground group-hover:text-primary transition-colors text-lg tracking-tight">
-                चक्र
-              </span>
-            </Link>
+        <div className="glass backdrop-blur-sm bg-background/60 shadow-lg transition-all duration-500 border border-border/50 rounded-full h-14 flex items-center justify-between px-6">
+          <Link href="/" className="text-xl font-bold">
+            <code>चक्र</code>
+          </Link>
 
-            <nav className="hidden md:flex items-center gap-6">
-              {navLinks.map((link) => {
-                const isActive = pathname === link.href;
-                return (
-                  <Link
-                    key={link.title}
-                    href={link.href}
-                    className={`relative text-sm font-medium transition-all duration-300 ${
-                      isActive
-                        ? "text-primary drop-shadow-[0_0_8px_hsl(var(--primary)/0.5)] border border-primary/20 px-4 py-2 rounded-2xl bg-accent"
-                        : "text-muted-foreground hover:text-foreground hover:drop-shadow-[0_0_8px_hsl(var(--foreground)/0.3)]"
-                    }`}
-                  >
-                    {link.title}
-                  </Link>
-                );
-              })}
-            </nav>
-
-            <div className="flex items-center gap-4">
-              <button
-                onClick={toggleTheme}
-                className="p-2 rounded-full hover:bg-accent transition-colors"
-                aria-label="Toggle theme"
+          <div className="hidden md:flex items-center">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`text-sm font-medium hover:opacity-80 transition-colors px-4 py-1 rounded-2xl ${
+                  pathname === link.href ? "glass" : "text-muted-foreground hover:text-foreground"
+                }`}
               >
-                {isDark ? <Sun size={18} /> : <Moon size={18} />}
-              </button>
-              
-              <button
-                className="md:hidden p-2 rounded-full hover:bg-accent transition-colors"
-                onClick={() => setMobileOpen((o) => !o)}
-                aria-label="Toggle menu"
+                {link.label}
+              </Link>
+            ))}
+            <div className="flex items-center ml-2 border-l border-white/10 pl-2 space-x-2">
+              <Button
+                variant="outline"
+                className="hidden lg:flex w-full justify-start text-sm text-muted-foreground sm:pr-12 md:w-40 lg:w-64 glass rounded-full relative"
+                onClick={() => setCommandOpen(true)}
               >
-                <AnimatePresence mode="wait" initial={false}>
-                  {mobileOpen ? (
-                    <motion.div
-                      key="close"
-                      initial={{ rotate: -90, opacity: 0 }}
-                      animate={{ rotate: 0, opacity: 1 }}
-                      exit={{ rotate: 90, opacity: 0 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <X size={20} />
-                    </motion.div>
-                  ) : (
-                    <motion.div
-                      key="menu"
-                      initial={{ rotate: 90, opacity: 0 }}
-                      animate={{ rotate: 0, opacity: 1 }}
-                      exit={{ rotate: -90, opacity: 0 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <Menu size={20} />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </button>
+                <span className="hidden lg:inline-flex">Search portfolio...</span>
+                <span className="inline-flex lg:hidden">Search...</span>
+                <kbd className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 hidden h-5 select-none items-center gap-1 rounded border border-white/20 bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex text-foreground glass">
+                  <span className="text-xs">⌘</span>K
+                </kbd>
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="lg:hidden"
+                onClick={() => setCommandOpen(true)}
+              >
+                <Icon icon="lucide:search" className="h-5 w-5" />
+                <span className="sr-only">Search</span>
+              </Button>
+              {themeToggle}
             </div>
           </div>
-        </div>
-      </motion.header>
 
-      {/* Mobile Menu Drawer */}
-      <MobileMenu open={mobileOpen} onClose={() => setMobileOpen(false)} pathname={pathname} />
+          <div className="flex md:hidden items-center gap-1">
+            {themeToggle}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              {isMenuOpen ? (
+                <Icon icon="lucide:x" className="h-5 w-5" />
+              ) : (
+                <Icon icon="lucide:menu" className="h-5 w-5" />
+              )}
+            </Button>
+          </div>
+        </div>
+
+      </motion.nav>
+
+      <MobileMenu 
+        open={isMenuOpen} 
+        onClose={() => setIsMenuOpen(false)} 
+        pathname={pathname} 
+      />
+      <CommandMenu open={commandOpen} setOpen={setCommandOpen} />
     </>
   );
 }

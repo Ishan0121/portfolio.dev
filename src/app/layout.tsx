@@ -1,24 +1,15 @@
 import type { Metadata } from "next";
-import { DM_Sans, JetBrains_Mono, Montserrat } from "next/font/google";
+import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import AppLayout from "@/components/AppLayout";
-import { CommandMenu } from "@/components/CommandMenu";
 import { Toaster } from "sonner";
 import { SmoothScrolling } from "@/components/SmoothScrolling";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
-const dmSans = DM_Sans({
+const nerdFont = JetBrains_Mono({
   subsets: ["latin"],
-  variable: "--font-heading",
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-});
-
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  variable: "--font-sans",
+  variable: "--font-nerd",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -34,14 +25,16 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${dmSans.variable} ${jetbrainsMono.variable} ${montserrat.variable} dark antialiased`}
+      suppressHydrationWarning
+      className={`${nerdFont.variable} antialiased`}
     >
       <body className="min-h-screen bg-background text-foreground flex flex-col font-sans">
-        <SmoothScrolling>
-          <AppLayout>{children}</AppLayout>
-          <CommandMenu />
-          <Toaster theme="dark" position="bottom-right" />
-        </SmoothScrolling>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+          <SmoothScrolling>
+            <AppLayout>{children}</AppLayout>
+            <Toaster theme="dark" position="bottom-right" />
+          </SmoothScrolling>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -1,12 +1,10 @@
 "use client";
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import {
   ReactFlow,
   Controls,
   Background,
-  useNodesState,
-  useEdgesState,
   Handle,
   Position,
   Panel,
@@ -14,7 +12,7 @@ import {
   type NodeProps,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import { skillsData } from '@/data/skills';
+import { useNodeStore } from '@/store/useNodeStore';
 
 // ── Sizes & gaps ──────────────────────────────────────────────────────────────
 const ROOT_W      = 240;
@@ -77,73 +75,10 @@ function SkillNode({ data }: NodeProps) {
 const nodeTypes = { root: RootNode, category: CategoryNode, skill: SkillNode };
 
 // ── Layout: each category is its own VERTICAL COLUMN ─────────────────────────
-// This fills the canvas height rather than just its width.
-function buildGraph() {
-  const nodes: any[] = [];
-  const edges: any[] = [];
-
-  const numCats    = skillsData.length;
-  const totalWidth = numCats * COL_W + (numCats - 1) * COL_GAP;
-
-  // ── Root ──────────────────────────────────────────────────────────────────
-  const rootX = totalWidth / 2 - ROOT_W / 2;
-  nodes.push({
-    id: 'root', type: 'root',
-    position: { x: rootX, y: 0 },
-    data: { label: 'My Skills & Expertise' },
-  });
-
-  // ── Categories & their skill columns ─────────────────────────────────────
-  skillsData.forEach((cat, ci) => {
-    const catId  = `cat-${cat.name}`;
-    const colX   = ci * (COL_W + COL_GAP);           // left edge of this column
-
-    // Category — centred in the column slot
-    const catX   = colX + (COL_W - CAT_W) / 2;
-    const catY   = ROOT_H + ROOT_CAT_V;
-
-    nodes.push({
-      id: catId, type: 'category',
-      position: { x: catX, y: catY },
-      data: { label: cat.name },
-    });
-
-    edges.push({
-      id: `e-root-${catId}`,
-      source: 'root', target: catId,
-      type: 'smoothstep', animated: true,
-      style: { stroke: 'hsl(var(--primary))', strokeWidth: 2 },
-    });
-
-    // Skills stacked vertically in the same column
-    cat.skills.forEach((skill, si) => {
-      const skillId = `skill-${cat.name}-${skill.name}`;
-      const skillX  = colX + (COL_W - SKILL_W) / 2;
-      // catY + estimated cat height + gap + row offset
-      const catEstH = 44; // approximate rendered height for the category card
-      const skillY  = catY + catEstH + CAT_SKILL_V + si * (SKILL_H + SKILL_ROW_V);
-
-      nodes.push({
-        id: skillId, type: 'skill',
-        position: { x: skillX, y: skillY },
-        data: { label: skill.name, level: skill.level },
-      });
-
-      edges.push({
-        id: `e-${catId}-${skillId}`,
-        source: catId, target: skillId,
-        type: 'smoothstep',
-        style: { stroke: 'hsl(var(--muted-foreground))', strokeWidth: 1, opacity: 0.35 },
-      });
-    });
-  });
-
-  return { nodes, edges };
-}
-
-// ── Scatter / Reset controls (must be inside <ReactFlow> to use useReactFlow) ─
-function ScatterControls({ originalNodes }: { originalNodes: any[] }) {
-  const { setNodes, fitView } = useReactFlow();
+// ── Scatter / Reset controls ──────────────────────────────────────────────────
+function ScatterControls() {
+  const { setNodes, resetGraph } = useNodeStore();
+  const { fitView } = useReactFlow();
 
   const scatter = () => {
     const W = 2400;
@@ -160,7 +95,7 @@ function ScatterControls({ originalNodes }: { originalNodes: any[] }) {
   };
 
   const reset = () => {
-    setNodes(originalNodes);
+    resetGraph();
     setTimeout(() => fitView({ padding: 0.08 }), 50);
   };
 
@@ -184,13 +119,8 @@ function ScatterControls({ originalNodes }: { originalNodes: any[] }) {
   );
 }
 
-
 export function TechTree() {
-
-  const { nodes: initialNodes, edges: initialEdges } = useMemo(buildGraph, []);
-
-  const [nodes, , onNodesChange] = useNodesState(initialNodes);
-  const [edges, , onEdgesChange] = useEdgesState(initialEdges);
+  const { nodes, edges, onNodesChange, onEdgesChange } = useNodeStore();
 
   return (
     <div className="w-full glass rounded-2xl border border-white/10 overflow-hidden shadow-2xl"
@@ -210,7 +140,7 @@ export function TechTree() {
       >
         <Background gap={20} size={1} />
         <Controls showInteractive={false} />
-        <ScatterControls originalNodes={initialNodes} />
+        <ScatterControls />
       </ReactFlow>
     </div>
   );

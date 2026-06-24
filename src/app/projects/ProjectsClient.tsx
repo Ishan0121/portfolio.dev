@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Project, fetchProjectsWithCache } from "@/lib/github-projects-fetcher";
 import { PortfolioGrid } from "@/components/portfolio-grid";
-import { Loader2 } from "lucide-react";
+import { Icon } from "@iconify/react";
 
 const container = {
   hidden: {},
@@ -13,7 +13,7 @@ const container = {
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" as any } },
 };
 
 export default function ProjectsClient() {
@@ -56,7 +56,7 @@ export default function ProjectsClient() {
                   exit={{ opacity: 0, scale: 0.8 }}
                   className="glass !rounded-full px-4 py-2 flex items-center gap-3"
                 >
-                  <Loader2 size={16} className="animate-spin text-primary" />
+                  <Icon icon="lucide:loader-2" width={16} height={16} className="animate-spin text-primary" />
                   <span className="text-xs font-mono uppercase tracking-widest opacity-80">Fetching Data</span>
                 </motion.div>
               )}

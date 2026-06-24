@@ -1,11 +1,38 @@
 "use client";
 
+import React, { ErrorInfo } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowUpRight, Download, Mail } from "lucide-react";
+import { Icon } from "@iconify/react";
 import { useEffect, useState } from "react";
 import { GitHubCalendar } from "react-github-calendar";
 import SocialLinks from "@/components/SocialLinks";
+import { toast } from "sonner";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+
+class GithubErrorBoundary extends React.Component<{ children: React.ReactNode, fallback: React.ReactNode, resetKey: any }, { hasError: boolean }> {
+  constructor(props: { children: React.ReactNode, fallback: React.ReactNode, resetKey: any }) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(_: Error) {
+    return { hasError: true };
+  }
+
+  componentDidUpdate(prevProps: any) {
+    if (this.props.resetKey !== prevProps.resetKey) {
+      this.setState({ hasError: false });
+    }
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return this.props.fallback;
+    }
+    return this.props.children;
+  }
+}
 
 const siteConfig = {
   name: "Ishan Maiti",
@@ -31,7 +58,7 @@ const fadeUp = {
     opacity: 1, 
     y: 0, 
     filter: "blur(0px)", 
-    transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } 
+    transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] as any } 
   },
 };
 
@@ -78,13 +105,32 @@ function AnimatedText({ texts, speed = 65, pause = 2000 }: { texts: string[], sp
 
 export default function HomePage() {
   const [isMounted, setIsMounted] = useState(false);
+  const [githubYear, setGithubYear] = useState<number | "last">("last");
+  
+  const currentYear = new Date().getFullYear();
+  const years: (number | "last")[] = ["last"];
+  for (let y = currentYear; y >= 2023; y--) {
+    years.push(y);
+  }
 
   useEffect(() => {
     setIsMounted(true);
+    
+    // Welcome Toast Notification
+    const hasVisited = sessionStorage.getItem("welcomeToastShown");
+    if (!hasVisited) {
+      setTimeout(() => {
+        toast.info("Welcome to my digital universe!", {
+          description: "Feel free to explore my portfolio and projects.",
+          duration: 5000,
+        });
+        sessionStorage.setItem("welcomeToastShown", "true");
+      }, 1000);
+    }
   }, []);
 
   return (
-    <section className="min-h-[90vh] flex flex-col items-center justify-center py-10 relative">
+    <section className="min-h-[90vh] flex flex-col items-center justify-center lg:py-30 relative">
       <motion.div
         variants={container}
         initial="hidden"
@@ -120,14 +166,15 @@ export default function HomePage() {
               className="flex items-center justify-center h-12 px-8 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shadow-lg"
             >
               View My Work
-              <ArrowUpRight className="ml-2 h-4 w-4" />
+              <Icon icon="lucide:arrow-up-right" className="ml-2 h-4 w-4" />
             </Link>
             <a
               href={siteConfig.resumeUrl}
               download
+              onClick={() => toast.info("Preparing your download...", { description: "The resume PDF should start downloading shortly." })}
               className="flex items-center justify-center h-12 px-8 rounded-full border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors shadow-sm"
             >
-              <Download className="mr-2 h-4 w-4" />
+              <Icon icon="lucide:download" className="mr-2 h-4 w-4" />
               Download CV
             </a>
           </motion.div>
@@ -140,18 +187,53 @@ export default function HomePage() {
           </motion.div>
           
           <motion.div variants={fadeUp} className="pt-16 pb-8 flex flex-col items-center w-full max-w-4xl opacity-80 hover:opacity-100 transition-opacity">
-            <h3 className="text-xl font-semibold mb-6">Open Source Contributions</h3>
+            <div className="flex flex-col sm:flex-row items-center justify-between w-full mb-6">
+              <h3 className="text-xl font-semibold mb-4 sm:mb-0">Open Source Contributions</h3>
+              <select
+                value={githubYear}
+                onChange={(e) => setGithubYear(e.target.value === "last" ? "last" : parseInt(e.target.value))}
+                className="bg-card border border-border/50 text-sm font-medium rounded-md px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground"
+              >
+                {years.map(y => (
+                  <option key={y} value={y}>{y === "last" ? "Last Year" : y}</option>
+                ))}
+              </select>
+            </div>
+            
             <div className="glass p-6 w-[90vw] md:w-full overflow-x-auto min-h-[160px] flex items-center justify-start md:justify-center">
               <div className="min-w-max">
                 {isMounted ? (
-                  <GitHubCalendar 
-                    username="Ishan0121" 
-                    colorScheme="dark"
-                    theme={{
-                      dark: ["hsl(var(--muted))", "hsl(var(--primary) / 0.4)", "hsl(var(--primary) / 0.6)", "hsl(var(--primary) / 0.8)", "hsl(var(--primary))"]
-                    }}
-                    errorMessage="GitHub contributions are currently unavailable."
-                  />
+                  <GithubErrorBoundary 
+                    resetKey={githubYear}
+                    fallback={
+                      <div className="text-muted-foreground flex items-center justify-center h-full min-h-[120px]">
+                        No contributions found for {githubYear === "last" ? "the last year" : githubYear}.
+                      </div>
+                    }
+                  >
+                    <TooltipProvider delayDuration={50}>
+                      <GitHubCalendar 
+                        username="Ishan0121" 
+                        colorScheme="dark"
+                        year={githubYear}
+                        theme={{
+                          light: ["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"],
+                          dark: ["#1f1f1f", "#444444", "#666666", "#aaaaaa", "#ffffff"]
+                        }}
+                        errorMessage="GitHub contributions are currently unavailable."
+                        renderBlock={(block, activity) => (
+                          <Tooltip key={activity.date}>
+                            <TooltipTrigger asChild>
+                              {block}
+                            </TooltipTrigger>
+                            <TooltipContent side="top" className="text-xs bg-card border border-border/50 px-2 py-1 rounded">
+                              {activity.count} contributions on {activity.date}
+                            </TooltipContent>
+                          </Tooltip>
+                        )}
+                      />
+                    </TooltipProvider>
+                  </GithubErrorBoundary>
                 ) : (
                   <div className="text-muted-foreground animate-pulse">Loading calendar...</div>
                 )}

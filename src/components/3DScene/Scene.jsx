@@ -7,31 +7,30 @@ import { NeuralNetwork } from './NeuralNetwork';
 import { DataCore } from './DataCore';
 import { CyberEye } from './CyberEye';
 import { BionicHeart } from './BionicHeart';
-import { useInteract } from '../../context/InteractContext';
+import { useInteractStore } from '../../store/useInteractStore';
 import LoadingScreen from '../LoadingScreen';
 
 function CanvasLoader() {
-  return null; // Empty fallback, actual loading screen is outside Canvas
-}
-
-function LoadingOverlay() {
   const { active, progress, item, loaded, total } = useProgress();
-  
-  // Format the item name so it's not a huge path
   const itemName = item ? item.split('/').pop() : 'assets';
-  
+
   return (
-    <LoadingScreen 
-      progress={progress} 
-      isComplete={!active} 
-      message="Loading 3D Environment"
-      detail={`Loading ${itemName} (${loaded}/${total})`}
-    />
+    <Html center zIndexRange={[100, 100]} wrapperClass="w-full h-full flex items-center justify-center">
+      <div className="w-[100vw] h-[100vh] sm:w-[95vw] sm:h-[calc(100vh-theme(spacing.24))] flex items-center justify-center">
+        <LoadingScreen 
+          progress={progress} 
+          isComplete={!active} 
+          message="Loading 3D Environment"
+          detail={`Loading ${itemName} (${loaded}/${total})`}
+          fullScreen={false}
+        />
+      </div>
+    </Html>
   );
 }
 
 export function SceneWrapper({ route }) {
-  const { isInteractMode, resetTrigger } = useInteract();
+  const { isInteractMode, resetTrigger } = useInteractStore();
   const controlsRef = useRef();
 
   // Reset camera when the reset button is clicked
@@ -51,7 +50,6 @@ export function SceneWrapper({ route }) {
 
   return (
     <>
-      <LoadingOverlay />
       <Canvas camera={{ position: [0, 0, 15], fov: 45 }} dpr={[1, 2]} gl={{ antialias: false }}>
         <color attach="background" args={['#050505']} />
         
@@ -62,11 +60,10 @@ export function SceneWrapper({ route }) {
         <directionalLight position={[0, -10, 5]} intensity={1} color="#222222" />
         <pointLight position={[-5, 0, 5]} color="#00f0ff" intensity={2} />
         
-        {/* Environment map ensures highly metallic materials have something to reflect, making their base colors visible */}
-        <Environment preset="city" />
-        
-        
         <Suspense fallback={<CanvasLoader />}>
+          {/* Environment map ensures highly metallic materials have something to reflect, making their base colors visible */}
+          <Environment preset="city" />
+          
           {(!route || route === '/') && <DNAEngine />}
           {route === '/about' && <NeuralNetwork />}
           {route === '/skills' && <DataCore />}
@@ -86,9 +83,9 @@ export function SceneWrapper({ route }) {
         <OrbitControls 
           ref={controlsRef}
           target={target}
-          enableZoom={isInteractMode} 
-          enablePan={isInteractMode}
-          enableRotate={isInteractMode}
+          enableZoom={true} 
+          enablePan={true}
+          enableRotate={true}
           maxPolarAngle={Math.PI}
           minPolarAngle={0}
         />

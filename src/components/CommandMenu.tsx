@@ -2,103 +2,190 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { Command } from "cmdk";
+import { useTheme } from "next-themes";
 import {
-  Home,
-  User,
-  FolderDot,
-  Code2,
-  Mail,
-  Box,
-  Search
-} from "lucide-react";
-import "./command-menu.css";
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+} from "@/components/ui/command";
+import { Icon } from "@iconify/react";
+import { siteConfig } from "@/lib/config";
+import { Project, fetchProjectsWithCache } from "@/lib/github-projects-fetcher";
+import { skillsData } from "@/lib/skills-data";
 
-export function CommandMenu() {
-  const [open, setOpen] = useState(false);
+interface CommandMenuProps {
+  open: boolean;
+  setOpen: (open: boolean) => void;
+}
+
+export function CommandMenu({ open, setOpen }: CommandMenuProps) {
   const router = useRouter();
+  const { setTheme } = useTheme();
+  const [projects, setProjects] = useState<Project[]>([]);
 
+  // Fetch projects when command menu opens
+  useEffect(() => {
+    async function loadProjects() {
+      if (!open || projects.length > 0) return;
+      const data = await fetchProjectsWithCache({
+        username: "Ishan0121",
+        maxProjects: 30,
+        sortBy: "updated",
+        excludeRepos: ["Ishan0121", "portfolio", "Portfolio-dna", "Portfolio3.0"],
+      });
+      setProjects(data);
+    }
+    loadProjects();
+  }, [open, projects.length]);
+
+  // Handle global shortcut
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
       if ((e.key === "k" || e.key === "K") && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
-        setOpen((open) => !open);
+        setOpen(!open);
       }
     };
 
-    document.addEventListener("keydown", down);
-    return () => document.removeEventListener("keydown", down);
-  }, []);
+    const toggleMenu = () => setOpen(!open);
 
+    document.addEventListener("keydown", down);
+    document.addEventListener("toggle-command-menu", toggleMenu);
+    return () => {
+      document.removeEventListener("keydown", down);
+      document.removeEventListener("toggle-command-menu", toggleMenu);
+    };
+  }, [open, setOpen]);
+
+  // Execute an action and close
   const runCommand = useCallback(
     (command: () => unknown) => {
       setOpen(false);
       command();
     },
-    []
+    [setOpen]
   );
 
-  if (!open) return null;
-
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-[20vh] bg-black/60 backdrop-blur-sm" onClick={() => setOpen(false)}>
-      <div 
-        className="w-full max-w-lg bg-card border border-border/50 rounded-xl overflow-hidden shadow-2xl" 
-        onClick={(e) => e.stopPropagation()}
-      >
-        <Command className="cmd-k" loop>
-          <div className="flex items-center border-b border-border/50 px-4">
-            <Search className="w-5 h-5 text-muted-foreground mr-2 shrink-0" />
-            <Command.Input 
-              placeholder="Type a command or search..." 
-              className="flex w-full h-14 bg-transparent outline-none text-foreground placeholder:text-muted-foreground"
-            />
-          </div>
+    <>
+      {/* Background Blur Overlay Hooked into Dialog State */}
+      {open && (
+        <div 
+          className="fixed inset-0 z-[40] bg-blue-900/10 backdrop-blur-[2px] transition-opacity duration-300 pointer-events-none"
+          aria-hidden="true"
+        />
+      )}
+      <CommandDialog open={open} onOpenChange={setOpen}>
+        <CommandInput placeholder="Type a command or search for projects, skills..." />
+        <CommandList>
+          <CommandEmpty>No results found.</CommandEmpty>
           
-          <Command.List className="max-h-[300px] overflow-y-auto p-2 scrollbar-thin">
-            <Command.Empty className="py-6 text-center text-sm text-muted-foreground">No results found.</Command.Empty>
+          <CommandGroup heading="Navigation">
+            <CommandItem value="Home" onSelect={() => runCommand(() => router.push("/"))}>
+              <Icon icon="lucide:home" className="mr-2 h-4 w-4" />
+              <span>Home</span>
+            </CommandItem>
+            <CommandItem value="About me resume contact" onSelect={() => runCommand(() => router.push("/about"))}>
+              <Icon icon="lucide:user" className="mr-2 h-4 w-4" />
+              <span>About</span>
+            </CommandItem>
+            <CommandItem value="Projects portfolio work" onSelect={() => runCommand(() => router.push("/projects"))}>
+              <Icon icon="lucide:folder-dot" className="mr-2 h-4 w-4" />
+              <span>Projects</span>
+            </CommandItem>
+            <CommandItem value="Skills technologies" onSelect={() => runCommand(() => router.push("/skills"))}>
+              <Icon icon="lucide:code-2" className="mr-2 h-4 w-4" />
+              <span>Skills</span>
+            </CommandItem>
+            <CommandItem value="Contact email message" onSelect={() => runCommand(() => router.push("/contact"))}>
+              <Icon icon="lucide:mail" className="mr-2 h-4 w-4" />
+              <span>Contact</span>
+            </CommandItem>
+          </CommandGroup>
+          
+          <CommandSeparator />
 
-            <Command.Group heading="Navigation" className="px-2 text-xs font-medium text-muted-foreground my-2">
-              <Command.Item
-                onSelect={() => runCommand(() => router.push("/"))}
-                className="flex items-center gap-2 px-3 py-3 text-sm text-foreground rounded-lg cursor-pointer hover:bg-accent aria-selected:bg-accent transition-colors"
-              >
-                <Home className="w-4 h-4" /> Home
-              </Command.Item>
-              <Command.Item
-                onSelect={() => runCommand(() => router.push("/about"))}
-                className="flex items-center gap-2 px-3 py-3 text-sm text-foreground rounded-lg cursor-pointer hover:bg-accent aria-selected:bg-accent transition-colors"
-              >
-                <User className="w-4 h-4" /> About
-              </Command.Item>
-              <Command.Item
-                onSelect={() => runCommand(() => router.push("/projects"))}
-                className="flex items-center gap-2 px-3 py-3 text-sm text-foreground rounded-lg cursor-pointer hover:bg-accent aria-selected:bg-accent transition-colors"
-              >
-                <FolderDot className="w-4 h-4" /> Projects
-              </Command.Item>
-              <Command.Item
+          {projects.length > 0 && (
+            <>
+              <CommandGroup heading="Projects">
+                {projects.map((project) => (
+                  <CommandItem
+                    key={project.githubUrl}
+                    value={`${project.title} ${project.description} ${project.tags.join(" ")}`}
+                    onSelect={() => {
+                      runCommand(() => window.open(project.liveUrl || project.githubUrl, "_blank"));
+                    }}
+                  >
+                    <Icon icon="lucide:folder-dot" className="mr-2 h-4 w-4 text-muted-foreground shrink-0" />
+                    <div className="flex flex-col overflow-hidden">
+                      <span className="truncate">{project.title}</span>
+                      <span className="text-xs text-muted-foreground truncate">{project.description}</span>
+                    </div>
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+              <CommandSeparator />
+            </>
+          )}
+
+          <CommandGroup heading="Skills">
+            {skillsData.flatMap(cat => cat.skills).map((skill) => (
+              <CommandItem
+                key={skill.name}
+                value={`${skill.name} ${skill.description}`}
                 onSelect={() => runCommand(() => router.push("/skills"))}
-                className="flex items-center gap-2 px-3 py-3 text-sm text-foreground rounded-lg cursor-pointer hover:bg-accent aria-selected:bg-accent transition-colors"
               >
-                <Code2 className="w-4 h-4" /> Skills
-              </Command.Item>
-              <Command.Item
-                onSelect={() => runCommand(() => router.push("/contact"))}
-                className="flex items-center gap-2 px-3 py-3 text-sm text-foreground rounded-lg cursor-pointer hover:bg-accent aria-selected:bg-accent transition-colors"
-              >
-                <Mail className="w-4 h-4" /> Contact
-              </Command.Item>
-              <Command.Item
-                onSelect={() => runCommand(() => router.push("/3d"))}
-                className="flex items-center gap-2 px-3 py-3 text-sm text-foreground rounded-lg cursor-pointer hover:bg-accent aria-selected:bg-accent transition-colors"
-              >
-                <Box className="w-4 h-4" /> 3D Lab
-              </Command.Item>
-            </Command.Group>
-          </Command.List>
-        </Command>
-      </div>
-    </div>
+                <Icon icon="lucide:code-2" className="mr-2 h-4 w-4 text-muted-foreground shrink-0" />
+                <div className="flex flex-col overflow-hidden">
+                  <span className="truncate">{skill.name}</span>
+                  <span className="text-xs text-muted-foreground truncate">{skill.description}</span>
+                </div>
+              </CommandItem>
+            ))}
+          </CommandGroup>
+
+          <CommandSeparator />
+          
+          <CommandGroup heading="Actions">
+            <CommandItem
+              value="Download Resume PDF CV"
+              onSelect={() => {
+                runCommand(() => {
+                  const link = document.createElement('a');
+                  link.href = siteConfig.resumePath;
+                  link.download = siteConfig.resumeName;
+                  link.click();
+                });
+              }}
+            >
+              <Icon icon="lucide:file-down" className="mr-2 h-4 w-4" />
+              <span>Download Resume</span>
+            </CommandItem>
+          </CommandGroup>
+          
+          <CommandSeparator />
+          
+          <CommandGroup heading="Theme">
+            <CommandItem value="Light Theme Appearance" onSelect={() => runCommand(() => setTheme("light"))}>
+              <Icon icon="lucide:sun" className="mr-2 h-4 w-4" />
+              <span>Light Theme</span>
+            </CommandItem>
+            <CommandItem value="Dark Theme Appearance" onSelect={() => runCommand(() => setTheme("dark"))}>
+              <Icon icon="lucide:moon" className="mr-2 h-4 w-4" />
+              <span>Dark Theme</span>
+            </CommandItem>
+            <CommandItem value="System Theme Appearance" onSelect={() => runCommand(() => setTheme("system"))}>
+              <Icon icon="lucide:monitor" className="mr-2 h-4 w-4" />
+              <span>System Theme</span>
+            </CommandItem>
+          </CommandGroup>
+
+        </CommandList>
+      </CommandDialog>
+    </>
   );
 }
