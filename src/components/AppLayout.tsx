@@ -1,6 +1,7 @@
 "use client";
 
 import Navigation from "./Navigation";
+import Footer from "./Footer";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -10,6 +11,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         <main className="pt-24 min-h-screen">
           {children}
         </main>
+        <Footer />
       </div>
     </>
   );
