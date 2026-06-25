@@ -7,7 +7,7 @@ import SocialLinks from "@/components/SocialLinks";
 
 export default function ContactPage() {
   return (
-    <div className="py-12 pt-24 max-w-6xl mx-auto px-6 min-h-[80vh] flex items-center">
+    <div className="py-12 lg:pt-24 max-w-6xl mx-auto px-6 min-h-[80vh] flex items-center">
       <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24">
         
         {/* Left Column - Info */}

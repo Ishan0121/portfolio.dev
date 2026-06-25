@@ -135,7 +135,7 @@ export default function HomePage() {
         variants={container}
         initial="hidden"
         animate="visible"
-        className="w-full max-w-5xl flex flex-col items-center justify-center text-center px-4 relative z-10"
+        className="w-full max-w-5xl flex flex-col items-center justify-center text-center px-4 sm:py-3 relative z-10"
       >
         <div className="space-y-10 flex flex-col items-center justify-center">
           <motion.div

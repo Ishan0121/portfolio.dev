@@ -17,7 +17,7 @@ export default function SkillsPage() {
       {/* <FloatingSplineBot splineScene="./spline/genkub.splinecode"/> */}
 
       <motion.section
-        className="max-w-7xl mx-auto px-6 py-12 sm:py-16 flex flex-col items-center"
+        className="max-w-7xl mx-auto px-6 lg:py-12 flex flex-col items-center"
         initial="hidden"
         animate="visible"
         variants={containerVariants}

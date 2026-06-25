@@ -36,7 +36,7 @@ export default function ProjectsClient() {
   }, []);
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-12 pb-32">
+    <div className="max-w-7xl mx-auto px-6 lg:py-12 pb-32">
       <motion.div
         variants={container}
         initial="hidden"
