@@ -35,7 +35,7 @@ export default function SkillsPage() {
         >
           <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-violet-600 rounded-lg opacity-20 blur-3xl" />
           <Image
-            src="/images/skills.gif"
+            src="./images/skills.gif"
             alt="skills"
             fill
             className="object-cover rounded-lg absolute"

@@ -38,11 +38,11 @@ const siteConfig = {
   name: "Ishan Maiti",
   bio: "Passionate about crafting seamless digital experiences through clean code and innovative solutions. Building systems and exploring new technologies.",
   taglines: [
-    "Welcome to my Universe",
-    "I am a Developer",
-    "I Love Coding",
-    "Exploring Technologies",
-    "A Programmer",
+    "Welcome to my Universe!",
+    "I am a Developer.",
+    "I Love Coding.",
+    "Exploring Technologies!",
+    "A Programmer...",
   ],
   resumeUrl: "#",
 };
