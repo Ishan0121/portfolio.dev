@@ -49,7 +49,7 @@ export function SceneWrapper({ route }) {
   else if (route === '/contact') target = [0, 0, -6]; // BionicHeart
 
   return (
-    <>
+    <div className="w-full h-full" data-lenis-prevent="true">
       <Canvas camera={{ position: [0, 0, 15], fov: 45 }} dpr={[1, 2]} gl={{ antialias: false }}>
         <color attach="background" args={['#050505']} />
         
@@ -90,6 +90,6 @@ export function SceneWrapper({ route }) {
           minPolarAngle={0}
         />
       </Canvas>
-    </>
+    </div>
   );
 }
