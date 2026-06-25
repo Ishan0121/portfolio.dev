@@ -130,7 +130,7 @@ export default function HomePage() {
   }, []);
 
   return (
-    <section className="min-h-[90vh] flex flex-col items-center justify-center lg:py-30 relative">
+    <section className="min-h-[90vh] flex flex-col items-center justify-center pt-10 lg:py-30 relative">
       <motion.div
         variants={container}
         initial="hidden"
@@ -179,7 +179,7 @@ export default function HomePage() {
             </a>
           </motion.div>
                         
-          <motion.div variants={fadeUp} className="pt-10 flex flex-col items-center gap-4">
+          <motion.div variants={fadeUp} className="flex flex-col items-center gap-4">
             <span className="text-sm font-medium tracking-widest uppercase opacity-50">Connect</span>
             <div className="p-4 rounded-full border border-border/50 bg-card shadow-sm backdrop-blur-md">
               <SocialLinks size="lg" className="gap-6" />
