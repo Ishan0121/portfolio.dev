@@ -6,10 +6,15 @@ import { useEffect, useState } from "react";
 export default function GlobalLoading() {
   const [progress, setProgress] = useState(10);
   
-  // A pseudo-progress just to show something is happening during server fetch
+  const [currentStep] = useState(0);
+
+  const loadingSteps = [
+    "Fetching page resources...",
+  ];
+
   useEffect(() => {
     const interval = setInterval(() => {
-      setProgress(p => (p < 85 ? p + Math.random() * 15 : p));
+      setProgress(p => (p < 90 ? Math.min(99, p + Math.random() * 15) : p));
     }, 200);
     return () => clearInterval(interval);
   }, []);
@@ -18,7 +23,8 @@ export default function GlobalLoading() {
     <LoadingScreen 
       progress={progress}
       message="Fetching Data"
-      detail="Loading page content..."
+      steps={loadingSteps}
+      currentStep={currentStep}
     />
   );
 }

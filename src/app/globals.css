@@ -137,7 +137,7 @@
 
   .glass::before {
     content: "";
-    @apply absolute inset-0 rounded-xl
+    @apply absolute inset-0 rounded-[inherit]
           bg-gradient-to-tr from-white/10 to-transparent
           opacity-50 pointer-events-none;
   }

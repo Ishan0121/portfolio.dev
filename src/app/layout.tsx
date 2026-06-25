@@ -10,6 +10,7 @@ const nerdFont = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-nerd",
   display: "swap",
+  preload: false,
 });
 
 export const metadata: Metadata = {

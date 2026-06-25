@@ -157,7 +157,7 @@ export default function AboutPage() {
               {person.role}
             </h2>
             
-            <div className="flex flex-wrap gap-3 justify-center md:justify-start mb-8 p-2 border border-border/50 rounded-2xl bg-secondary/10">
+            <div className="flex flex-wrap gap-3 justify-center md:justify-start mb-8 p-2 border border-border/50 rounded-full glass bg-secondary/10 ">
               <SocialLinks size="md" className="gap-3" showName />
             </div>
             
