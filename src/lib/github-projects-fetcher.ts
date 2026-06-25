@@ -1,5 +1,18 @@
 // lib/github-projects-fetcher.ts
-import { toast } from "sonner";
+import { useNotificationStore } from "@/store/useNotificationStore";
+
+async function fetchWithTimeout(url: string, options: RequestInit = {}, timeoutMs = 8000) {
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(new Error(`Request timed out after ${timeoutMs}ms`)), timeoutMs);
+  try {
+    const response = await fetch(url, { ...options, signal: controller.signal });
+    clearTimeout(id);
+    return response;
+  } catch (error) {
+    clearTimeout(id);
+    throw error;
+  }
+}
 
 export interface Project {
   title: string;
@@ -149,13 +162,14 @@ export async function fetchGitHubRepos(
   } = config;
 
   try {
-    const response = await fetch(
+    const response = await fetchWithTimeout(
       `https://api.github.com/users/${username}/repos?per_page=100&sort=${sortBy}`,
       {
         headers: {
           Accept: "application/vnd.github.v3+json",
         },
-      }
+      },
+      8000 // 8 seconds timeout
     );
 
     if (!response.ok) {
@@ -298,7 +312,7 @@ export async function fetchProjectsWithCache(
 
   try {
     // 1. Lightweight fetch to check if the user profile has updated
-    const profileResponse = await fetch(`https://api.github.com/users/${username}`);
+    const profileResponse = await fetchWithTimeout(`https://api.github.com/users/${username}`, {}, 5000);
     
     if (!profileResponse.ok) {
       // If we hit an API limit on the lightweight check, fallback to cache immediately
@@ -335,13 +349,13 @@ export async function fetchProjectsWithCache(
     try {
       const cachedData = localStorage.getItem(CACHE_KEY);
       if (cachedData) {
-        toast.warning("Network issue detected. Showing cached projects.");
+        useNotificationStore.getState().notify("github_fetch_error", { type: "warning" });
         return JSON.parse(cachedData);
       }
     } catch (e) {
       console.error("Error parsing cached projects:", e);
     }
-    toast.error("Failed to connect to GitHub. Showing offline fallback projects.");
+    useNotificationStore.getState().notify("network_offline", { type: "error" });
     
     // Return hardcoded fallbacks if API and cache both fail
     return [

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { toast } from "sonner";
+import { useNotificationStore } from "@/store/useNotificationStore";
 import { Icon } from "@iconify/react";
 
 const COOLDOWN_MINUTES = 30;
@@ -12,6 +12,7 @@ const web3formsAccessKey = "ca516541-11c7-43f1-b9cd-bb21e64906f2"; // Provide th
 export function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [cooldown, setCooldown] = useState<number | null>(null);
+  const notify = useNotificationStore((state) => state.notify);
 
   useEffect(() => {
     const lastSubmission = localStorage.getItem("lastContactSubmission");
@@ -28,12 +29,12 @@ export function ContactForm() {
     e.preventDefault();
     
     if (cooldown !== null && cooldown > 0) {
-      toast.warning(`I have already received your message. Please wait a while before sending another one.`);
+      notify("form_success", { force: true, type: "warning" }); // they've already succeeded recently
       return;
     }
 
     if (!web3formsAccessKey) {
-      toast.error("Contact form is not configured yet. Missing Access Key.");
+      notify("form_error", { force: true, type: "error" });
       return;
     }
 
@@ -64,15 +65,15 @@ export function ContactForm() {
       const result = await response.json();
 
       if (response.status === 200) {
-        toast.success("Message received successfully! I will get back to you soon.");
+        notify("form_success", { type: "success" });
         localStorage.setItem("lastContactSubmission", Date.now().toString());
         setCooldown(COOLDOWN_MINUTES);
         (e.target as HTMLFormElement).reset();
       } else {
-        toast.error(result.message || "Failed to send message. Please try again.");
+        notify("form_error", { force: true, type: "error" });
       }
     } catch {
-      toast.error("Network error. Please try again later.");
+      notify("network_offline", { force: true, type: "error" });
     } finally {
       setIsSubmitting(false);
     }

@@ -7,7 +7,7 @@ import { Icon } from "@iconify/react";
 import { useEffect, useState } from "react";
 import { GitHubCalendar } from "react-github-calendar";
 import SocialLinks from "@/components/SocialLinks";
-import { toast } from "sonner";
+import { useNotificationStore } from "@/store/useNotificationStore";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 class GithubErrorBoundary extends React.Component<{ children: React.ReactNode, fallback: React.ReactNode, resetKey: any }, { hasError: boolean }> {
@@ -105,6 +105,7 @@ function AnimatedText({ texts, speed = 65, pause = 2000 }: { texts: string[], sp
 export default function HomePage() {
   const [isMounted, setIsMounted] = useState(false);
   const [githubYear, setGithubYear] = useState<number | "last">("last");
+  const notify = useNotificationStore((state) => state.notify);
   
   const currentYear = new Date().getFullYear();
   const years: (number | "last")[] = ["last"];
@@ -119,10 +120,7 @@ export default function HomePage() {
     const hasVisited = sessionStorage.getItem("welcomeToastShown");
     if (!hasVisited) {
       setTimeout(() => {
-        toast.info("Welcome to my digital universe!", {
-          description: "Feel free to explore my portfolio and projects.",
-          duration: 5000,
-        });
+        useNotificationStore.getState().notify("welcome", { force: true, type: "info" });
         sessionStorage.setItem("welcomeToastShown", "true");
       }, 1000);
     }
@@ -170,7 +168,7 @@ export default function HomePage() {
             <a
               href={siteConfig.resumeUrl}
               download
-              onClick={() => toast.info("Preparing your download...", { description: "The resume PDF should start downloading shortly." })}
+              onClick={() => notify("download_resume", { type: "info" })}
               className="flex items-center justify-center h-12 px-8 rounded-full border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors shadow-sm"
             >
               <Icon icon="lucide:download" className="mr-2 h-4 w-4" />

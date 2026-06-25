@@ -5,6 +5,7 @@ import AppLayout from "@/components/AppLayout";
 import { Toaster } from "sonner";
 import { SmoothScrolling } from "@/components/SmoothScrolling";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { SystemMonitor } from "@/components/SystemMonitor";
 
 const nerdFont = JetBrains_Mono({
   subsets: ["latin"],
@@ -32,8 +33,16 @@ export default function RootLayout({
       <body className="min-h-screen bg-background text-foreground flex flex-col font-sans">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <SmoothScrolling>
+            <SystemMonitor />
             <AppLayout>{children}</AppLayout>
-            <Toaster theme="dark" position="bottom-right" />
+            <Toaster 
+              theme="dark" 
+              position="bottom-right" 
+              closeButton
+              toastOptions={{
+                className: "glass border-primary/20 shadow-2xl backdrop-blur-md rounded-xl"
+              }}
+            />
           </SmoothScrolling>
         </ThemeProvider>
       </body>

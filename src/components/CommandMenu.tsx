@@ -16,6 +16,7 @@ import { Icon } from "@iconify/react";
 import { siteConfig } from "@/lib/config";
 import { Project, fetchProjectsWithCache } from "@/lib/github-projects-fetcher";
 import { skillsData } from "@/lib/skills-data";
+import { useNotificationStore } from "@/store/useNotificationStore";
 
 interface CommandMenuProps {
   open: boolean;
@@ -164,6 +165,13 @@ export function CommandMenu({ open, setOpen }: CommandMenuProps) {
             >
               <Icon icon="lucide:file-down" className="mr-2 h-4 w-4" />
               <span>Download Resume</span>
+            </CommandItem>
+            <CommandItem 
+              value="Toggle Do Not Disturb Notifications DND Mute" 
+              onSelect={() => runCommand(() => useNotificationStore.getState().toggleDnd())}
+            >
+              <Icon icon="lucide:bell-off" className="mr-2 h-4 w-4" />
+              <span>Toggle Do Not Disturb</span>
             </CommandItem>
           </CommandGroup>
           

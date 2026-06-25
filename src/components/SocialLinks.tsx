@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { toast } from "sonner";
+import { useNotificationStore } from "@/store/useNotificationStore";
 import { Icon as IconifyIcon } from "@iconify/react";
 
 const socialLinks = [
@@ -41,6 +41,8 @@ interface SocialLinksProps {
 }
 
 export default function SocialLinks({ size = "md", className, showName = false }: SocialLinksProps) {
+  const notify = useNotificationStore((state) => state.notify);
+
   return (
     <TooltipProvider>
       <div className={cn("flex flex-wrap items-center justify-center gap-3", className)}>
@@ -63,11 +65,7 @@ export default function SocialLinks({ size = "md", className, showName = false }
                   rel="noopener noreferrer"
                   aria-label={label}
                   onClick={() => {
-                    if (id === "email") {
-                      toast.info("Opening email client...", { description: url.replace("mailto:", "") });
-                    } else {
-                      toast.info(`Opening ${label}...`);
-                    }
+                    notify("external_link", { type: "info" });
                   }}
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
