@@ -9,6 +9,7 @@ import { GitHubCalendar } from "react-github-calendar";
 import SocialLinks from "@/components/SocialLinks";
 import { useNotificationStore } from "@/store/useNotificationStore";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { siteConfig } from "@/lib/config";
 
 class GithubErrorBoundary extends React.Component<{ children: React.ReactNode, fallback: React.ReactNode, resetKey: any }, { hasError: boolean }> {
   constructor(props: { children: React.ReactNode, fallback: React.ReactNode, resetKey: any }) {
@@ -34,18 +35,6 @@ class GithubErrorBoundary extends React.Component<{ children: React.ReactNode, f
   }
 }
 
-const siteConfig = {
-  name: "Ishan Maiti",
-  bio: "Passionate about crafting seamless digital experiences through clean code and innovative solutions. Building systems and exploring new technologies.",
-  taglines: [
-    "Welcome to my Universe!",
-    "I am a Developer.",
-    "I Love Coding.",
-    "Exploring Technologies!",
-    "A Programmer...",
-  ],
-  resumeUrl: "#",
-};
 
 const container = {
   hidden: {},
@@ -127,7 +116,7 @@ export default function HomePage() {
   }, []);
 
   return (
-    <section className="min-h-[90vh] flex flex-col items-center justify-center pt-10 lg:py-30 relative">
+    <section className="min-h-[90vh] flex flex-col items-center justify-center pt-10 lg:py-20 relative">
       <motion.div
         variants={container}
         initial="hidden"
@@ -139,14 +128,14 @@ export default function HomePage() {
             variants={fadeUp}
             className="space-y-6 flex flex-col items-center justify-center"
           >
-            <h1 className="text-5xl sm:text-7xl lg:text-8xl font-bold tracking-tight leading-[1.1] text-foreground max-w-4xl drop-shadow-2xl font-heading">
+            <h1 className="text-5xl sm:text-7xl lg:text-9xl font-bold tracking-tight leading-[1.1] text-foreground max-w-4xl drop-shadow-2xl font-heading">
               <span className="block text-primary/80 text-2xl sm:text-3xl font-medium tracking-normal mb-4">Hello, I am</span>
-              <span className="bg-clip-text text-transparent bg-gradient-to-br from-foreground to-foreground/50">
+              <span className="bg-clip-text text-transparent bg-gradient-to-br from-foreground to-foreground/50 uppercase">
                 {siteConfig.name}
               </span>
             </h1>
             <div className="text-xl sm:text-2xl text-muted-foreground min-h-[3.5rem] sm:min-h-[2.5rem] tracking-tight font-mono max-w-2xl text-balance flex items-center justify-center">
-              <AnimatedText texts={siteConfig.taglines} />
+              <AnimatedText texts={siteConfig.messages} />
             </div>
           </motion.div>
               
@@ -166,8 +155,8 @@ export default function HomePage() {
               <Icon icon="lucide:arrow-up-right" className="ml-2 h-4 w-4" />
             </Link>
             <a
-              href={siteConfig.resumeUrl}
-              download
+              href={siteConfig.resumePath}
+              download={siteConfig.resumeName}
               onClick={() => notify("download_resume", { type: "info" })}
               className="flex items-center justify-center h-12 px-8 rounded-full border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors shadow-sm"
             >
@@ -176,7 +165,7 @@ export default function HomePage() {
             </a>
           </motion.div>
                         
-          <motion.div variants={fadeUp} className="flex flex-col items-center gap-4">
+          <motion.div variants={fadeUp} className="flex flex-col items-center gap-4 lg:pt-10">
             <span className="text-sm font-medium tracking-widest uppercase opacity-50">Connect</span>
             <div className="p-4 rounded-full border border-border/50 bg-card shadow-sm backdrop-blur-md">
               <SocialLinks size="lg" className="gap-6" />
@@ -210,7 +199,7 @@ export default function HomePage() {
                   >
                     <TooltipProvider delayDuration={50}>
                       <GitHubCalendar 
-                        username="Ishan0121" 
+                        username={siteConfig.githubUsername} 
                         colorScheme="dark"
                         year={githubYear}
                         theme={{

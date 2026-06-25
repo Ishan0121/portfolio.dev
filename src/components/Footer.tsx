@@ -4,15 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Icon } from "@iconify/react";
 import SocialLinks from "@/components/SocialLinks";
-
-const navLinks = [
-  { title: "Home", href: "/" },
-  { title: "About", href: "/about" },
-  { title: "Projects", href: "/projects" },
-  { title: "Skills", href: "/skills" },
-  { title: "3D Lab", href: "/3d" },
-  { title: "Contact", href: "/contact" },
-];
+import { siteConfig } from "@/lib/config";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -35,11 +27,11 @@ export default function Footer() {
                 IM
               </motion.div>
               <span className="font-semibold text-lg group-hover:text-primary transition-colors">
-                Ishan Maiti
+                {siteConfig.name}
               </span>
             </Link>
             <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">
-              Crafting digital experiences with clean code and thoughtful design.
+              {siteConfig.bio}
             </p>
           </div>
 
@@ -47,7 +39,7 @@ export default function Footer() {
           <div className="space-y-4">
             <h3 className="text-sm font-semibold text-foreground tracking-wide uppercase font-mono">Navigation</h3>
             <ul className="space-y-2">
-              {navLinks.map((link) => (
+              {siteConfig.navLinks.map((link) => (
                 <li key={link.title}>
                   <Link
                     href={link.href}
@@ -66,11 +58,11 @@ export default function Footer() {
             <h3 className="text-sm font-semibold text-foreground tracking-wide uppercase font-mono">Connect</h3>
             <SocialLinks size="md" />
             <a
-              href={`mailto:ishanmaiti1234@gmail.com`}
+              href={`mailto:${siteConfig.socials.email}`}
               className="inline-flex items-center gap-2 text-xs text-muted-foreground hover:text-primary transition-colors duration-200"
             >
               <Icon icon="lucide:mail" width={13} height={13} />
-              ishanmaiti1234@gmail.com
+              {siteConfig.socials.email}
             </a>
           </div>
         </div>
@@ -78,7 +70,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="max-w-6xl mx-auto mt-10 pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-muted-foreground">
-            © {year} Ishan Maiti. All rights reserved.
+            © {year} {siteConfig.name}. All rights reserved.
           </p>
           <motion.p
             className="text-xs text-muted-foreground flex items-center gap-1"

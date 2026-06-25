@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Project, fetchProjectsWithCache } from "@/lib/github-projects-fetcher";
 import { PortfolioGrid } from "@/components/portfolio-grid";
 import { Icon } from "@iconify/react";
+import { siteConfig } from "@/lib/config";
 
 const container = {
   hidden: {},
@@ -24,10 +25,10 @@ export default function ProjectsClient() {
     async function loadProjects() {
       setIsLoading(true);
       const data = await fetchProjectsWithCache({
-        username: "Ishan0121",
+        username: siteConfig.githubUsername,
         maxProjects: 30,
         sortBy: "updated",
-        excludeRepos: ["Ishan0121", "portfolio", "Portfolio-dna", "Portfolio3.0"],
+        excludeRepos: siteConfig.github.excludeRepos,
       });
       setProjects(data);
       setIsLoading(false);

@@ -10,6 +10,7 @@ import { Icon } from "@iconify/react";
 import { CommandMenu } from "@/components/CommandMenu";
 import MobileMenu from "./MobileMenu";
 import { cn } from "@/lib/utils";
+import { siteConfig } from "@/lib/config";
 
 export function Navigation() {
   const [mounted, setMounted] = useState(false);
@@ -43,14 +44,7 @@ export function Navigation() {
 
   if (!mounted) return null;
 
-  const navLinks = [
-    { href: "/", label: "Home" },
-    { href: "/about", label: "About" },
-    { href: "/projects", label: "Projects" },
-    { href: "/skills", label: "Skills" },
-    { href: "/3d", label: "3D Lab" },
-    { href: "/contact", label: "Contact" },
-  ];
+  const navLinks = siteConfig.navLinks;
 
   const themeToggle = (
     <Button
@@ -102,7 +96,7 @@ export function Navigation() {
                   pathname === link.href ? "glass" : "text-muted-foreground hover:text-foreground"
                 }`}
               >
-                {link.label}
+                {link.title}
               </Link>
             ))}
             <div className="flex items-center ml-2 border-l border-white/10 pl-2 space-x-2">

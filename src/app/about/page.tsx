@@ -5,56 +5,9 @@ import { Icon } from "@iconify/react";
 import Link from "next/link";
 import { useState } from "react";
 import SocialLinks from "@/components/SocialLinks";
+import { siteConfig } from "@/lib/config";
 
-const person = {
-  name: "Ishan Maiti",
-  role: "Computer Science Student & Developer",
-  location: "Kolkata, India",
-  languages: ["English", "Hindi", "Bengali"],
-  avatar: "https://github.com/Ishan0121.png",
-  intro: "I am a developer driven by the desire to understand how systems work from the ground up. Over the years, I've evolved from creating simple web interfaces to developing complex systems that bridge the gap between software, hardware, and creative technologies. My focus is always on performance, clean architecture, and delivering a premium user experience.",
-};
-
-const work = [
-  {
-    company: "Freelance Developer",
-    timeframe: "2023 - Present",
-    role: "Full Stack Engineer",
-    achievements: [
-      "Built multiple Next.js applications with complex state management and animations.",
-      "Integrated hardware and IoT systems using C++ and WebSockets for real-time data.",
-      "Optimized 3D web experiences using React Three Fiber.",
-    ],
-  },
-];
-
-const studies = [
-  {
-    name: "Computer Science & Engineering",
-    description: "Bachelor of Technology - Focusing on System Architecture, Data Structures, and Modern Web Technologies.",
-  },
-];
-
-const technical = [
-  {
-    title: "Web Development",
-    description: "Building next gen apps with Next.js, Tailwind CSS, and Framer Motion.",
-    tags: [
-      { name: "JavaScript", icon: "logos:javascript" },
-      { name: "Next.js", icon: "logos:nextjs-icon" },
-      { name: "React", icon: "logos:react" },
-      { name: "Tailwind CSS", icon: "logos:tailwindcss-icon" },
-    ]
-  },
-  {
-    title: "Hardware & IoT",
-    description: "Integrating hardware systems using C++ and WebSockets.",
-    tags: [
-      { name: "C++", icon: "logos:c-plusplus" },
-      { name: "Arduino", icon: "logos:arduino" },
-    ]
-  }
-];
+const { person, work, studies, technical } = siteConfig;
 
 function TableOfContents() {
   const structure = [

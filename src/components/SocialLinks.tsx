@@ -6,33 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useNotificationStore } from "@/store/useNotificationStore";
 import { Icon as IconifyIcon } from "@iconify/react";
-
-const socialLinks = [
-  {
-    id: "github",
-    label: "GitHub",
-    url: "https://github.com/Ishan0121",
-    icon: "mdi:github",
-  },
-  {
-    id: "linkedin",
-    label: "LinkedIn",
-    url: "https://www.linkedin.com/in/ishan-maiti-785212297",
-    icon: "mdi:linkedin",
-  },
-  {
-    id: "email",
-    label: "Email",
-    url: "mailto:ishanmaiti1234@gmail.com",
-    icon: "mdi:email",
-  },
-  {
-    id: "twitter",
-    label: "Twitter",
-    url: "https://x.com/maiti_ishan",
-    icon: "mdi:twitter",
-  },
-];
+import { siteConfig } from "@/lib/config";
 
 interface SocialLinksProps {
   size?: "sm" | "md" | "lg";
@@ -46,7 +20,7 @@ export default function SocialLinks({ size = "md", className, showName = false }
   return (
     <TooltipProvider>
       <div className={cn("flex flex-wrap items-center justify-center gap-3", className)}>
-        {socialLinks.map(({ id, label, url, icon }) => (
+        {siteConfig.socialLinks.map(({ id, label, url, icon }) => (
           <Tooltip key={id} delayDuration={300}>
             <TooltipTrigger asChild>
               <Button 

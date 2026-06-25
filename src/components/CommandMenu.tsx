@@ -33,10 +33,10 @@ export function CommandMenu({ open, setOpen }: CommandMenuProps) {
     async function loadProjects() {
       if (!open || projects.length > 0) return;
       const data = await fetchProjectsWithCache({
-        username: "Ishan0121",
+        username: siteConfig.githubUsername,
         maxProjects: 30,
         sortBy: "updated",
-        excludeRepos: ["Ishan0121", "portfolio", "Portfolio-dna", "Portfolio3.0"],
+        excludeRepos: siteConfig.github.excludeRepos,
       });
       setProjects(data);
     }
@@ -86,26 +86,12 @@ export function CommandMenu({ open, setOpen }: CommandMenuProps) {
           <CommandEmpty>No results found.</CommandEmpty>
           
           <CommandGroup heading="Navigation">
-            <CommandItem value="Home" onSelect={() => runCommand(() => router.push("/"))}>
-              <Icon icon="lucide:home" className="mr-2 h-4 w-4" />
-              <span>Home</span>
-            </CommandItem>
-            <CommandItem value="About me resume contact" onSelect={() => runCommand(() => router.push("/about"))}>
-              <Icon icon="lucide:user" className="mr-2 h-4 w-4" />
-              <span>About</span>
-            </CommandItem>
-            <CommandItem value="Projects portfolio work" onSelect={() => runCommand(() => router.push("/projects"))}>
-              <Icon icon="lucide:folder-dot" className="mr-2 h-4 w-4" />
-              <span>Projects</span>
-            </CommandItem>
-            <CommandItem value="Skills technologies" onSelect={() => runCommand(() => router.push("/skills"))}>
-              <Icon icon="lucide:code-2" className="mr-2 h-4 w-4" />
-              <span>Skills</span>
-            </CommandItem>
-            <CommandItem value="Contact email message" onSelect={() => runCommand(() => router.push("/contact"))}>
-              <Icon icon="lucide:mail" className="mr-2 h-4 w-4" />
-              <span>Contact</span>
-            </CommandItem>
+            {siteConfig.navLinks.map((link) => (
+              <CommandItem key={link.title} value={link.keywords} onSelect={() => runCommand(() => router.push(link.href))}>
+                <Icon icon={link.icon} className="mr-2 h-4 w-4" />
+                <span>{link.title}</span>
+              </CommandItem>
+            ))}
           </CommandGroup>
           
           <CommandSeparator />

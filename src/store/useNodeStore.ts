@@ -9,7 +9,7 @@ import {
   applyNodeChanges,
   applyEdgeChanges,
 } from '@xyflow/react';
-import { skillsData } from '@/data/skills';
+import { skillsData } from '@/lib/skills-data';
 
 // Constants for layout
 const ROOT_W      = 240;

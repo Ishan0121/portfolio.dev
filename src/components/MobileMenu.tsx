@@ -3,15 +3,7 @@
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import SocialLinks from "./SocialLinks";
-
-const navLinks = [
-  { title: "Home", href: "/" },
-  { title: "About", href: "/about" },
-  { title: "Projects", href: "/projects" },
-  { title: "Skills", href: "/skills" },
-  { title: "3D Lab", href: "/3d" },
-  { title: "Contact", href: "/contact" },
-];
+import { siteConfig } from "@/lib/config";
 
 const backdropVariants = {
   hidden: { opacity: 0 },
@@ -71,7 +63,7 @@ export default function MobileMenu({ open, onClose, pathname }: { open: boolean,
 
             {/* Nav links */}
             <nav className="flex flex-col gap-1 flex-1 px-5 pt-24 pb-8">
-              {navLinks.map(({ title, href }, i) => {
+              {siteConfig.navLinks.map(({ title, href }, i) => {
                 const isActive = pathname === href;
                 return (
                   <motion.div key={title} custom={i} variants={itemVariants} initial="hidden" animate="visible">
@@ -95,7 +87,7 @@ export default function MobileMenu({ open, onClose, pathname }: { open: boolean,
                 );
               })}
 
-              <motion.div custom={navLinks.length} variants={itemVariants} initial="hidden" animate="visible" className="mt-4">
+              <motion.div custom={siteConfig.navLinks.length} variants={itemVariants} initial="hidden" animate="visible" className="mt-4">
                 <button
                   onClick={() => {
                     document.dispatchEvent(new CustomEvent("toggle-command-menu"));
