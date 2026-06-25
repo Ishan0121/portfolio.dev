@@ -85,7 +85,7 @@ export default function SkillsPage() {
         >
           <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-violet-600 rounded-lg opacity-20 blur-3xl" />
           <Image
-            src="/images/js.gif"
+            src="./images/js.gif"
             alt="js"
             fill
             className="object-cover rounded-lg"
