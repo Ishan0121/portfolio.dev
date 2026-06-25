@@ -63,12 +63,12 @@ export default function AboutPage() {
             <div className="relative w-40 h-40 rounded-full overflow-hidden border border-border shadow-sm bg-card">
               {!imageLoaded && (
                 <div className="absolute inset-0 bg-muted animate-pulse flex items-center justify-center">
-                  <span className="text-muted-foreground/50 text-3xl font-bold">{person.name[0]}</span>
+                  <span className="text-muted-foreground/50 text-3xl font-bold">{siteConfig.name[0]}</span>
                 </div>
               )}
               <img 
                 src={person.avatar} 
-                alt={person.name} 
+                alt={siteConfig.name} 
                 onLoad={() => setImageLoaded(true)}
                 className={`w-full h-full object-cover transition-opacity duration-500 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`} 
               />
@@ -104,7 +104,7 @@ export default function AboutPage() {
             </div>
             
             <h1 className="text-5xl md:text-6xl font-bold text-foreground tracking-tight mb-2">
-              {person.name}
+              {siteConfig.name}
             </h1>
             <h2 className="text-xl text-muted-foreground font-medium mb-6">
               {person.role}
