@@ -1,6 +1,6 @@
 "use client";
 
-import LoadingScreen from "@/components/LoadingScreen";
+import LoadingScreen from '@/components/core/LoadingScreen';
 import { useEffect, useState } from "react";
 
 export default function GlobalLoading() {

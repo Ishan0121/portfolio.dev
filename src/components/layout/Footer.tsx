@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Icon } from "@iconify/react";
-import SocialLinks from "@/components/SocialLinks";
+import SocialLinks from '@/components/shared/SocialLinks';
 import { siteConfig } from "@/lib/config";
 
 export default function Footer() {
@@ -56,7 +56,7 @@ export default function Footer() {
           {/* Social */}
           <div className="space-y-4">
             <h3 className="text-sm font-semibold text-foreground tracking-wide uppercase font-mono">Connect</h3>
-            <SocialLinks size="md" />
+            <SocialLinks size="md" className="justify-start"/>
             <a
               href={`mailto:${siteConfig.socials.email}`}
               className="inline-flex items-center gap-2 text-xs text-muted-foreground hover:text-primary transition-colors duration-200"

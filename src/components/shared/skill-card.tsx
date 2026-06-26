@@ -13,7 +13,11 @@ export function SkillCard({ name, level, description, icon }: SkillCardProps) {
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            {icon && <Icon icon={icon} className="w-5 h-5" />}
+            {icon && (
+              icon.startsWith('/') 
+                ? <img src={icon} alt={name} className="w-5 h-5 object-contain" />
+                : <Icon icon={icon} className="w-5 h-5" />
+            )}
             <h3 className="font-semibold">{name}</h3>
           </div>
           <span className="text-sm text-muted-foreground">{level}</span>

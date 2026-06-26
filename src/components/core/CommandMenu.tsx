@@ -15,7 +15,7 @@ import {
 import { Icon } from "@iconify/react";
 import { siteConfig } from "@/lib/config";
 import { Project, fetchProjectsWithCache } from "@/lib/github-projects-fetcher";
-import { skillsData } from "@/lib/skills-data";
+import { skillsData } from '@/data/skills-data';
 import { useNotificationStore } from "@/store/useNotificationStore";
 
 interface CommandMenuProps {

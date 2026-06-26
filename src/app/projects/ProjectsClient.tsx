@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Project, fetchProjectsWithCache } from "@/lib/github-projects-fetcher";
-import { PortfolioGrid } from "@/components/portfolio-grid";
+import { PortfolioGrid } from '@/components/sections/portfolio-grid';
 import { Icon } from "@iconify/react";
 import { siteConfig } from "@/lib/config";
 

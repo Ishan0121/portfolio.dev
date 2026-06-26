@@ -4,10 +4,11 @@ import { motion } from "framer-motion";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
-import SocialLinks from "@/components/SocialLinks";
+import SocialLinks from '@/components/shared/SocialLinks';
 import { siteConfig } from "@/lib/config";
 import { GitHubCalendar } from "react-github-calendar";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { TracingBeam } from "@/components/effects/tracing-beam";
 
 class GithubErrorBoundary extends React.Component<{ children: React.ReactNode, fallback: React.ReactNode, resetKey: any }, { hasError: boolean }> {
   constructor(props: { children: React.ReactNode, fallback: React.ReactNode, resetKey: any }) {
@@ -94,7 +95,7 @@ export default function AboutPage() {
   return (
     <div className="max-w-6xl mx-auto px-6 py-7 pb-32 relative">
       <TableOfContents />
-      
+      <TracingBeam className="px-6">
       <div className="flex flex-col md:flex-row gap-12 lg:gap-24 relative justify-center">
         
         {/* Avatar Sidebar (Left) */}
@@ -162,7 +163,7 @@ export default function AboutPage() {
           {/* Work Experience */}
           {work && work.length > 0 && (
             <section id="work" className="space-y-8">
-              <h2 className="text-3xl font-semibold text-foreground">
+              <h2 className="text-3xl font-semibold text-foreground ">
                 Work Experience
               </h2>
               <div className="flex flex-col gap-10">
@@ -293,6 +294,7 @@ export default function AboutPage() {
         </section>
 
       
+      </TracingBeam>
     </div>
   );
 }

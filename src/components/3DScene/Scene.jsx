@@ -8,7 +8,7 @@ import { DataCore } from './DataCore';
 import { CyberEye } from './CyberEye';
 import { BionicHeart } from './BionicHeart';
 import { useInteractStore } from '../../store/useInteractStore';
-import LoadingScreen from '../LoadingScreen';
+import LoadingScreen from '@/components/core/LoadingScreen';
 
 function CanvasLoader() {
   const { active, progress, item, loaded, total } = useProgress();

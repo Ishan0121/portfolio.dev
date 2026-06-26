@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import AppLayout from "@/components/AppLayout";
+import AppLayout from '@/components/layout/AppLayout';
 import { Toaster } from "sonner";
-import { SmoothScrolling } from "@/components/SmoothScrolling";
-import { ThemeProvider } from "@/components/ThemeProvider";
-import { SystemMonitor } from "@/components/SystemMonitor";
+import { SmoothScrolling } from '@/components/layout/SmoothScrolling';
+import { ThemeProvider } from '@/components/core/ThemeProvider';
+import { SystemMonitor } from '@/components/core/SystemMonitor';
 
 const nerdFont = JetBrains_Mono({
   subsets: ["latin"],

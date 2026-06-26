@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { AnimatePresence, motion } from "framer-motion";
-import SocialLinks from "./SocialLinks";
+import SocialLinks from "@/components/shared/SocialLinks";
 import { siteConfig } from "@/lib/config";
 
 const backdropVariants = {

@@ -5,11 +5,15 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
 import { siteConfig } from "@/lib/config";
-import { skillsData } from "@/lib/skills-data";
-import SocialLinks from "@/components/SocialLinks";
-import { GridBackground } from "@/components/GridBackground";
+import { skillsData } from '@/data/skills-data';
+import SocialLinks from '@/components/shared/SocialLinks';
+import { GridBackground } from '@/components/layout/GridBackground';
 import { useNotificationStore } from "@/store/useNotificationStore";
 import { Button } from "@/components/ui/button";
+
+import { FlipWords } from "@/components/effects/flip-words";
+import { InfiniteMovingCards } from "@/components/effects/infinite-moving-cards";
+import { Meteors } from "@/components/effects/meteors";
 
 const container = {
   hidden: {},
@@ -25,67 +29,6 @@ const fadeUp = {
   },
 };
 
-function AnimatedText({ texts, speed = 65, pause = 2000 }: { texts: string[], speed?: number, pause?: number }) {
-  const [textIndex, setTextIndex] = useState(0);
-  const [charIndex, setCharIndex] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
-
-  useEffect(() => {
-    const handleType = () => {
-      const currentText = texts[textIndex];
-      
-      if (!isDeleting && charIndex === currentText.length) {
-        setTimeout(() => setIsDeleting(true), pause);
-        return;
-      }
-      
-      if (isDeleting && charIndex === 0) {
-        setIsDeleting(false);
-        setTextIndex((prev) => (prev + 1) % texts.length);
-        return;
-      }
-
-      setCharIndex((prev) => prev + (isDeleting ? -1 : 1));
-    };
-
-    const typingSpeed = isDeleting ? speed / 2 : speed;
-    const timer = setTimeout(handleType, typingSpeed);
-    return () => clearTimeout(timer);
-  }, [charIndex, isDeleting, textIndex, texts, speed, pause]);
-
-  return (
-    <span className="inline-block border-r-2 border-primary pr-1 animate-pulse">
-      {texts[textIndex]?.substring(0, charIndex) || ""}
-    </span>
-  );
-}
-
-function AutoMarquee({ tags, direction = "left" }: { tags: any[], direction?: "left" | "right" }) {
-  // Duplicate tags to ensure a smooth, seamless infinite scroll
-  const duplicatedTags = [...tags, ...tags, ...tags, ...tags];
-  
-  const animateX = direction === "left" ? ["0%", "-50%"] : ["-50%", "0%"];
-
-  return (
-    <div className="relative flex overflow-hidden w-full py-2 mt-2 group-hover:scale-[1.02] transition-transform duration-500">
-      <motion.div 
-        key={`marquee-200-${direction}`}
-        className="flex whitespace-nowrap gap-3 items-center min-w-max"
-        animate={{ x: animateX }}
-        transition={{ ease: "linear", duration: 200, repeat: Infinity }}
-      >
-        {duplicatedTags.map((tag, i) => (
-           <div key={i} className="flex items-center gap-2 px-4 py-2 bg-secondary/40 rounded-xl text-sm font-medium border border-border/30 shadow-sm shrink-0 hover:bg-secondary/60 transition-colors">
-             {tag.icon && <Icon icon={tag.icon} className="w-4 h-4" />}
-             {tag.name}
-           </div>
-        ))}
-      </motion.div>
-      <div className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-card to-transparent pointer-events-none"></div>
-      <div className="absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-card to-transparent pointer-events-none"></div>
-    </div>
-  );
-}
 
 export default function HomePage() {
   const [isMounted, setIsMounted] = useState(false);
@@ -147,7 +90,7 @@ export default function HomePage() {
           </h1>
           
           <div className="text-xl sm:text-2xl text-muted-foreground mt-8 min-h-[3.5rem] sm:min-h-[2.5rem] tracking-tight font-mono max-w-2xl text-balance flex items-center justify-center">
-            <AnimatedText texts={siteConfig.messages} speed={60} pause={2500} />
+            <FlipWords words={siteConfig.messages} duration={3000} />
           </div>
         </motion.section>
 
@@ -174,8 +117,8 @@ export default function HomePage() {
 
           {/* 3D Lab Card */}
           <Link href="/3d" className="lg:col-span-1 row-span-1 glass rounded-[2rem] p-8 border border-border/50 hover:border-primary/50 transition-all group overflow-hidden relative flex flex-col justify-between shadow-sm hover:shadow-md ">
-            
-            <div className="relative w-16 h-16 rounded-2xl bg-linear-to-br from-primary/20 to-primary/5 border border-primary/20 flex items-center justify-center group-hover:-translate-y-1 transition-transform duration-500 shadow-lg">
+            <Meteors number={20} />
+            <div className="relative w-16 h-16 rounded-2xl bg-linear-to-br from-primary/20 to-primary/5 border border-primary/20 flex items-center justify-center group-hover:-translate-y-1 transition-transform duration-500 shadow-lg z-10">
               <Icon icon="lucide:box" className="w-8 h-8 text-primary drop-shadow-md" />
               <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-10 h-1 bg-primary/20 blur-sm rounded-full group-hover:w-6 transition-all duration-500"></div>
             </div>
@@ -184,14 +127,15 @@ export default function HomePage() {
               <h3 className="text-2xl font-bold">3D Lab</h3>
               <p className="text-sm text-muted-foreground mt-1">Interactive WebGL</p>
             </div>
-            <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-background/50 flex items-center justify-center backdrop-blur-md group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+            <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-background/50 flex items-center justify-center backdrop-blur-md group-hover:bg-primary group-hover:text-primary-foreground transition-colors z-10">
               <Icon icon="lucide:arrow-up-right" className="w-5 h-5" />
             </div>
           </Link>
 
           {/* Projects Card */}
           <Link href="/projects" className="lg:col-span-1 row-span-2 glass rounded-[2rem] p-0 border border-border/50 hover:border-primary/50 transition-all group overflow-hidden relative flex flex-col shadow-sm hover:shadow-md">
-            <div className="flex-1 w-full bg-secondary/20 relative overflow-hidden flex items-center justify-center border-b border-border/30">
+            <Meteors number={15} />
+            <div className="flex-1 w-full bg-secondary/20 relative overflow-hidden flex items-center justify-center border-b border-border/30 z-10">
                {/* Decorative grid pattern */}
                <div className="absolute inset-0 opacity-[0.1]" style={{ backgroundImage: 'linear-gradient(theme(colors.foreground) 1px, transparent 1px), linear-gradient(90deg, theme(colors.foreground) 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
                
@@ -208,7 +152,7 @@ export default function HomePage() {
                  </div>
                </div>
             </div>
-            <div className="p-8 flex flex-col gap-4 bg-background/50 backdrop-blur-sm">
+            <div className="p-8 flex flex-col gap-4 bg-background/50 backdrop-blur-sm z-10">
               <div>
                 <h3 className="text-3xl font-bold">Projects</h3>
                 <p className="text-sm text-muted-foreground mt-1">Explore my recent work</p>
@@ -243,12 +187,13 @@ export default function HomePage() {
           {/* Skills Card */}
           <Link href="/skills" className="lg:col-span-2 row-span-1 glass rounded-[2rem] p-8 border border-border/50 hover:border-primary/50 transition-all group overflow-hidden relative flex flex-col justify-center shadow-sm hover:shadow-md">
             <h3 className="text-xl font-bold mb-2 text-foreground/80 relative z-10">Tech Stack</h3>
-            <AutoMarquee tags={skillsData.flatMap(category => category.skills)} direction="left"/>
-            <AutoMarquee tags={skillsData.flatMap(category => category.skills)} direction="right"/>
-            <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-secondary/50 flex items-center justify-center backdrop-blur-md group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+            <InfiniteMovingCards items={skillsData.flatMap(category => category.skills)} direction="left" speed="slow" />
+            <InfiniteMovingCards items={skillsData.flatMap(category => category.skills)} direction="right" speed="slow" />
+            <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-secondary/50 flex items-center justify-center backdrop-blur-md group-hover:bg-primary group-hover:text-primary-foreground transition-colors z-10">
               <Icon icon="lucide:arrow-up-right" className="w-5 h-5" />
             </div>
           </Link>
+
 
         </motion.section>
       </motion.div>

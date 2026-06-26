@@ -138,19 +138,19 @@ export const skillsData: SkillCategory[] = [
         level: "Intermediate",
         description:
           "Linux distribution focused on productivity and development",
-        icon: "mdi:linux",
+        icon: "simple-icons:popos",
       },
       {
         name: "Garuda",
         level: "Intermediate",
         description: "User-friendly Arch-based Linux with gaming focus",
-        icon: "mdi:linux",
+        icon: "simple-icons:garudalinux",
       },
       {
         name: "Archcraft",
         level: "Intermediate",
         description: "Minimal and aesthetically focused Arch-based Linux",
-        icon: "logos:archlinux",
+        icon: "/images/archcraft.svg",
       },
       {
         name: "Arch",
@@ -163,7 +163,7 @@ export const skillsData: SkillCategory[] = [
         level: "Intermediate",
         description:
           "Security-focused Linux distribution for penetration testing",
-        icon: "logos:archlinux",
+        icon: "/images/blackarch.png",
       },
     ],
   },
