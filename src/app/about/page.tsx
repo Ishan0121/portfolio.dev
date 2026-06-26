@@ -63,7 +63,7 @@ export default function AboutPage() {
             <div className="relative w-40 h-40 rounded-full overflow-hidden border border-border shadow-sm bg-card">
               {!imageLoaded && (
                 <div className="absolute inset-0 bg-muted animate-pulse flex items-center justify-center">
-                  <span className="text-muted-foreground/50 text-3xl font-bold">{siteConfig.name[0]}</span>
+                  <img src="./images/pp.jpeg" alt="Loading placeholder" className="w-full h-full object-cover opacity-50 grayscale" />
                 </div>
               )}
               <img 
