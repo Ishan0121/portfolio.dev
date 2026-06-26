@@ -45,9 +45,6 @@ export function ProjectCard({
     );
   }
 
-  // Determine if it's the auto-generated live URL which we shouldn't show if missing
-  const isAutoLiveUrl = liveUrl.includes(".github.io") && liveUrl.includes(title.toLowerCase().replace(/\s+/g, '-'));
-
   return (
         <div 
           className={`group relative flex flex-col h-full overflow-hidden glass glass-hover ${onClick ? 'cursor-pointer' : ''}`}
@@ -89,7 +86,7 @@ export function ProjectCard({
         </div>
             
         <div className="flex gap-3 pt-4 border-t border-border mt-4">
-              {liveUrl && !isAutoLiveUrl && (
+              {liveUrl && (
                 <Button asChild className="flex-1 rounded-full">
                   <a href={liveUrl} target="_blank" rel="noopener noreferrer">
                     <Icon icon="lucide:external-link" className="mr-2 h-4 w-4" />
@@ -98,7 +95,7 @@ export function ProjectCard({
                 </Button>
               )}
               {githubUrl && (
-                <Button asChild variant={liveUrl && !isAutoLiveUrl ? "outline" : "default"} className="flex-1 rounded-full">
+                <Button asChild variant={liveUrl ? "outline" : "default"} className="flex-1 rounded-full">
                   <a href={githubUrl} target="_blank" rel="noopener noreferrer">
                     <Icon icon="mdi:github" className="mr-2 h-4 w-4" />
                     Code

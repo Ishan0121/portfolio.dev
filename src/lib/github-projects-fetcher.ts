@@ -193,6 +193,13 @@ export async function fetchGitHubRepos(
     // Return basic project info suitable for immediate display
     return reposToProcess.map((repo: any) => {
       const repoName = repo.name;
+      
+      // Determine if there is a valid live URL
+      let validLiveUrl = repo.homepage || "";
+      if (!validLiveUrl && repo.has_pages) {
+        validLiveUrl = `https://${username}.github.io/${repoName}`;
+      }
+
       const project: Project = {
         title: formatRepoTitle(repoName, customTitles),
         description:
@@ -200,7 +207,7 @@ export async function fetchGitHubRepos(
           repo.description ||
           "No description available",
         imageUrl: DEFAULT_LANGUAGE_IMAGES.default, // Default placeholder
-        liveUrl: repo.homepage || `https://${username}.github.io/${repoName}`,
+        liveUrl: validLiveUrl,
         githubUrl: repo.html_url,
         tags: [],
         isLoading: true,
@@ -307,8 +314,8 @@ export async function fetchProjectsWithCache(
   config: GitHubFetcherConfig
 ): Promise<Project[]> {
   const { username } = config;
-  const CACHE_KEY = `github_projects_${username}`;
-  const CACHE_TIMESTAMP_KEY = `github_projects_updated_${username}`;
+  const CACHE_KEY = `github_projects_v2_${username}`;
+  const CACHE_TIMESTAMP_KEY = `github_projects_updated_v2_${username}`;
 
   try {
     // 1. Lightweight fetch to check if the user profile has updated
