@@ -15,8 +15,25 @@ const nerdFont = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Identity Website",
-  description: "A digital universe",
+  metadataBase: new URL('https://chakra-the-portfolio.vercel.app'), // Placeholder domain, ideally from env
+  title: {
+    template: "%s | Specter's Portfolio",
+    default: "Identity Website | Specter",
+  },
+  description: "A digital universe showcasing my work and experience.",
+  openGraph: {
+    title: "Identity Website | Specter",
+    description: "A digital universe showcasing my work and experience.",
+    url: "/",
+    siteName: "Specter's Portfolio",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Identity Website | Specter",
+    description: "A digital universe showcasing my work and experience.",
+  },
 };
 
 export default function RootLayout({

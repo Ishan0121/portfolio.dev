@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
+import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import SocialLinks from '@/components/shared/SocialLinks';
 import { siteConfig } from "@/lib/config";
@@ -104,12 +105,14 @@ export default function AboutPage() {
             <div className="relative w-40 h-40 rounded-full overflow-hidden border border-border shadow-sm bg-card">
               {!imageLoaded && (
                 <div className="absolute inset-0 bg-muted animate-pulse flex items-center justify-center">
-                  <img src="./images/pp.jpeg" alt="Loading placeholder" className="w-full h-full object-cover opacity-50 grayscale" />
+                  <Image src="/images/pp.jpeg" width={400} height={400} alt="Loading placeholder" className="w-full h-full object-cover opacity-50 grayscale" />
                 </div>
               )}
-              <img 
+              <Image 
                 src={person.avatar} 
                 alt={siteConfig.name} 
+                width={400}
+                height={400}
                 onLoad={() => setImageLoaded(true)}
                 className={`w-full h-full object-cover transition-opacity duration-500 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`} 
               />

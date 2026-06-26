@@ -2,11 +2,12 @@ import React, { Suspense, useRef, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Environment, Html, useProgress } from '@react-three/drei';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
-import { DNAEngine } from './DNAEngine';
-import { NeuralNetwork } from './NeuralNetwork';
-import { DataCore } from './DataCore';
-import { CyberEye } from './CyberEye';
-import { BionicHeart } from './BionicHeart';
+import dynamic from 'next/dynamic';
+const DNAEngine = dynamic(() => import('./DNAEngine').then(mod => mod.DNAEngine), { ssr: false });
+const NeuralNetwork = dynamic(() => import('./NeuralNetwork').then(mod => mod.NeuralNetwork), { ssr: false });
+const DataCore = dynamic(() => import('./DataCore').then(mod => mod.DataCore), { ssr: false });
+const CyberEye = dynamic(() => import('./CyberEye').then(mod => mod.CyberEye), { ssr: false });
+const BionicHeart = dynamic(() => import('./BionicHeart').then(mod => mod.BionicHeart), { ssr: false });
 import { useInteractStore } from '../../store/useInteractStore';
 import LoadingScreen from '@/components/core/LoadingScreen';
 
