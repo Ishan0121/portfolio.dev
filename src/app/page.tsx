@@ -1,40 +1,15 @@
 "use client";
 
-import React, { ErrorInfo } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
-import { useEffect, useState } from "react";
-import { GitHubCalendar } from "react-github-calendar";
-import SocialLinks from "@/components/SocialLinks";
-import { useNotificationStore } from "@/store/useNotificationStore";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { siteConfig } from "@/lib/config";
-
-class GithubErrorBoundary extends React.Component<{ children: React.ReactNode, fallback: React.ReactNode, resetKey: any }, { hasError: boolean }> {
-  constructor(props: { children: React.ReactNode, fallback: React.ReactNode, resetKey: any }) {
-    super(props);
-    this.state = { hasError: false };
-  }
-
-  static getDerivedStateFromError(_: Error) {
-    return { hasError: true };
-  }
-
-  componentDidUpdate(prevProps: any) {
-    if (this.props.resetKey !== prevProps.resetKey) {
-      this.setState({ hasError: false });
-    }
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return this.props.fallback;
-    }
-    return this.props.children;
-  }
-}
-
+import { skillsData } from "@/lib/skills-data";
+import SocialLinks from "@/components/SocialLinks";
+import { GridBackground } from "@/components/GridBackground";
+import { useNotificationStore } from "@/store/useNotificationStore";
+import { Button } from "@/components/ui/button";
 
 const container = {
   hidden: {},
@@ -42,7 +17,7 @@ const container = {
 };
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 50 },
+  hidden: { opacity: 0, y: 30 },
   visible: { 
     opacity: 1, 
     y: 0, 
@@ -78,12 +53,6 @@ function AnimatedText({ texts, speed = 65, pause = 2000 }: { texts: string[], sp
     return () => clearTimeout(timer);
   }, [charIndex, isDeleting, textIndex, texts, speed, pause]);
 
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
   return (
     <span className="inline-block border-r-2 border-primary pr-1 animate-pulse">
       {texts[textIndex]?.substring(0, charIndex) || ""}
@@ -91,16 +60,36 @@ function AnimatedText({ texts, speed = 65, pause = 2000 }: { texts: string[], sp
   );
 }
 
+function AutoMarquee({ tags, direction = "left" }: { tags: any[], direction?: "left" | "right" }) {
+  // Duplicate tags to ensure a smooth, seamless infinite scroll
+  const duplicatedTags = [...tags, ...tags, ...tags, ...tags];
+  
+  const animateX = direction === "left" ? ["0%", "-50%"] : ["-50%", "0%"];
+
+  return (
+    <div className="relative flex overflow-hidden w-full py-2 mt-2 group-hover:scale-[1.02] transition-transform duration-500">
+      <motion.div 
+        key={`marquee-200-${direction}`}
+        className="flex whitespace-nowrap gap-3 items-center min-w-max"
+        animate={{ x: animateX }}
+        transition={{ ease: "linear", duration: 200, repeat: Infinity }}
+      >
+        {duplicatedTags.map((tag, i) => (
+           <div key={i} className="flex items-center gap-2 px-4 py-2 bg-secondary/40 rounded-xl text-sm font-medium border border-border/30 shadow-sm shrink-0 hover:bg-secondary/60 transition-colors">
+             {tag.icon && <Icon icon={tag.icon} className="w-4 h-4" />}
+             {tag.name}
+           </div>
+        ))}
+      </motion.div>
+      <div className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-card to-transparent pointer-events-none"></div>
+      <div className="absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-card to-transparent pointer-events-none"></div>
+    </div>
+  );
+}
+
 export default function HomePage() {
   const [isMounted, setIsMounted] = useState(false);
-  const [githubYear, setGithubYear] = useState<number | "last">("last");
   const notify = useNotificationStore((state) => state.notify);
-  
-  const currentYear = new Date().getFullYear();
-  const years: (number | "last")[] = ["last"];
-  for (let y = currentYear; y >= 2023; y--) {
-    years.push(y);
-  }
 
   useEffect(() => {
     setIsMounted(true);
@@ -115,119 +104,154 @@ export default function HomePage() {
     }
   }, []);
 
+  if (!isMounted) return null;
+
   return (
-    <section className="min-h-[90vh] flex flex-col items-center justify-center pt-10 lg:py-20 relative">
-      <motion.div
+    <div className="relative min-h-screen lg:pt-24 pb-16 px-4 sm:px-6 lg:px-8 flex flex-col items-center">
+      {/* Ambient glowing blobs */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-[-1]">
+        <motion.div 
+          animate={{ scale: [1, 1.1, 1], opacity: [0.15, 0.25, 0.15] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[10%] -left-[10%] w-[40vw] h-[40vw] rounded-full bg-primary/20 blur-[120px]" 
+        />
+        <motion.div 
+          animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.2, 0.1] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          className="absolute bottom-[10%] -right-[10%] w-[50vw] h-[50vw] rounded-full bg-blue-500/10 blur-[150px]" 
+        />
+      </div>
+
+      <GridBackground />
+
+      <motion.div 
         variants={container}
         initial="hidden"
         animate="visible"
-        className="w-full max-w-5xl flex flex-col items-center justify-center text-center px-4 sm:py-3 relative z-10"
+        className="w-full max-w-5xl space-y-16"
       >
-        <div className="space-y-10 flex flex-col items-center justify-center">
-          <motion.div
-            variants={fadeUp}
-            className="space-y-6 flex flex-col items-center justify-center"
-          >
-            <h1 className="text-5xl sm:text-7xl lg:text-9xl font-bold tracking-tight leading-[1.1] text-foreground max-w-4xl drop-shadow-2xl font-heading">
-              <span className="block text-primary/80 text-2xl sm:text-3xl font-medium tracking-normal mb-4">Hello, I am</span>
-              <span className="bg-clip-text text-transparent bg-gradient-to-br from-foreground to-foreground/50 uppercase">
-                {siteConfig.name}
-              </span>
-            </h1>
-            <div className="text-xl sm:text-2xl text-muted-foreground min-h-[3.5rem] sm:min-h-[2.5rem] tracking-tight font-mono max-w-2xl text-balance flex items-center justify-center">
-              <AnimatedText texts={siteConfig.messages} />
-            </div>
-          </motion.div>
-              
-          <motion.p
-            variants={fadeUp}
-            className="text-base sm:text-lg text-muted-foreground max-w-2xl font-normal leading-relaxed text-balance"
-          >
-            {siteConfig.bio}
-          </motion.p>
-              
-          <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center gap-6 pt-6 w-full justify-center">
-            <Link 
-              href="/projects"
-              className="flex items-center justify-center h-12 px-8 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shadow-lg"
-            >
-              View My Work
-              <Icon icon="lucide:arrow-up-right" className="ml-2 h-4 w-4" />
-            </Link>
-            <a
-              href={siteConfig.resumePath}
-              download={siteConfig.resumeName}
-              onClick={() => notify("download_resume", { type: "info" })}
-              className="flex items-center justify-center h-12 px-8 rounded-full border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors shadow-sm"
-            >
-              <Icon icon="lucide:download" className="mr-2 h-4 w-4" />
-              Download CV
-            </a>
-          </motion.div>
-                        
-          <motion.div variants={fadeUp} className="flex flex-col items-center gap-4 lg:pt-10">
-            <span className="text-sm font-medium tracking-widest uppercase opacity-50">Connect</span>
-            <div className="p-4 rounded-full border border-border/50 bg-card shadow-sm backdrop-blur-md">
-              <SocialLinks size="lg" className="gap-6" />
-            </div>
-          </motion.div>
+        {/* Hero Section */}
+        <motion.section variants={fadeUp} className="flex flex-col items-center text-center pt-10 lg:pt-16">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-secondary/30 border border-border/50 rounded-full text-sm font-medium backdrop-blur-md mb-8 hover:bg-secondary/50 transition-colors cursor-default">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+            </span>
+            <span>Available for new opportunities</span>
+          </div>
           
-          <motion.div variants={fadeUp} className="pt-16 pb-8 flex flex-col items-center w-full max-w-4xl opacity-80 hover:opacity-100 transition-opacity">
-            <div className="flex flex-col sm:flex-row items-center justify-between w-full mb-6">
-              <h3 className="text-xl font-semibold mb-4 sm:mb-0">Open Source Contributions</h3>
-              <select
-                value={githubYear}
-                onChange={(e) => setGithubYear(e.target.value === "last" ? "last" : parseInt(e.target.value))}
-                className="bg-card border border-border/50 text-sm font-medium rounded-md px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground"
-              >
-                {years.map(y => (
-                  <option key={y} value={y}>{y === "last" ? "Last Year" : y}</option>
-                ))}
-              </select>
+          <h1 className="text-5xl sm:text-7xl lg:text-[6rem] font-bold tracking-tight text-foreground max-w-4xl drop-shadow-2xl leading-[1.1]">
+            <span className="bg-clip-text text-transparent bg-gradient-to-br from-foreground to-foreground/50">
+              Creative Developer
+            </span>
+          </h1>
+          
+          <div className="text-xl sm:text-2xl text-muted-foreground mt-8 min-h-[3.5rem] sm:min-h-[2.5rem] tracking-tight font-mono max-w-2xl text-balance flex items-center justify-center">
+            <AnimatedText texts={siteConfig.messages} speed={60} pause={2500} />
+          </div>
+        </motion.section>
+
+        {/* Bento Grid */}
+        <motion.section variants={fadeUp} className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6 auto-rows-[minmax(220px,auto)] md:auto-rows-[220px]">
+          
+          {/* About Card */}
+          <Link href="/about" className="lg:col-span-2 row-span-1 glass rounded-[2rem] p-6 sm:p-8 border border-border/50 hover:border-primary/50 transition-all group relative flex flex-col-reverse sm:flex-row items-center justify-center sm:justify-start gap-6   shadow-sm hover:shadow-md">
+            <div className="flex-1 flex flex-col gap-2 z-10 text-center sm:text-left">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary/60 text-xs font-semibold w-fit border border-border/30 mb-2 mx-auto sm:mx-0">
+                <Icon icon="lucide:map-pin" className="w-3.5 h-3.5 text-primary" /> {siteConfig.person.location}
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">{siteConfig.name}</h2>
+              <p className="text-muted-foreground font-medium text-balance">{siteConfig.person.role}</p>
+            </div>
+            <div className="relative w-28 h-28 sm:w-36 sm:h-36 shrink-0 z-10">
+              <div className="absolute inset-0 rounded-full bg-linear-to-tr from-primary to-blue-500 blur-xl opacity-20 group-hover:opacity-40 transition-opacity"></div>
+              <img src={siteConfig.person.avatar} className="relative w-full h-full object-cover rounded-full border-2 border-border/50 shadow-xl group-hover:scale-105 transition-transform duration-500" alt="Avatar"/>
+            </div>
+            <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-secondary/50 flex items-center justify-center backdrop-blur-md group-hover:bg-primary group-hover:text-primary-foreground transition-colors z-10">
+              <Icon icon="lucide:arrow-up-right" className="w-5 h-5" />
+            </div>
+          </Link>
+
+          {/* 3D Lab Card */}
+          <Link href="/3d" className="lg:col-span-1 row-span-1 glass rounded-[2rem] p-8 border border-border/50 hover:border-primary/50 transition-all group overflow-hidden relative flex flex-col justify-between shadow-sm hover:shadow-md ">
+            
+            <div className="relative w-16 h-16 rounded-2xl bg-linear-to-br from-primary/20 to-primary/5 border border-primary/20 flex items-center justify-center group-hover:-translate-y-1 transition-transform duration-500 shadow-lg">
+              <Icon icon="lucide:box" className="w-8 h-8 text-primary drop-shadow-md" />
+              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-10 h-1 bg-primary/20 blur-sm rounded-full group-hover:w-6 transition-all duration-500"></div>
             </div>
             
-            <div className="glass p-6 w-[90vw] md:w-full overflow-x-auto min-h-[160px] flex items-center justify-start md:justify-center">
-              <div className="min-w-max">
-                {isMounted ? (
-                  <GithubErrorBoundary 
-                    resetKey={githubYear}
-                    fallback={
-                      <div className="text-muted-foreground flex items-center justify-center h-full min-h-[120px]">
-                        No contributions found for {githubYear === "last" ? "the last year" : githubYear}.
-                      </div>
-                    }
-                  >
-                    <TooltipProvider delayDuration={50}>
-                      <GitHubCalendar 
-                        username={siteConfig.githubUsername} 
-                        colorScheme="dark"
-                        year={githubYear}
-                        theme={{
-                          light: ["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"],
-                          dark: ["#1f1f1f", "#444444", "#666666", "#aaaaaa", "#ffffff"]
-                        }}
-                        errorMessage="GitHub contributions are currently unavailable."
-                        renderBlock={(block, activity) => (
-                          <Tooltip key={activity.date}>
-                            <TooltipTrigger asChild>
-                              {block}
-                            </TooltipTrigger>
-                            <TooltipContent side="top" className="text-xs bg-card border border-border/50 px-2 py-1 rounded">
-                              {activity.count} contributions on {activity.date}
-                            </TooltipContent>
-                          </Tooltip>
-                        )}
-                      />
-                    </TooltipProvider>
-                  </GithubErrorBoundary>
-                ) : (
-                  <div className="text-muted-foreground animate-pulse">Loading calendar...</div>
-                )}
+            <div className="relative z-10 mt-auto pt-6">
+              <h3 className="text-2xl font-bold">3D Lab</h3>
+              <p className="text-sm text-muted-foreground mt-1">Interactive WebGL</p>
+            </div>
+            <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-background/50 flex items-center justify-center backdrop-blur-md group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+              <Icon icon="lucide:arrow-up-right" className="w-5 h-5" />
+            </div>
+          </Link>
+
+          {/* Projects Card */}
+          <Link href="/projects" className="lg:col-span-1 row-span-2 glass rounded-[2rem] p-0 border border-border/50 hover:border-primary/50 transition-all group overflow-hidden relative flex flex-col shadow-sm hover:shadow-md">
+            <div className="flex-1 w-full bg-secondary/20 relative overflow-hidden flex items-center justify-center border-b border-border/30">
+               {/* Decorative grid pattern */}
+               <div className="absolute inset-0 opacity-[0.1]" style={{ backgroundImage: 'linear-gradient(theme(colors.foreground) 1px, transparent 1px), linear-gradient(90deg, theme(colors.foreground) 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
+               
+               {/* Mock project cards */}
+               <div className="relative flex gap-3 rotate-[-10deg] scale-110 group-hover:rotate-0 group-hover:scale-100 transition-all duration-700">
+                 <div className="w-24 h-32 rounded-xl bg-background border border-border/50 shadow-md flex items-center justify-center -translate-y-4">
+                   <Icon icon="lucide:layout" className="w-8 h-8 text-muted-foreground/30" />
+                 </div>
+                 <div className="w-24 h-32 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 shadow-lg flex items-center justify-center z-10 relative">
+                   <Icon icon="lucide:folder-dot" className="w-10 h-10 text-primary" />
+                 </div>
+                 <div className="w-24 h-32 rounded-xl bg-background border border-border/50 shadow-md flex items-center justify-center translate-y-4">
+                   <Icon icon="lucide:terminal" className="w-8 h-8 text-muted-foreground/30" />
+                 </div>
+               </div>
+            </div>
+            <div className="p-8 flex flex-col gap-4 bg-background/50 backdrop-blur-sm">
+              <div>
+                <h3 className="text-3xl font-bold">Projects</h3>
+                <p className="text-sm text-muted-foreground mt-1">Explore my recent work</p>
+              </div>
+              <div className="w-full py-3.5 rounded-full bg-foreground text-background font-medium text-sm text-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                View Portfolio
               </div>
             </div>
-          </motion.div>
-        </div>
+          </Link>
+
+          {/* Connect / Resume Card */}
+          <div className="lg:col-span-1 row-span-1 glass rounded-[2rem] p-8 border border-border/50 transition-all overflow-hidden relative flex flex-col justify-center items-center shadow-sm">
+            <SocialLinks size="lg" className="gap-1" />
+            <div className="flex flex-col w-full gap-3 mt-auto">
+              <Button asChild className="w-full rounded-full gap-2 h-12" size="lg">
+                <Link href="/contact">
+                  <Icon icon="lucide:mail" className="w-4 h-4" /> Email Me
+                </Link>
+              </Button>
+              <Button asChild variant="outline" className="w-full rounded-full gap-2 h-12 border-border/50 bg-secondary/30 hover:bg-secondary/60" size="lg">
+                <a 
+                  href={siteConfig.resumePath} 
+                  download={siteConfig.resumeName} 
+                  onClick={() => notify("download_resume", { type: "info" })}
+                >
+                  <Icon icon="lucide:download" className="w-4 h-4" /> Download CV
+                </a>
+              </Button>
+            </div>
+          </div>
+
+          {/* Skills Card */}
+          <Link href="/skills" className="lg:col-span-2 row-span-1 glass rounded-[2rem] p-8 border border-border/50 hover:border-primary/50 transition-all group overflow-hidden relative flex flex-col justify-center shadow-sm hover:shadow-md">
+            <h3 className="text-xl font-bold mb-2 text-foreground/80 relative z-10">Tech Stack</h3>
+            <AutoMarquee tags={skillsData.flatMap(category => category.skills)} direction="left"/>
+            <AutoMarquee tags={skillsData.flatMap(category => category.skills)} direction="right"/>
+            <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-secondary/50 flex items-center justify-center backdrop-blur-md group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+              <Icon icon="lucide:arrow-up-right" className="w-5 h-5" />
+            </div>
+          </Link>
+
+        </motion.section>
       </motion.div>
-    </section>
+    </div>
   );
 }

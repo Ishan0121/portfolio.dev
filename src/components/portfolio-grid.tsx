@@ -6,6 +6,7 @@ import { ProjectCard } from "./project-card";
 import { ProjectDrawer } from "./project-drawer";
 import { Project } from "@/lib/github-projects-fetcher";
 import { Icon } from "@iconify/react";
+import { Button } from "@/components/ui/button";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -76,13 +77,14 @@ export function PortfolioGrid({ projects }: { projects: Project[] }) {
         {/* Filters */}
         <div className="flex flex-wrap gap-2 justify-center md:justify-start">
           {filterTags.map((tag) => (
-            <button
+            <Button
               key={tag}
               onClick={() => handleTagChange(tag)}
-              className={`px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 shadow-sm border ${activeTag === tag ? 'bg-primary text-primary-foreground border-primary' : 'bg-background text-foreground border-border hover:bg-accent'}`}
+              variant={activeTag === tag ? "default" : "secondary"}
+              className="rounded-full px-4 py-2"
             >
               {tag}
-            </button>
+            </Button>
           ))}
         </div>
       </div>

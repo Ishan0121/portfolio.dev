@@ -12,6 +12,7 @@ import {
   type NodeProps,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
+import { Button } from "@/components/ui/button";
 import { useNodeStore } from '@/store/useNodeStore';
 
 // ── Sizes & gaps ──────────────────────────────────────────────────────────────
@@ -102,18 +103,20 @@ function ScatterControls() {
   return (
     <Panel position="top-right">
       <div className="flex flex-col gap-2 p-2">
-        <button
+        <Button
+          variant="outline"
           onClick={scatter}
-          className="flex items-center gap-2 px-4 py-2 rounded-full glass border border-white/20 text-xs font-semibold text-foreground hover:border-primary/50 hover:text-primary transition-all shadow-lg"
+          className="rounded-full gap-2 shadow-lg border-white/20 hover:border-primary/50 hover:text-primary bg-background/40 backdrop-blur-md text-xs h-9"
         >
           <span className="text-base">🌪️</span> Scatter
-        </button>
-        <button
+        </Button>
+        <Button
+          variant="outline"
           onClick={reset}
-          className="flex items-center gap-2 px-4 py-2 rounded-full glass border border-white/20 text-xs font-semibold text-muted-foreground hover:border-white/40 hover:text-foreground transition-all shadow-lg"
+          className="rounded-full gap-2 shadow-lg border-white/20 text-muted-foreground hover:text-foreground hover:border-white/40 bg-background/40 backdrop-blur-md text-xs h-9"
         >
           <span className="text-base">🔁</span> Reset
-        </button>
+        </Button>
       </div>
     </Panel>
   );

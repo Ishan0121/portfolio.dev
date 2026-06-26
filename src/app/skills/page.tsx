@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { SectionHeading } from "@/components/section-heading";
 import { SkillsSection } from "@/components/skills-section";
 import { TechTree } from "@/components/tech-tree";
+import { Button } from "@/components/ui/button";
 import { skillsData } from "@/lib/skills-data";
 import Image from "next/image";
 import { containerVariants, fadeInUpVariants } from "@/lib/utils";
@@ -45,18 +46,20 @@ export default function SkillsPage() {
 
         <motion.div variants={fadeInUpVariants} className="flex justify-center mb-10 w-full z-20">
           <div className="glass p-1 rounded-full flex items-center gap-1 border border-white/10 shadow-lg relative bg-blue-900/10">
-            <button 
+            <Button 
+              variant="ghost"
               onClick={() => setView("grid")}
-              className={`px-6 py-2 rounded-full text-sm font-medium transition-all z-10 w-32 ${view === "grid" ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`}
+              className={`rounded-full z-10 w-32 ${view === "grid" ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`}
             >
               Grid View
-            </button>
-            <button 
+            </Button>
+            <Button 
+              variant="ghost"
               onClick={() => setView("tree")}
-              className={`px-6 py-2 rounded-full text-sm font-medium transition-all z-10 w-32 ${view === "tree" ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`}
+              className={`rounded-full z-10 w-32 ${view === "tree" ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`}
             >
               Tree View
-            </button>
+            </Button>
             {/* Sliding background indicator */}
             <div 
               className={`absolute top-1 bottom-1 w-[calc(50%-4px)] bg-primary/20 border border-primary/30 rounded-full transition-transform duration-300 ease-out z-0`}

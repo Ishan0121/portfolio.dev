@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNotificationStore } from "@/store/useNotificationStore";
 import { Icon } from "@iconify/react";
+import { Button } from "@/components/ui/button";
 
 const COOLDOWN_MINUTES = 30;
 // We'll hardcode or use environment variable
@@ -133,16 +134,15 @@ export function ContactForm() {
         />
       </div>
       
-      <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-        <button 
-          type="submit" 
-          className="glass glass-hover flex items-center justify-center gap-2 text-sm font-medium h-12 w-full text-foreground transition-all duration-300 disabled:opacity-50 disabled:pointer-events-none cursor-pointer group"
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? "Sending..." : "Send Message"}
-          {!isSubmitting && <Icon icon="lucide:send" className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />}
-        </button>
-      </motion.div>
+      <Button 
+        type="submit" 
+        variant="outline"
+        className="flex items-center justify-center gap-2 h-12 w-full transition-all duration-300 group bg-card/40 hover:bg-primary hover:text-primary-foreground border-border/50"
+        disabled={isSubmitting}
+      >
+        {isSubmitting ? "Sending..." : "Send Message"}
+        {!isSubmitting && <Icon icon="lucide:send" className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />}
+      </Button>
     </form>
   );
 }

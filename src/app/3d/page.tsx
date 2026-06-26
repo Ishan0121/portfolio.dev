@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import dynamic from "next/dynamic";
 import { Icon } from "@iconify/react";
+import { Button } from "@/components/ui/button";
 
 const SceneWrapper = dynamic(
   () => import("@/components/3DScene/Scene").then((mod) => mod.SceneWrapper),
@@ -28,10 +29,11 @@ const models = [
 
 export default function ThreeDLabPage() {
   const [activeModel, setActiveModel] = useState("/");
+  const [isInteracting, setIsInteracting] = useState(false);
 
   return (
       <div className="relative w-full h-[calc(100vh-theme(spacing.24))] overflow-hidden bg-[#050505] rounded-3xl border border-border/50 mx-auto max-w-[95%]">
-        <div className="absolute inset-0 z-0">
+        <div className={`absolute inset-0 z-0 transition-opacity duration-700 ${!isInteracting ? 'pointer-events-none opacity-60 blur-[1px]' : 'opacity-100 blur-0'}`}>
           <SceneWrapper route={activeModel} />
         </div>
         
@@ -43,27 +45,56 @@ export default function ThreeDLabPage() {
           
           <div className="flex flex-col gap-2 pointer-events-auto">
             {models.map(model => (
-              <button
+              <Button
                 key={model.id}
                 onClick={() => setActiveModel(model.id)}
-                className={`flex items-center gap-3 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 border ${
-                  activeModel === model.id 
-                    ? "bg-primary text-primary-foreground border-primary shadow-[0_0_15px_rgba(var(--color-primary),0.3)]" 
-                    : "bg-background/60 backdrop-blur-md text-muted-foreground border-border/50 hover:bg-accent hover:text-foreground"
-                }`}
+                variant={activeModel === model.id ? "default" : "outline"}
+                className={`rounded-xl gap-3 h-10 ${activeModel === model.id ? 'shadow-[0_0_15px_rgba(var(--color-primary),0.3)]' : 'bg-background/60 backdrop-blur-md border-border/50'}`}
               >
                 {model.icon}
                 <span className="hidden sm:inline">{model.name}</span>
-              </button>
+              </Button>
             ))}
           </div>
         </div>
         
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 bg-background/80 backdrop-blur-md px-6 py-2 rounded-full border border-border/50 pointer-events-auto">
-          <p className="text-xs font-mono tracking-widest uppercase opacity-70">
-            Drag to rotate • Scroll to zoom
-          </p>
-        </div>
+        <AnimatePresence>
+          {!isInteracting ? (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="absolute inset-0 z-[5] flex items-center justify-center"
+            >
+              <Button 
+                onClick={() => setIsInteracting(true)}
+                size="lg"
+                className="rounded-full shadow-[0_0_30px_rgba(var(--color-primary),0.3)] gap-3 font-mono tracking-widest uppercase px-8 h-14"
+              >
+                <Icon icon="lucide:mouse-pointer-click" className="w-5 h-5" />
+                Click to Interact
+              </Button>
+            </motion.div>
+          ) : (
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex items-center gap-4 bg-background/80 backdrop-blur-md px-2 py-2 rounded-full border border-border/50 pointer-events-auto"
+            >
+              <p className="text-xs font-mono tracking-widest uppercase opacity-70 px-4">
+                Drag to rotate • Scroll to zoom
+              </p>
+              <Button 
+                variant="destructive" 
+                size="sm" 
+                className="rounded-full px-4 h-8 text-xs font-mono uppercase tracking-wider"
+                onClick={() => setIsInteracting(false)}
+              >
+                Exit
+              </Button>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
   );
 }

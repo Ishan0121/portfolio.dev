@@ -7,6 +7,7 @@ import { getReadme } from "@/app/actions/getReadme";
 import { Drawer } from "vaul";
 import { Project } from "@/lib/github-projects-fetcher";
 import { Icon } from "@iconify/react";
+import { Button } from "@/components/ui/button";
 
 interface ProjectDrawerProps {
   project: Project | null;
@@ -74,14 +75,18 @@ export function ProjectDrawer({ project, open, onOpenChange }: ProjectDrawerProp
               </Drawer.Title>
               <div className="flex gap-2">
                 {project.githubUrl && (
-                  <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="flex items-center text-sm font-medium bg-accent text-accent-foreground border border-border/50 px-4 py-2 rounded-full hover:bg-background transition-colors">
-                    <Icon icon="mdi:github" className="w-4 h-4 mr-2" /> Code
-                  </a>
+                  <Button asChild variant="outline" className="rounded-full px-4 border-border/50">
+                    <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
+                      <Icon icon="mdi:github" className="w-4 h-4 mr-2" /> Code
+                    </a>
+                  </Button>
                 )}
                 {project.liveUrl && !isAutoLiveUrl && (
-                  <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="flex items-center text-sm font-medium bg-primary text-primary-foreground px-4 py-2 rounded-full hover:bg-primary/90 transition-colors">
-                    <Icon icon="lucide:external-link" className="w-4 h-4 mr-2" /> Live
-                  </a>
+                  <Button asChild className="rounded-full px-4">
+                    <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
+                      <Icon icon="lucide:external-link" className="w-4 h-4 mr-2" /> Live
+                    </a>
+                  </Button>
                 )}
               </div>
             </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import { AnimatePresence, motion } from "framer-motion";
 import SocialLinks from "./SocialLinks";
 import { siteConfig } from "@/lib/config";
@@ -88,16 +89,17 @@ export default function MobileMenu({ open, onClose, pathname }: { open: boolean,
               })}
 
               <motion.div custom={siteConfig.navLinks.length} variants={itemVariants} initial="hidden" animate="visible" className="mt-4">
-                <button
+                <Button
+                  variant="outline"
                   onClick={() => {
                     document.dispatchEvent(new CustomEvent("toggle-command-menu"));
                     onClose();
                   }}
-                  className="flex items-center gap-3 w-full px-4 py-3 rounded-2xl text-base font-medium transition-all duration-200 text-muted-foreground hover:text-foreground hover:bg-white/5 border border-border/50 glass"
+                  className="flex items-center gap-3 w-full justify-start rounded-2xl text-base h-12 text-muted-foreground hover:text-foreground border-border/50 bg-background/40 backdrop-blur-md"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
                   Search Portfolio
-                </button>
+                </Button>
               </motion.div>
             </nav>
 

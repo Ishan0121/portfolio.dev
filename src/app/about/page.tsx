@@ -3,9 +3,36 @@
 import { motion } from "framer-motion";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SocialLinks from "@/components/SocialLinks";
 import { siteConfig } from "@/lib/config";
+import { GitHubCalendar } from "react-github-calendar";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+
+class GithubErrorBoundary extends React.Component<{ children: React.ReactNode, fallback: React.ReactNode, resetKey: any }, { hasError: boolean }> {
+  constructor(props: { children: React.ReactNode, fallback: React.ReactNode, resetKey: any }) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(_: Error) {
+    return { hasError: true };
+  }
+
+  componentDidUpdate(prevProps: any) {
+    if (this.props.resetKey !== prevProps.resetKey) {
+      this.setState({ hasError: false });
+    }
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return this.props.fallback;
+    }
+    return this.props.children;
+  }
+}
+
 
 const { person, work, studies, technical } = siteConfig;
 
@@ -15,6 +42,7 @@ function TableOfContents() {
     { title: "Work Experience", id: "work" },
     { title: "Studies", id: "studies" },
     { title: "Technical skills", id: "technical" },
+    { title: "Open Source", id: "opensource" },
   ];
 
   const scrollTo = (id: string, offset: number) => {
@@ -50,6 +78,18 @@ function TableOfContents() {
 
 export default function AboutPage() {
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+  const [githubYear, setGithubYear] = useState<number | "last">("last");
+
+  const currentYear = new Date().getFullYear();
+  const years: (number | "last")[] = ["last"];
+  for (let y = currentYear; y >= 2023; y--) {
+    years.push(y);
+  }
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-7 pb-32 relative">
@@ -110,7 +150,7 @@ export default function AboutPage() {
               {person.role}
             </h2>
             
-            <div className="flex flex-wrap gap-3 justify-center md:justify-start mb-8 p-2 border border-border/50 rounded-full glass bg-secondary/10 ">
+            <div className="flex flex-wrap gap-3 justify-center md:justify-start mb-8 p-2 border border-border/50 lg:rounded-full glass bg-secondary/10 ">
               <SocialLinks size="md" className="gap-3" showName />
             </div>
             
@@ -194,8 +234,65 @@ export default function AboutPage() {
             </section>
           )}
 
-        </div>
-      </div>
+        </div></div>
+
+        {/* GitHub Calendar (Open Source) */}
+        <section id="opensource" className="space-y-8 w-full mt-16 pt-8 border-t border-border/30">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-2">
+            <h2 className="text-3xl font-semibold text-foreground">Open Source Contributions</h2>
+            <select
+              value={githubYear}
+              onChange={(e) => setGithubYear(e.target.value === "last" ? "last" : parseInt(e.target.value))}
+              className="bg-card border border-border/50 text-sm font-medium rounded-md px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground"
+            >
+              {years.map(y => (
+                <option key={y} value={y}>{y === "last" ? "Last Year" : y}</option>
+              ))}
+            </select>
+          </div>
+          
+          <div className="glass p-6 w-full overflow-x-auto min-h-[160px] flex items-center justify-start md:justify-center rounded-xl border border-border/50">
+            <div className="min-w-max">
+              {isMounted ? (
+                <GithubErrorBoundary 
+                  resetKey={githubYear}
+                  fallback={
+                    <div className="text-muted-foreground flex items-center justify-center h-full min-h-[120px]">
+                      No contributions found for {githubYear === "last" ? "the last year" : githubYear}.
+                    </div>
+                  }
+                >
+                  <TooltipProvider delayDuration={50}>
+                    <GitHubCalendar 
+                      username={siteConfig.githubUsername} 
+                      colorScheme="dark"
+                      year={githubYear}
+                      theme={{
+                        light: ["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"],
+                        dark: ["#1f1f1f", "#444444", "#666666", "#aaaaaa", "#ffffff"]
+                      }}
+                      errorMessage="GitHub contributions are currently unavailable."
+                      renderBlock={(block, activity) => (
+                        <Tooltip key={activity.date}>
+                          <TooltipTrigger asChild>
+                            {block}
+                          </TooltipTrigger>
+                          <TooltipContent side="top" className="text-xs bg-card border border-border/50 px-2 py-1 rounded">
+                            {activity.count} contributions on {activity.date}
+                          </TooltipContent>
+                        </Tooltip>
+                      )}
+                    />
+                  </TooltipProvider>
+                </GithubErrorBoundary>
+              ) : (
+                <div className="text-muted-foreground animate-pulse">Loading calendar...</div>
+              )}
+            </div>
+          </div>
+        </section>
+
+      
     </div>
   );
 }

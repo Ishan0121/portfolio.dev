@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Icon } from "@iconify/react";
+import { Button } from "@/components/ui/button";
 
 type ProjectCardProps = {
   title: string;
@@ -89,16 +90,20 @@ export function ProjectCard({
         
         <div className="flex gap-3 pt-4 border-t border-border mt-4">
           {liveUrl && !isAutoLiveUrl && (
-            <a href={liveUrl} target="_blank" rel="noopener noreferrer" className="flex-1 flex items-center justify-center bg-primary text-primary-foreground py-2 rounded-full text-sm font-medium hover:bg-primary/90 transition-colors">
-              <Icon icon="lucide:external-link" className="mr-2 h-4 w-4" />
-              Live Demo
-            </a>
+            <Button asChild className="flex-1 rounded-full">
+              <a href={liveUrl} target="_blank" rel="noopener noreferrer">
+                <Icon icon="lucide:external-link" className="mr-2 h-4 w-4" />
+                Live Demo
+              </a>
+            </Button>
           )}
           {githubUrl && (
-            <a href={githubUrl} target="_blank" rel="noopener noreferrer" className={`flex-1 flex items-center justify-center py-2 rounded-full text-sm font-medium transition-colors ${liveUrl && !isAutoLiveUrl ? 'bg-background border border-border hover:bg-accent text-foreground' : 'bg-primary text-primary-foreground hover:bg-primary/90'}`}>
-              <Icon icon="mdi:github" className="mr-2 h-4 w-4" />
-              Code
-            </a>
+            <Button asChild variant={liveUrl && !isAutoLiveUrl ? "outline" : "default"} className="flex-1 rounded-full">
+              <a href={githubUrl} target="_blank" rel="noopener noreferrer">
+                <Icon icon="mdi:github" className="mr-2 h-4 w-4" />
+                Code
+              </a>
+            </Button>
           )}
         </div>
       </div>
