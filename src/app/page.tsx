@@ -65,9 +65,7 @@ export default function HomePage() {
           className="absolute bottom-[10%] -right-[10%] w-[50vw] h-[50vw] rounded-full bg-blue-500/10 blur-[150px]" 
         />
       </div>
-
-      <GridBackground />
-
+      
       <motion.div 
         variants={container}
         initial="hidden"
@@ -99,7 +97,7 @@ export default function HomePage() {
         <motion.section variants={fadeUp} className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6 auto-rows-[minmax(220px,auto)] md:auto-rows-[220px]">
           
           {/* About Card */}
-          <Link href="/about" className="lg:col-span-2 row-span-1 glass rounded-[2rem] p-6 sm:p-8 border border-border/50 hover:border-primary/50 transition-all group relative flex flex-col-reverse sm:flex-row items-center justify-center sm:justify-start gap-6   shadow-sm hover:shadow-md">
+          <Link href="/about" className="lg:col-span-2 row-span-1 glass rounded-[2rem] p-6 px-20 sm:py-8 sm:px-12 border border-border/50 hover:border-primary/50 transition-all group relative flex flex-col-reverse sm:flex-row items-center justify-center sm:justify-start shadow-sm hover:shadow-md">
             <div className="flex-1 flex flex-col gap-2 z-10 text-center sm:text-left">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary/60 text-xs font-semibold w-fit border border-border/30 mb-2 mx-auto sm:mx-0">
                 <Icon icon="lucide:map-pin" className="w-3.5 h-3.5 text-primary" /> {siteConfig.person.location}
@@ -135,7 +133,6 @@ export default function HomePage() {
 
           {/* Projects Card */}
           <Link href="/projects" className="lg:col-span-1 row-span-2 glass rounded-[2rem] p-0 border border-border/50 hover:border-primary/50 transition-all group overflow-hidden relative flex flex-col shadow-sm hover:shadow-md">
-            <Meteors number={15} />
             <div className="flex-1 w-full bg-secondary/20 relative overflow-hidden flex items-center justify-center border-b border-border/30 z-10">
                {/* Decorative grid pattern */}
                <div className="absolute inset-0 opacity-[0.1]" style={{ backgroundImage: 'linear-gradient(theme(colors.foreground) 1px, transparent 1px), linear-gradient(90deg, theme(colors.foreground) 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
@@ -158,14 +155,14 @@ export default function HomePage() {
                 <h3 className="text-3xl font-bold">Projects</h3>
                 <p className="text-sm text-muted-foreground mt-1">Explore my recent work</p>
               </div>
-              <div className="w-full py-3.5 rounded-full bg-foreground text-background font-medium text-sm text-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                View Portfolio
-              </div>
+              <Button variant="outline" className="w-full rounded-full gap-2 h-12" size="lg">
+                <Icon icon="lucide:arrow-up-right" className="w-5 h-5" /> View Portfolio
+              </Button>
             </div>
           </Link>
 
           {/* Connect / Resume Card */}
-          <div className="lg:col-span-1 row-span-1 glass rounded-[2rem] p-8 border border-border/50 transition-all overflow-hidden relative flex flex-col justify-center items-center shadow-sm">
+          <div className="lg:col-span-1 row-span-1 glass rounded-[2rem] p-8 border border-border/50 transition-all overflow-hidden relative flex flex-col justify-center items-center shadow-sm  hover:border-primary/50 ">
             <SocialLinks size="lg" className="gap-1" />
             <div className="flex flex-col w-full gap-3 mt-auto">
               <Button asChild className="w-full rounded-full gap-2 h-12" size="lg">
@@ -191,7 +188,7 @@ export default function HomePage() {
             <InfiniteMovingCards items={skillsData.flatMap(category => category.skills)} direction="left" speed="slow" />
             <InfiniteMovingCards items={skillsData.flatMap(category => category.skills)} direction="right" speed="slow" />
             <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-secondary/50 flex items-center justify-center backdrop-blur-md group-hover:bg-primary group-hover:text-primary-foreground transition-colors z-10">
-              <Icon icon="lucide:arrow-up-right" className="w-5 h-5" />
+              <Icon icon="lucide:arrow-up-right" className="w-5 h-5"/>
             </div>
           </Link>
 

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 
 export function GridBackground() {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
@@ -20,7 +19,7 @@ export function GridBackground() {
     return () => window.removeEventListener("resize", updateDimensions);
   }, []);
 
-  const [blocks, setBlocks] = useState<{ id: string; x: number; y: number }[]>([]);
+  const [blocks, setBlocks] = useState<{ id: string; x: number; y: number; delay: number; duration: number }[]>([]);
 
   useEffect(() => {
     if (dimensions.width === 0 || dimensions.height === 0) return;
@@ -33,26 +32,12 @@ export function GridBackground() {
       id: Math.random().toString(36).substring(2, 9),
       x: Math.floor(Math.random() * cols),
       y: Math.floor(Math.random() * rows),
+      delay: Math.random() * 5,
+      duration: Math.random() * 3 + 2,
     });
 
     const initialBlocks = Array.from({ length: maxBlocks }).map(generateRandomBlock);
     setBlocks(initialBlocks);
-
-    const interval = setInterval(() => {
-      setBlocks((prev) => {
-        const newBlocks = [...prev];
-        const numToChange = Math.floor(Math.random() * 3) + 1; // Change 1-3 blocks
-
-        for (let i = 0; i < numToChange; i++) {
-          newBlocks.shift();
-          newBlocks.push(generateRandomBlock());
-        }
-
-        return newBlocks;
-      });
-    }, 400);
-
-    return () => clearInterval(interval);
   }, [dimensions]);
 
   return (
@@ -68,22 +53,20 @@ export function GridBackground() {
       }}
     >
       <svg className="absolute inset-0 w-full h-full">
-        <AnimatePresence>
-          {blocks.map((block) => (
-            <motion.rect
-              key={block.id}
-              width={gridSize - 1}
-              height={gridSize - 1}
-              x={block.x * gridSize + 1}
-              y={block.y * gridSize + 1}
-              className="fill-gray-600 dark:fill-gray-400"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.3 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 1.5, ease: "easeInOut" }}
-            />
-          ))}
-        </AnimatePresence>
+        {blocks.map((block) => (
+          <rect
+            key={block.id}
+            width={gridSize - 1}
+            height={gridSize - 1}
+            x={block.x * gridSize + 1}
+            y={block.y * gridSize + 1}
+            className="fill-gray-600 dark:fill-gray-400 animate-twinkle opacity-0"
+            style={{
+              animationDelay: `${block.delay}s`,
+              '--twinkle-duration': `${block.duration}s`,
+            } as React.CSSProperties}
+          />
+        ))}
       </svg>
     </div>
   );
