@@ -19,10 +19,10 @@ export default function ContactPage() {
         >
           <div>
             <h1 className="text-4xl md:text-5xl font-heading font-bold mb-4 tracking-tight">
-              <span className="bg-clip-text text-transparent bg-gradient-to-b from-primary to-secondary">Let's create something amazing</span> together.
+              <span className="bg-clip-text text-transparent bg-gradient-to-b from-primary to-secondary">Let&apos;s create something amazing</span> together.
             </h1>
             <p className="text-lg text-muted-foreground">
-              Whether you have a project in mind, a question about my work, or just want to say hi, I'm always open to chatting.
+              Whether you have a project in mind, a question about my work, or just want to say hi, I&apos;m always open to chatting.
             </p>
           </div>
 
@@ -50,7 +50,7 @@ export default function ContactPage() {
 
           <div className="pt-8 border-t border-border/50">
             <p className="text-sm font-medium mb-4">Connect with me</p>
-            <SocialLinks />
+            <SocialLinks size="lg" className="justify-start" />
           </div>
         </motion.div>
 
