@@ -3,11 +3,13 @@
 import { motion } from "framer-motion";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
+import Image from "next/image";
 import React, { useState, useEffect } from "react";
-import SocialLinks from "@/components/SocialLinks";
+import SocialLinks from '@/components/shared/SocialLinks';
 import { siteConfig } from "@/lib/config";
 import { GitHubCalendar } from "react-github-calendar";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { TracingBeam } from "@/components/effects/tracing-beam";
 
 class GithubErrorBoundary extends React.Component<{ children: React.ReactNode, fallback: React.ReactNode, resetKey: any }, { hasError: boolean }> {
   constructor(props: { children: React.ReactNode, fallback: React.ReactNode, resetKey: any }) {
@@ -94,7 +96,7 @@ export default function AboutPage() {
   return (
     <div className="max-w-6xl mx-auto px-6 py-7 pb-32 relative">
       <TableOfContents />
-      
+      <TracingBeam className="px-6">
       <div className="flex flex-col md:flex-row gap-12 lg:gap-24 relative justify-center">
         
         {/* Avatar Sidebar (Left) */}
@@ -103,12 +105,14 @@ export default function AboutPage() {
             <div className="relative w-40 h-40 rounded-full overflow-hidden border border-border shadow-sm bg-card">
               {!imageLoaded && (
                 <div className="absolute inset-0 bg-muted animate-pulse flex items-center justify-center">
-                  <img src="./images/pp.jpeg" alt="Loading placeholder" className="w-full h-full object-cover opacity-50 grayscale" />
+                  <Image src="/images/pp.jpeg" width={400} height={400} alt="Loading placeholder" className="w-full h-full object-cover opacity-50 grayscale" />
                 </div>
               )}
-              <img 
+              <Image 
                 src={person.avatar} 
                 alt={siteConfig.name} 
+                width={400}
+                height={400}
                 onLoad={() => setImageLoaded(true)}
                 className={`w-full h-full object-cover transition-opacity duration-500 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`} 
               />
@@ -162,7 +166,7 @@ export default function AboutPage() {
           {/* Work Experience */}
           {work && work.length > 0 && (
             <section id="work" className="space-y-8">
-              <h2 className="text-3xl font-semibold text-foreground">
+              <h2 className="text-3xl font-semibold text-foreground ">
                 Work Experience
               </h2>
               <div className="flex flex-col gap-10">
@@ -293,6 +297,7 @@ export default function AboutPage() {
         </section>
 
       
+      </TracingBeam>
     </div>
   );
 }

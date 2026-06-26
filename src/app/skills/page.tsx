@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { SectionHeading } from "@/components/section-heading";
-import { SkillsSection } from "@/components/skills-section";
-import { TechTree } from "@/components/tech-tree";
+import { SectionHeading } from '@/components/shared/section-heading';
+import { SkillsSection } from '@/components/sections/skills-section';
+import { TechTree } from '@/components/sections/tech-tree';
 import { Button } from "@/components/ui/button";
-import { skillsData } from "@/lib/skills-data";
+import { skillsData } from '@/data/skills-data';
 import Image from "next/image";
 import { containerVariants, fadeInUpVariants } from "@/lib/utils";
 
@@ -49,20 +49,20 @@ export default function SkillsPage() {
             <Button 
               variant="ghost"
               onClick={() => setView("grid")}
-              className={`rounded-full z-10 w-32 ${view === "grid" ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`}
+              className={`rounded-full z-10 w-32 ${view === "grid" ? "text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-transparent"}`}
             >
               Grid View
             </Button>
             <Button 
               variant="ghost"
               onClick={() => setView("tree")}
-              className={`rounded-full z-10 w-32 ${view === "tree" ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`}
+              className={`rounded-full z-10 w-32 ${view === "tree" ? "text-foreground" : "text-muted-foreground hover:text-foregroundx hover:bg-transparent"}`}
             >
               Tree View
             </Button>
             {/* Sliding background indicator */}
             <div 
-              className={`absolute top-1 bottom-1 w-[calc(50%-4px)] bg-primary/20 border border-primary/30 rounded-full transition-transform duration-300 ease-out z-0`}
+              className={`absolute top-1 bottom-1 w-[calc(50%-6px)] bg-primary/20 border border-primary/30 rounded-full transition-transform duration-300 ease-out z-0 `}
               style={{ transform: view === "grid" ? "translateX(0)" : "translateX(calc(100% + 4px))", left: "4px" }}
             />
           </div>

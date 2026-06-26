@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ProjectCard } from "./project-card";
-import { ProjectDrawer } from "./project-drawer";
+import { ProjectCard } from "@/components/shared/project-card";
+import { ProjectDrawer } from "@/components/shared/project-drawer";
 import { Project } from "@/lib/github-projects-fetcher";
 import { Icon } from "@iconify/react";
 import { Button } from "@/components/ui/button";
@@ -97,7 +97,7 @@ export function PortfolioGrid({ projects }: { projects: Project[] }) {
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 min-h-[500px]" // Min height prevents huge layout shifts when paginating
       >
         <AnimatePresence mode="popLayout">
-          {currentProjects.map((project, index) => (
+          {currentProjects.map((project, index) => (    
             <motion.div
               layout
               initial={{ opacity: 0, scale: 0.9 }}

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Icon } from "@iconify/react";
-import SocialLinks from "@/components/SocialLinks";
+import SocialLinks from '@/components/shared/SocialLinks';
 import { siteConfig } from "@/lib/config";
 
 export default function Footer() {

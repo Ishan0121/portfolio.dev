@@ -7,7 +7,7 @@ import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@iconify/react";
-import { CommandMenu } from "@/components/CommandMenu";
+import { CommandMenu } from '@/components/core/CommandMenu';
 import MobileMenu from "./MobileMenu";
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/lib/config";
@@ -107,7 +107,7 @@ export function Navigation() {
               >
                 <span className="hidden lg:inline-flex">Search portfolio...</span>
                 <span className="inline-flex lg:hidden">Search...</span>
-                <kbd className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 hidden h-5 select-none items-center gap-1 rounded border border-white/20 bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex text-foreground glass">
+                <kbd className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 hidden h-5 select-none items-center gap-1 rounded-full border border-white/20 bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex text-foreground glass">
                   <span className="text-xs">⌘</span>K
                 </kbd>
               </Button>
