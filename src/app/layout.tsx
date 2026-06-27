@@ -6,6 +6,8 @@ import { ToasterProvider } from '@/components/core/ToasterProvider';
 import { SmoothScrolling } from '@/components/layout/SmoothScrolling';
 import { ThemeProvider } from '@/components/core/ThemeProvider';
 import { SystemMonitor } from '@/components/core/SystemMonitor';
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const nerdFont = JetBrains_Mono({
   subsets: ["latin"],
@@ -58,6 +60,8 @@ export default function RootLayout({
             <SystemMonitor />
             <AppLayout>{children}</AppLayout>
             <ToasterProvider />
+            <Analytics />
+            <SpeedInsights />
           </SmoothScrolling>
         </ThemeProvider>
       </body>
