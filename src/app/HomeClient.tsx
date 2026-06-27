@@ -31,19 +31,6 @@ export default function HomeClient() {
 
   return (
     <div className="relative min-h-screen lg:pt-24 pb-16 px-4 sm:px-6 lg:px-8 flex flex-col items-center">
-      {/* Ambient glowing blobs */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none z-[-1]">
-        <motion.div
-          animate={{ scale: [1, 1.1, 1], opacity: [0.15, 0.25, 0.15] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[10%] -left-[10%] w-[40vw] h-[40vw] rounded-full bg-primary/20 blur-[120px]"
-        />
-        <motion.div
-          animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.2, 0.1] }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-          className="absolute bottom-[10%] -right-[10%] w-[50vw] h-[50vw] rounded-full bg-blue-500/10 blur-[150px]"
-        />
-      </div>
 
       <motion.div
         variants={containerVariants}

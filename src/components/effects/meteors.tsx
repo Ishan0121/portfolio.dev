@@ -1,6 +1,6 @@
 "use client";
 import { cn } from "@/lib/utils";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 export const Meteors = ({
   number,
@@ -9,7 +9,15 @@ export const Meteors = ({
   number?: number;
   className?: string;
 }) => {
+  const [mounted, setMounted] = useState(false);
   const meteors = new Array(number || 20).fill(true);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
   return (
     <>
       {meteors.map((el, idx) => (
