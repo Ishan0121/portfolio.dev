@@ -6,7 +6,7 @@ import { ToasterProvider } from '@/components/core/ToasterProvider';
 import { SmoothScrolling } from '@/components/layout/SmoothScrolling';
 import { ThemeProvider } from '@/components/core/ThemeProvider';
 import { SystemMonitor } from '@/components/core/SystemMonitor';
-import { Analytics } from '@vercel/analytics/react';
+import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const nerdFont = JetBrains_Mono({
