@@ -13,7 +13,7 @@ export const siteConfig = {
   resumePath: "./docs/ISHAN MAITI_CV2.pdf",
   resumeName: "My Resume.pdf",
   githubUsername: "Ishan0121",
-  web3formsAccessKey: "fa4b6e56-a0ca-4c81-a46a-9f1a4311dd3d", // Get your free access key from https://web3forms.com/
+  web3formsAccessKey: process.env.NEXT_PUBLIC_WEB3FORMS_KEY ?? "", // Set NEXT_PUBLIC_WEB3FORMS_KEY in .env.local
   navLinks: [
     { title: "Home", href: "/", icon: "lucide:home", keywords: "Home" },
     { title: "About", href: "/about", icon: "lucide:user", keywords: "About me resume contact" },

@@ -2,20 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Project, fetchProjectsWithCache } from "@/lib/github-projects-fetcher";
+import { Project } from "@/lib/github-projects-fetcher";
 import { PortfolioGrid } from '@/components/sections/portfolio-grid';
 import { Icon } from "@iconify/react";
 import { siteConfig } from "@/lib/config";
-
-const container = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.15 } },
-};
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" as any } },
-};
+import { containerVariants, fadeUp } from "@/lib/animations";
 
 export default function ProjectsClient() {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -23,23 +14,61 @@ export default function ProjectsClient() {
 
   useEffect(() => {
     async function loadProjects() {
-      setIsLoading(true);
-      const data = await fetchProjectsWithCache({
-        username: siteConfig.githubUsername,
+      const username = siteConfig.githubUsername;
+      const CACHE_KEY = `github_projects_v2_${username}`;
+      const CACHE_FINGERPRINT_KEY = `github_projects_fingerprint_v2_${username}`;
+      
+      // 1. Read from localStorage immediately for instant render
+      const cachedData = localStorage.getItem(CACHE_KEY);
+      const cachedFingerprint = localStorage.getItem(CACHE_FINGERPRINT_KEY);
+      
+      if (cachedData) {
+        try {
+          setProjects(JSON.parse(cachedData));
+          setIsLoading(false); // Stop loading skeleton instantly if we have cache
+        } catch (e) {
+          console.error("Failed to parse cached projects");
+          setIsLoading(true);
+        }
+      } else {
+        // If no cache, show loading skeleton
+        setIsLoading(true);
+      }
+
+      // 2. Background revalidation to Server
+      const config = {
+        username,
         maxProjects: 30,
-        sortBy: "updated",
+        sortBy: "updated" as const,
         excludeRepos: siteConfig.github.excludeRepos,
-      });
-      setProjects(data);
-      setIsLoading(false);
+      };
+
+      try {
+        const { syncProjects } = await import("@/app/actions/projects");
+        const response = await syncProjects(config, cachedFingerprint);
+        
+        if (response.updated && response.projects && response.metadata) {
+          console.log("Projects updated from server");
+          setProjects(response.projects);
+          localStorage.setItem(CACHE_KEY, JSON.stringify(response.projects));
+          localStorage.setItem(CACHE_FINGERPRINT_KEY, response.metadata.fingerprint);
+        } else {
+          console.log("Local cache is already up to date with GitHub state.");
+        }
+      } catch (error) {
+        console.error("Error during background revalidation:", error);
+      } finally {
+        setIsLoading(false);
+      }
     }
+    
     loadProjects();
   }, []);
 
   return (
     <div className="max-w-7xl mx-auto px-6 lg:py-12 pb-32">
       <motion.div
-        variants={container}
+        variants={containerVariants}
         initial="hidden"
         animate="visible"
         className="space-y-16"

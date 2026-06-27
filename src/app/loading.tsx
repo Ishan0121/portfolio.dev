@@ -3,27 +3,58 @@
 import LoadingScreen from '@/components/core/LoadingScreen';
 import { useEffect, useState } from "react";
 
+const LOADING_STEPS = [
+  "Loading interface...",
+  "Fetching page resources...",
+  "Preparing components...",
+  "Rendering experience...",
+];
+
 export default function GlobalLoading() {
   const [progress, setProgress] = useState(10);
-  
-  const [currentStep] = useState(0);
-
-  const loadingSteps = [
-    "Fetching page resources...",
-  ];
+  const [currentStep, setCurrentStep] = useState(0);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setProgress(p => (p < 90 ? Math.min(99, p + Math.random() * 15) : p));
-    }, 200);
-    return () => clearInterval(interval);
+    let currentProg = 10;
+    setProgress(currentProg);
+
+    const updateProgress = (target: number, stepIndex: number) => {
+      setProgress(target);
+      setCurrentStep(stepIndex);
+    };
+
+    const handleLoad = () => {
+      updateProgress(100, LOADING_STEPS.length - 1);
+    };
+
+    if (document.readyState === "complete") {
+      handleLoad();
+    } else {
+      updateProgress(40, 1);
+      
+      // Simulate resource fetching until load event
+      const loadingInterval = setInterval(() => {
+        setProgress(p => Math.min(85, p + (Math.random() * 5)));
+      }, 500);
+
+      window.addEventListener("load", handleLoad);
+      
+      document.fonts?.ready.then(() => {
+        updateProgress(60, 2);
+      });
+
+      return () => {
+        clearInterval(loadingInterval);
+        window.removeEventListener("load", handleLoad);
+      };
+    }
   }, []);
 
   return (
-    <LoadingScreen 
+    <LoadingScreen
       progress={progress}
-      message="Fetching Data"
-      steps={loadingSteps}
+      message="System Initialization"
+      steps={LOADING_STEPS}
       currentStep={currentStep}
     />
   );

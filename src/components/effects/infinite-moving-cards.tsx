@@ -81,8 +81,8 @@ export const InfiniteMovingCards = ({
           pauseOnHover && "hover:[animation-play-state:paused]"
         )}
       >
-        {/* Duplicate the items array multiple times to ensure seamless infinite scroll without cloneNode issues */}
-        {[...items, ...items, ...items].map((item, idx) => (
+        {/* Duplicate the items once for seamless infinite scroll — CSS animation loops at 50% */}
+        {[...items, ...items].map((item, idx) => (
           <li
             className="flex items-center gap-2 px-4 py-2 bg-secondary/40 rounded-xl text-sm font-medium border border-border/30 shadow-sm shrink-0 hover:bg-secondary/60 transition-colors"
             key={item.name + idx}

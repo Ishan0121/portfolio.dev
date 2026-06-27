@@ -1,7 +1,7 @@
 // lib/github-projects-fetcher.ts
 import { useNotificationStore } from "@/store/useNotificationStore";
 
-async function fetchWithTimeout(url: string, options: RequestInit = {}, timeoutMs = 8000) {
+async function fetchWithTimeout(url: string, options: RequestInit & { next?: { revalidate?: number | false, tags?: string[] } } = {}, timeoutMs = 8000) {
   const controller = new AbortController();
   const id = setTimeout(() => controller.abort(new Error(`Request timed out after ${timeoutMs}ms`)), timeoutMs);
   try {
@@ -12,6 +12,19 @@ async function fetchWithTimeout(url: string, options: RequestInit = {}, timeoutM
     clearTimeout(id);
     throw error;
   }
+}
+
+export interface GitHubRepo {
+  name: string;
+  description: string;
+  homepage: string;
+  html_url: string;
+  has_pages: boolean;
+  fork: boolean;
+  archived: boolean;
+  default_branch: string;
+  language: string;
+  topics: string[];
 }
 
 export interface Project {
@@ -149,7 +162,7 @@ function getImageUrl(
 
 export async function fetchGitHubRepos(
   config: GitHubFetcherConfig
-): Promise<{ repo: any; project: Project }[]> {
+): Promise<{ repo: GitHubRepo; project: Project }[]> {
   const {
     username,
     excludeRepos = [],
@@ -168,6 +181,7 @@ export async function fetchGitHubRepos(
         headers: {
           Accept: "application/vnd.github.v3+json",
         },
+        cache: 'no-store'
       },
       8000 // 8 seconds timeout
     );
@@ -180,7 +194,7 @@ export async function fetchGitHubRepos(
     const repos = await response.json();
 
     // Filter repos
-    const filteredRepos = repos.filter((repo: any) => {
+    const filteredRepos = repos.filter((repo: GitHubRepo) => {
       if (excludeRepos.includes(repo.name)) return false;
       if (!includeForked && repo.fork) return false;
       if (!includeArchived && repo.archived) return false;
@@ -191,7 +205,7 @@ export async function fetchGitHubRepos(
     const reposToProcess = filteredRepos.slice(0, maxProjects);
 
     // Return basic project info suitable for immediate display
-    return reposToProcess.map((repo: any) => {
+    return reposToProcess.map((repo: GitHubRepo) => {
       const repoName = repo.name;
       
       // Determine if there is a valid live URL
@@ -222,7 +236,7 @@ export async function fetchGitHubRepos(
 
 export async function enrichProject(
   basicProject: Project,
-  repo: any,
+  repo: GitHubRepo,
   config: GitHubFetcherConfig
 ): Promise<Project> {
   const {

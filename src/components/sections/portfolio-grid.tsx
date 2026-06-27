@@ -8,7 +8,7 @@ import { Project } from "@/lib/github-projects-fetcher";
 import { Icon } from "@iconify/react";
 import { Button } from "@/components/ui/button";
 
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 12;
 
 const containerVariants = {
   hidden: { opacity: 0 },

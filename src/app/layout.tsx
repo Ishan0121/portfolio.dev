@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import AppLayout from '@/components/layout/AppLayout';
-import { Toaster } from "sonner";
+import { ToasterProvider } from '@/components/core/ToasterProvider';
 import { SmoothScrolling } from '@/components/layout/SmoothScrolling';
 import { ThemeProvider } from '@/components/core/ThemeProvider';
 import { SystemMonitor } from '@/components/core/SystemMonitor';
@@ -11,11 +11,11 @@ const nerdFont = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-nerd",
   display: "swap",
-  preload: false,
+  preload: true,
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://chakra-the-portfolio.vercel.app'), // Placeholder domain, ideally from env
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL ?? 'https://chakra-the-portfolio.vercel.app'),
   title: {
     template: "%s | Specter's Portfolio",
     default: "Identity Website | Specter",
@@ -28,11 +28,16 @@ export const metadata: Metadata = {
     siteName: "Specter's Portfolio",
     locale: "en_US",
     type: "website",
+    images: [{ url: '/preview.png', width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Identity Website | Specter",
     description: "A digital universe showcasing my work and experience.",
+    images: ['/preview.png'],
+  },
+  alternates: {
+    canonical: '/',
   },
 };
 
@@ -52,14 +57,7 @@ export default function RootLayout({
           <SmoothScrolling>
             <SystemMonitor />
             <AppLayout>{children}</AppLayout>
-            <Toaster 
-              theme="dark" 
-              position="bottom-right" 
-              closeButton
-              toastOptions={{
-                className: "glass border-primary/20 shadow-2xl backdrop-blur-md rounded-xl"
-              }}
-            />
+            <ToasterProvider />
           </SmoothScrolling>
         </ThemeProvider>
       </body>

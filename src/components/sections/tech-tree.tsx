@@ -14,6 +14,7 @@ import {
 import '@xyflow/react/dist/style.css';
 import { Button } from "@/components/ui/button";
 import { useNodeStore } from '@/store/useNodeStore';
+import { useTheme } from "next-themes";
 
 // ── Sizes & gaps ──────────────────────────────────────────────────────────────
 const ROOT_W      = 240;
@@ -124,6 +125,7 @@ function ScatterControls() {
 
 export function TechTree() {
   const { nodes, edges, onNodesChange, onEdgesChange } = useNodeStore();
+  const { resolvedTheme } = useTheme();
 
   return (
     <div className="w-full glass rounded-2xl border border-white/10 overflow-hidden shadow-2xl"
@@ -136,7 +138,7 @@ export function TechTree() {
         nodeTypes={nodeTypes}
         fitView
         fitViewOptions={{ padding: 0.08 }}
-        colorMode="dark"
+        colorMode={resolvedTheme === "dark" ? "dark" : "light"}
         minZoom={0.1}
         maxZoom={2}
         attributionPosition="bottom-right"

@@ -1,5 +1,6 @@
 import { SkillCard } from "@/components/shared/skill-card";
 import { motion, useInView } from "framer-motion";
+import type { Transition } from "framer-motion";
 import { useRef } from "react";
 import type { SkillCategory } from '@/data/skills-data';
 
@@ -48,8 +49,8 @@ function SkillAnimationWrapper({
       }
       transition={{
         duration: 0.6,
-        ease: "easeOut" as any,
-      }}
+        ease: "easeOut",
+      } satisfies Transition}
       className="overflow-hidden" // Prevent horizontal scroll
     >
       {children}

@@ -9,7 +9,7 @@ type SkillCardProps = {
 
 export function SkillCard({ name, level, description, icon }: SkillCardProps) {
   return (
-    <div className="rounded-lg border border-white/10 bg-blue-900/5 backdrop-blur-[2px] p-4 transition-all hover:backdrop-blur-[4px] hover:bg-blue-900/20 shadow-sm shadow-blue-900/50">
+    <div className="rounded-lg border border-primary/30 bg-primary/5 backdrop-blur-[2px] p-4 transition-all hover:backdrop-blur-[4px] hover:bg-primary/20 shadow-sm shadow-primary/50">
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">

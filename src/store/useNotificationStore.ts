@@ -4,7 +4,6 @@ import { toast } from 'sonner';
 import { NotificationCategory, getRandomMessage } from '@/data/notification-messages';
 import React from 'react';
 import { Icon } from '@iconify/react';
-import { Button } from '@/components/ui/button';
 
 interface NotificationState {
   isDndEnabled: boolean;
@@ -78,7 +77,7 @@ export const useNotificationStore = create<NotificationState>()(
           icon: message.icon ? React.createElement(Icon, { icon: message.icon, className: "w-5 h-5 text-primary" }) : undefined,
           description: message.description,
           duration: 7000,
-          className: "glass border-primary/20",
+          className: "glass border-primary/20 ",
         };
 
         switch (type) {

@@ -47,29 +47,31 @@
 }
 
 :root {
-    --background: hsl(0, 0%, 100%);
-    --foreground: hsl(240, 10%, 3.9%);
-    --card: hsl(0, 0%, 100%);
-    --card-foreground: hsl(240, 10%, 3.9%);
-    --popover: hsl(0, 0%, 100%);
-    --popover-foreground: hsl(240, 10%, 3.9%);
-    --primary: hsl(240, 5.9%, 10%);
-    --primary-foreground: hsl(0, 0%, 98%);
-    --secondary: hsl(240, 4.8%, 95.9%);
-    --secondary-foreground: hsl(240, 5.9%, 10%);
-    --muted: hsl(240, 4.8%, 95.9%);
-    --muted-foreground: hsl(240, 3.8%, 46.1%);
-    --accent: hsl(240, 4.8%, 95.9%);
-    --accent-foreground: hsl(240, 5.9%, 10%);
-    --destructive: hsl(0, 84.2%, 60.2%);
-    --destructive-foreground: hsl(0, 0%, 98%);
-    --border: hsl(240, 5.9%, 90%);
-    --input: hsl(240, 5.9%, 90%);
-    --ring: hsl(240, 10%, 3.9%);
+    /* Light mode — warm off-white with slate accents, same design language as dark */
+    --background: hsl(40, 20%, 97%);
+    --foreground: hsl(240, 10%, 8%);
+    --card: hsl(40, 15%, 94%);
+    --card-foreground: hsl(240, 10%, 8%);
+    --popover: hsl(40, 15%, 96%);
+    --popover-foreground: hsl(240, 10%, 8%);
+    --primary: hsl(240, 10%, 12%);
+    --primary-foreground: hsl(40, 20%, 97%);
+    --secondary: hsl(240, 8%, 88%);
+    --secondary-foreground: hsl(240, 10%, 12%);
+    --muted: hsl(240, 8%, 90%);
+    --muted-foreground: hsl(240, 6%, 42%);
+    --accent: hsl(240, 8%, 88%);
+    --accent-foreground: hsl(240, 10%, 12%);
+    --destructive: hsl(0, 72%, 51%);
+    --destructive-foreground: hsl(40, 20%, 97%);
+    --border: hsl(240, 8%, 82%);
+    --input: hsl(240, 8%, 82%);
+    --ring: hsl(240, 10%, 12%);
     --radius: 0.5rem;
 }
 
 .dark {
+    /* Dark mode — deep zinc/slate */
     --background: hsl(240, 10%, 3.9%);
     --foreground: hsl(0, 0%, 98%);
     --card: hsl(240, 10%, 3.9%);
@@ -91,6 +93,7 @@
     --ring: hsl(240, 4.9%, 83.9%);
 }
 
+
 @layer base {
   * {
       @apply border-border outline-ring/50;
@@ -101,6 +104,9 @@
   button:not(:disabled), [role="button"]:not(:disabled) {
       cursor: pointer;
     }
+}
+
+@layer components {
   .glass {
     @apply relative border border-white/10
           bg-zinc-950/20 backdrop-blur-md
@@ -135,7 +141,7 @@
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: #74898f;
+    background: var(--muted-foreground);
     border-radius: 50px;
 }
 

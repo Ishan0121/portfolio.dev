@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
+import type { Transition } from "framer-motion";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
@@ -98,7 +99,7 @@ export default function LoadingScreen({
                   className="h-full bg-primary"
                   initial={{ width: 0 }}
                   animate={{ width: `${progress}%` }}
-                  transition={{ ease: "easeOut" } as any}
+                  transition={{ ease: "easeOut" } satisfies Transition}
                 />
               </div>
             </div>
