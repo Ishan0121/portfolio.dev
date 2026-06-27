@@ -8,6 +8,17 @@ const NeuralNetwork = dynamic(() => import('./NeuralNetwork').then(mod => mod.Ne
 const DataCore = dynamic(() => import('./DataCore').then(mod => mod.DataCore), { ssr: false });
 const CyberEye = dynamic(() => import('./CyberEye').then(mod => mod.CyberEye), { ssr: false });
 const BionicHeart = dynamic(() => import('./BionicHeart').then(mod => mod.BionicHeart), { ssr: false });
+const QuantumCore = dynamic(() => import('./QuantumCore').then(mod => mod.QuantumCore), { ssr: false });
+const BioSpine = dynamic(() => import('./BioSpine').then(mod => mod.BioSpine), { ssr: false });
+const NexusGate = dynamic(() => import('./NexusGate').then(mod => mod.NexusGate), { ssr: false });
+const ChronosDial = dynamic(() => import('./ChronosDial').then(mod => mod.ChronosDial), { ssr: false });
+const MechaLotus = dynamic(() => import('./MechaLotus').then(mod => mod.MechaLotus), { ssr: false });
+const PlasmaThruster = dynamic(() => import('./PlasmaThruster').then(mod => mod.PlasmaThruster), { ssr: false });
+const VoidCube = dynamic(() => import('./VoidCube').then(mod => mod.VoidCube), { ssr: false });
+const HoverDrone = dynamic(() => import('./HoverDrone').then(mod => mod.HoverDrone), { ssr: false });
+const EnergyCrystal = dynamic(() => import('./EnergyCrystal').then(mod => mod.EnergyCrystal), { ssr: false });
+const CyberPlanet = dynamic(() => import('./CyberPlanet').then(mod => mod.CyberPlanet), { ssr: false });
+const SonicRings = dynamic(() => import('./SonicRings').then(mod => mod.SonicRings), { ssr: false });
 import { useInteractStore } from '../../store/useInteractStore';
 import LoadingScreen from '@/components/core/LoadingScreen';
 
@@ -48,6 +59,17 @@ export function SceneWrapper({ route }) {
   else if (route === '/skills') target = [0, 1, -6]; // DataCore
   else if (route === '/projects') target = [0, 0, -6]; // CyberEye
   else if (route === '/contact') target = [0, 0, -6]; // BionicHeart
+  else if (route === '/quantum') target = [0, 0, -6]; // QuantumCore
+  else if (route === '/spine') target = [0, 0, -6]; // BioSpine
+  else if (route === '/nexus') target = [0, 0, -6]; // NexusGate
+  else if (route === '/dial') target = [0, 0, -6]; // ChronosDial
+  else if (route === '/lotus') target = [0, -1, -6]; // MechaLotus
+  else if (route === '/thruster') target = [0, 0, -6]; // PlasmaThruster
+  else if (route === '/void') target = [0, 0, -6]; // VoidCube
+  else if (route === '/drone') target = [0, 0, -6]; // HoverDrone
+  else if (route === '/crystal') target = [0, 0, -6]; // EnergyCrystal
+  else if (route === '/planet') target = [0, 0, -6]; // CyberPlanet
+  else if (route === '/sonic') target = [0, 0, -6]; // SonicRings
 
   return (
     <div className="w-full h-full" data-lenis-prevent="true">
@@ -70,6 +92,17 @@ export function SceneWrapper({ route }) {
           {route === '/skills' && <DataCore />}
           {route === '/projects' && <CyberEye />}
           {route === '/contact' && <BionicHeart />}
+          {route === '/quantum' && <QuantumCore />}
+          {route === '/spine' && <BioSpine />}
+          {route === '/nexus' && <NexusGate />}
+          {route === '/dial' && <ChronosDial />}
+          {route === '/lotus' && <MechaLotus />}
+          {route === '/thruster' && <PlasmaThruster />}
+          {route === '/void' && <VoidCube />}
+          {route === '/drone' && <HoverDrone />}
+          {route === '/crystal' && <EnergyCrystal />}
+          {route === '/planet' && <CyberPlanet />}
+          {route === '/sonic' && <SonicRings />}
         </Suspense>
 
         <EffectComposer>

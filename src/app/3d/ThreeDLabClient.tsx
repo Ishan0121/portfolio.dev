@@ -26,11 +26,25 @@ const models = [
   { id: "/skills", name: "Data Core", icon: <Icon icon="lucide:database" width={18} height={18} /> },
   { id: "/projects", name: "Cyber Eye", icon: <Icon icon="lucide:eye" width={18} height={18} /> },
   { id: "/contact", name: "Bionic Heart", icon: <Icon icon="lucide:heart" width={18} height={18} /> },
+  { id: "/quantum", name: "Quantum Core", icon: <Icon icon="lucide:atom" width={18} height={18} /> },
+  { id: "/spine", name: "Cyber Spine", icon: <Icon icon="lucide:activity" width={18} height={18} /> },
+  { id: "/nexus", name: "Nexus Gate", icon: <Icon icon="lucide:aperture" width={18} height={18} /> },
+  { id: "/dial", name: "Chronos Dial", icon: <Icon icon="lucide:clock" width={18} height={18} /> },
+  { id: "/lotus", name: "Mecha Lotus", icon: <Icon icon="lucide:flower-2" width={18} height={18} /> },
+  { id: "/thruster", name: "Plasma Thruster", icon: <Icon icon="lucide:rocket" width={18} height={18} /> },
+  { id: "/void", name: "Void Cube", icon: <Icon icon="lucide:box" width={18} height={18} /> },
+  { id: "/drone", name: "Hover Drone", icon: <Icon icon="lucide:bot" width={18} height={18} /> },
+  { id: "/crystal", name: "Energy Crystal", icon: <Icon icon="lucide:gem" width={18} height={18} /> },
+  { id: "/planet", name: "Cyber Planet", icon: <Icon icon="lucide:globe" width={18} height={18} /> },
+  { id: "/sonic", name: "Sonic Rings", icon: <Icon icon="lucide:disc-3" width={18} height={18} /> },
 ];
 
 export default function ThreeDLabClient() {
   const [activeModel, setActiveModel] = useState("/");
   const [isInteracting, setIsInteracting] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const activeModelData = models.find(m => m.id === activeModel) || models[0];
 
   return (
       <motion.div 
@@ -43,24 +57,53 @@ export default function ThreeDLabClient() {
           <SceneWrapper route={activeModel} />
         </div>
         
-        <div className="absolute top-6 left-6 right-6 z-10 flex justify-between items-start pointer-events-none">
-          <div className="bg-background/80 backdrop-blur-md p-4 rounded-xl border border-border/50 pointer-events-auto">
-            <h1 className="text-xl font-bold font-heading text-foreground mb-1">3D Lab</h1>
-            <p className="text-xs text-muted-foreground font-mono uppercase tracking-widest">Experimental Models</p>
+        <div className="absolute top-4 left-4 right-4 sm:top-6 sm:left-6 sm:right-6 z-10 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-between items-stretch sm:items-start pointer-events-none">
+          <div className="bg-background/80 backdrop-blur-md px-4 py-3 sm:p-4 rounded-xl border border-border/50 pointer-events-auto flex items-center justify-between sm:block">
+            <h1 className="text-lg sm:text-xl font-bold font-heading text-foreground mb-0 sm:mb-1">3D Lab</h1>
+            <p className="text-[10px] sm:text-xs text-muted-foreground font-mono uppercase tracking-widest">Experimental<span className="hidden sm:inline"> Models</span></p>
           </div>
           
-          <div className="flex flex-col gap-2 pointer-events-auto">
-            {models.map(model => (
-              <Button
-                key={model.id}
-                onClick={() => setActiveModel(model.id)}
-                variant={activeModel === model.id ? "default" : "outline"}
-                className={`rounded-xl gap-3 h-10 ${activeModel === model.id ? 'shadow-[0_0_15px_rgba(var(--color-primary),0.3)]' : 'bg-background/60 backdrop-blur-md border-border/50'}`}
-              >
-                {model.icon}
-                <span className="hidden sm:inline">{model.name}</span>
-              </Button>
-            ))}
+          {/* Custom Dropdown Selector */}
+          <div className="relative pointer-events-auto w-full sm:w-auto">
+            <Button
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              variant="outline"
+              className="w-full sm:w-auto rounded-xl gap-3 h-11 sm:h-12 bg-background/80 backdrop-blur-md border-border/50 min-w-full sm:min-w-[200px] justify-between shadow-[0_0_15px_rgba(var(--color-primary),0.15)]"
+            >
+              <div className="flex items-center gap-3">
+                {activeModelData.icon}
+                <span className="inline font-medium">{activeModelData.name}</span>
+              </div>
+              <Icon icon="lucide:chevron-down" className={`w-4 h-4 transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+            </Button>
+            
+            <AnimatePresence>
+              {isDropdownOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute top-[calc(100%+0.5rem)] left-0 right-0 sm:left-auto sm:right-0 w-full sm:w-[220px] bg-background/90 backdrop-blur-xl border border-border/50 rounded-xl overflow-hidden shadow-2xl z-50 flex flex-col max-h-[50vh] sm:max-h-[60vh] overflow-y-auto custom-scrollbar"
+                >
+                  {models.map(model => (
+                    <button
+                      key={model.id}
+                      onClick={() => {
+                        setActiveModel(model.id);
+                        setIsDropdownOpen(false);
+                      }}
+                      className={`flex items-center gap-3 px-4 py-3 text-sm transition-colors hover:bg-primary/20 ${
+                        activeModel === model.id ? 'bg-primary/15 text-primary font-bold border-l-2 border-primary' : 'text-foreground/80 border-l-2 border-transparent'
+                      }`}
+                    >
+                      {model.icon}
+                      {model.name}
+                    </button>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
         
@@ -85,15 +128,16 @@ export default function ThreeDLabClient() {
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex items-center gap-4 bg-background/80 backdrop-blur-md px-2 py-2 rounded-full border border-border/50 pointer-events-auto"
+              className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-1/2 sm:right-auto sm:-translate-x-1/2 z-10 flex flex-row items-center justify-between sm:justify-center gap-2 sm:gap-4 bg-background/80 backdrop-blur-md p-2 rounded-xl sm:rounded-full border border-border/50 pointer-events-auto"
             >
-              <p className="text-xs font-mono tracking-widest uppercase opacity-70 px-4">
-                Drag to rotate • Scroll to zoom
+              <p className="text-[10px] sm:text-xs font-mono tracking-widest uppercase opacity-70 px-2 sm:px-4 text-left sm:text-center leading-tight">
+                <span className="hidden sm:inline">Drag to rotate • Scroll to zoom</span>
+                <span className="sm:hidden">1-finger rotate<br/>2-finger zoom</span>
               </p>
               <Button 
                 variant="destructive" 
                 size="sm" 
-                className="rounded-full px-4 h-8 text-xs font-mono uppercase tracking-wider"
+                className="rounded-lg sm:rounded-full px-4 h-9 sm:h-8 text-xs font-mono uppercase tracking-wider shrink-0"
                 onClick={() => setIsInteracting(false)}
               >
                 Exit
