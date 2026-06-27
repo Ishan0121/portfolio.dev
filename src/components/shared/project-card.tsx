@@ -1,4 +1,4 @@
-import Image from "next/image";
+  import Image from "next/image";
 import { Icon } from "@iconify/react";
 import { Button } from "@/components/ui/button";
 
@@ -58,6 +58,7 @@ export function ProjectCard({
         >
       <div className="relative h-[220px] w-full overflow-hidden rounded-lg">
             <Image
+              unoptimized={true}
               src={imageUrl}
               alt={title}
               fill

@@ -9,7 +9,7 @@ import { siteConfig } from "@/lib/config";
 import dynamic from "next/dynamic";
 import { useTheme } from "next-themes";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { containerVariants, fadeUp } from "@/lib/animations";
 
 import type { Props as GitHubCalendarProps } from "react-github-calendar";
@@ -21,14 +21,38 @@ const GitHubCalendar = dynamic<GitHubCalendarProps>(
 
 const { person, work, studies, technical } = siteConfig;
 
+const structure = [
+  { title: "Introduction", id: "introduction" },
+  { title: "Work Experience", id: "work" },
+  { title: "Studies", id: "studies" },
+  { title: "Technical skills", id: "technical" },
+  { title: "Open Source", id: "opensource" },
+];
+
 function TableOfContents() {
-  const structure = [
-    { title: "Introduction", id: "introduction" },
-    { title: "Work Experience", id: "work" },
-    { title: "Studies", id: "studies" },
-    { title: "Technical skills", id: "technical" },
-    { title: "Open Source", id: "opensource" },
-  ];
+  const [activeSection, setActiveSection] = useState<string>("introduction");
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: "-20% 0px -70% 0px" }
+    );
+
+    structure.forEach((section) => {
+      const element = document.getElementById(section.id);
+      if (element) {
+        observer.observe(element);
+      }
+    });
+
+    return () => observer.disconnect();
+  }, []);
 
   const scrollTo = (id: string, offset: number) => {
     const element = document.getElementById(id);
@@ -41,24 +65,28 @@ function TableOfContents() {
 
   return (
     <div className="fixed left-0 top-1/2 -translate-y-1/2 pl-8 gap-8 hidden xl:flex flex-col z-50">
-      {structure.map((section, index) => (
-        <div
-          key={index}
-          className="flex items-center gap-3 cursor-pointer group"
-          onClick={() => scrollTo(section.id, 80)}
-        >
-          <div className="h-0.5 w-5 bg-foreground/20 group-hover:bg-foreground transition-colors"></div>
-          <span className="text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors whitespace-nowrap">
-            {section.title}
-          </span>
-        </div>
-      ))}
+      {structure.map((section, index) => {
+        const isActive = activeSection === section.id;
+        return (
+          <div
+            key={index}
+            className="flex items-center gap-3 cursor-pointer group"
+            onClick={() => scrollTo(section.id, 80)}
+          >
+            <div className={`h-0.5 transition-all duration-300 ${isActive ? 'w-8 bg-foreground' : 'w-5 bg-foreground/20 group-hover:bg-foreground/60'}`}></div>
+            <span className={`text-sm font-medium transition-all duration-300 whitespace-nowrap ${isActive ? 'text-foreground font-semibold scale-105 origin-left' : 'text-muted-foreground group-hover:text-foreground/80'}`}>
+              {section.title}
+            </span>
+          </div>
+        );
+      })}
     </div>
   );
 }
 
 export default function AboutClient() {
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [githubYear, setGithubYear] = useState<number | "last">("last");
   const [showCalendar, setShowCalendar] = useState(false);
   const { resolvedTheme } = useTheme();
@@ -90,7 +118,13 @@ export default function AboutClient() {
           {/* Avatar Sidebar (Left) */}
           <motion.div variants={fadeUp} className="w-full md:w-1/3 lg:w-[30%] flex flex-col items-center md:items-start">
             <div className="md:sticky top-24 flex flex-col items-center gap-6 w-full py-8">
-              <div className="relative w-40 h-40 rounded-full overflow-hidden border border-border shadow-sm bg-card">
+              <div 
+                className="relative w-40 h-40 rounded-full overflow-hidden border border-border shadow-sm bg-card cursor-pointer hover:ring-2 hover:ring-primary/50 hover:scale-105 transition-all duration-300 group"
+                onClick={() => setIsModalOpen(true)}
+              >
+                <div className="absolute inset-0 bg-background/20 opacity-0 group-hover:opacity-100 transition-opacity z-10 flex items-center justify-center backdrop-blur-[1px]">
+                  <Icon icon="lucide:zoom-in" width={24} height={24} className="text-foreground drop-shadow-md" />
+                </div>
                 {!imageLoaded && (
                   <div className="absolute inset-0 bg-muted animate-pulse flex items-center justify-center">
                     <span className="text-6xl font-bold font-heading text-muted-foreground/30">
@@ -99,6 +133,7 @@ export default function AboutClient() {
                   </div>
                 )}
                 <Image
+                  unoptimized={true}
                   src={person.avatar}
                   alt={siteConfig.name}
                   width={400}
@@ -314,6 +349,45 @@ export default function AboutClient() {
         </motion.section>
 
       </div>
+
+      <AnimatePresence>
+        {isModalOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-sm p-4"
+            onClick={() => setIsModalOpen(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="relative max-w-2xl max-h-[90vh] w-full rounded-2xl overflow-hidden shadow-2xl border border-border/50 bg-card/50 backdrop-blur-xl flex items-center justify-center p-2"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="absolute top-4 right-4 z-20 p-2.5 bg-background/60 hover:bg-background/90 backdrop-blur-md rounded-full text-foreground transition-all duration-300 hover:scale-110 border border-border/50"
+              >
+                <Icon icon="lucide:x" width={20} height={20} />
+              </button>
+              <div className="w-full h-full relative rounded-xl overflow-hidden">
+                <Image
+                  unoptimized={true}
+                  src={person.avatar}
+                  alt={siteConfig.name}
+                  width={1000}
+                  height={1000}
+                  className="w-full h-full object-contain max-h-[85vh] rounded-xl"
+                  priority={true}
+                />
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }
