@@ -20,11 +20,11 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL ?? 'https://chakra-the-portfolio.vercel.app'),
   title: {
     template: "%s | Specter's Portfolio",
-    default: "Identity Website | Specter",
+    default: "Identity Website | Ishan",
   },
   description: "A digital universe showcasing my work and experience.",
   openGraph: {
-    title: "Identity Website | Specter",
+    title: "Identity Website | Ishan",
     description: "A digital universe showcasing my work and experience.",
     url: "/",
     siteName: "Specter's Portfolio",
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Identity Website | Specter",
+    title: "Identity Website | Ishan",
     description: "A digital universe showcasing my work and experience.",
     images: ['/preview.png'],
   },
