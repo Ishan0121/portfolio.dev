@@ -51,7 +51,7 @@ export default function ThreeDLabClient() {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="relative w-full h-[calc(100vh-theme(spacing.24))] overflow-hidden bg-[#050505] rounded-3xl border border-border/50 mx-auto max-w-[95%]"
+        className="relative w-full h-[calc(100vh-theme(spacing.32))] overflow-hidden bg-[#050505] rounded-3xl border border-border/50 mx-auto max-w-[95%] mb-6"
       >
         <div className={`absolute inset-0 z-0 transition-opacity duration-700 ${!isInteracting ? 'pointer-events-none opacity-60 blur-[1px]' : 'opacity-100 blur-0'}`}>
           <SceneWrapper route={activeModel} />
