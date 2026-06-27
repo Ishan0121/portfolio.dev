@@ -1,10 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Icon } from "@iconify/react";
-import Link from "next/link";
 import Image from "next/image";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import SocialLinks from '@/components/shared/SocialLinks';
 import { ErrorBoundary } from '@/components/shared/ErrorBoundary';
 import { siteConfig } from "@/lib/config";
@@ -18,7 +16,6 @@ const GitHubCalendar = dynamic<GitHubCalendarProps>(
   { ssr: false }
 );
 import { TracingBeam } from "@/components/effects/tracing-beam";
-import { skillsData } from "@/data/skills-data";
 
 const { person, work, studies, technical } = siteConfig;
 
@@ -48,7 +45,7 @@ function TableOfContents() {
           className="flex items-center gap-3 cursor-pointer group"
           onClick={() => scrollTo(section.id, 80)}
         >
-          <div className="h-[2px] w-5 bg-foreground/20 group-hover:bg-foreground transition-colors"></div>
+          <div className="h-0.5 w-5 bg-foreground/20 group-hover:bg-foreground transition-colors"></div>
           <span className="text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors whitespace-nowrap">
             {section.title}
           </span>
