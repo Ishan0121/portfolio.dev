@@ -1,5 +1,6 @@
-// lib/github-projects-fetcher.ts
 import { useNotificationStore } from "@/store/useNotificationStore";
+import { parse } from "yaml";
+import { z } from "zod";
 
 async function fetchWithTimeout(url: string, options: RequestInit & { next?: { revalidate?: number | false, tags?: string[] } } = {}, timeoutMs = 8000) {
   const controller = new AbortController();
@@ -25,6 +26,7 @@ export interface GitHubRepo {
   default_branch: string;
   language: string;
   topics: string[];
+  updated_at: string;
 }
 
 export interface Project {
@@ -35,7 +37,26 @@ export interface Project {
   githubUrl: string;
   tags: string[];
   isLoading?: boolean;
+  status?: string;
+  featured?: boolean;
 }
+
+export const projectYamlSchema = z.object({
+  name: z.string().optional(),
+  description: z.string().optional(),
+  preview: z.string().optional(),
+  links: z.object({
+    live: z.string().optional(),
+    github: z.string().optional(),
+  }).optional(),
+  status: z.string().optional(),
+  stack: z.array(z.string()).optional(),
+  featured: z.boolean().optional(),
+});
+
+export type ProjectYamlMetadata = z.infer<typeof projectYamlSchema>;
+
+const repoMetadataState: Record<string, { hasProjectMetadata: boolean, updated_at: string }> = {};
 
 export interface GitHubFetcherConfig {
   username: string;
@@ -247,40 +268,81 @@ export async function enrichProject(
   const repoName = repo.name;
 
   try {
-    // Avoid fetching languages separately to save API calls
-    // Use repo.language (primary language) and keywords instead
+    let yamlMetadata: ProjectYamlMetadata | null = null;
+    let skipFetch = false;
 
-    // Try to fetch preview image from repo
-    const previewImage = await fetchRepoPreviewImage(
-      username,
-      repoName,
-      repo.default_branch,
-      previewImagePaths
-    );
+    if (repoMetadataState[repoName]) {
+      const state = repoMetadataState[repoName];
+      if (!state.hasProjectMetadata && state.updated_at === repo.updated_at) {
+        skipFetch = true;
+      }
+    }
 
-    // Get final image URL with fallback logic (uses primary language)
+    if (!skipFetch) {
+      try {
+        const yamlUrl = `https://raw.githubusercontent.com/${username}/${repoName}/${repo.default_branch}/.project.yml`;
+        const yamlRes = await fetch(yamlUrl, { method: "GET" });
+        if (yamlRes.ok) {
+          const yamlText = await yamlRes.text();
+          const parsed = parse(yamlText);
+          const validation = projectYamlSchema.safeParse(parsed);
+          
+          if (validation.success) {
+            yamlMetadata = validation.data;
+            repoMetadataState[repoName] = { hasProjectMetadata: true, updated_at: repo.updated_at };
+          } else {
+            console.warn(`Validation failed for .project.yml in ${repoName}:`, validation.error);
+            repoMetadataState[repoName] = { hasProjectMetadata: false, updated_at: repo.updated_at };
+          }
+        } else {
+          repoMetadataState[repoName] = { hasProjectMetadata: false, updated_at: repo.updated_at };
+        }
+      } catch (err) {
+        console.error(`Failed to fetch/parse .project.yml for ${repoName}:`, err);
+      }
+    } else {
+      // If we skipped fetching, it's because we know it doesn't have metadata, so yamlMetadata remains null.
+    }
+
+    let previewImage = null;
+    if (yamlMetadata?.preview) {
+      previewImage = `https://raw.githubusercontent.com/${username}/${repoName}/${repo.default_branch}/${yamlMetadata.preview}`;
+    } else {
+      previewImage = await fetchRepoPreviewImage(
+        username,
+        repoName,
+        repo.default_branch,
+        previewImagePaths
+      );
+    }
+
     const imageUrl = getImageUrl(
       repoName,
-      repo.language, // Use the primary language from the repo object
+      repo.language,
       previewImage,
       customImages
     );
 
-    // Build tags
     const tags: string[] = [];
-    
-    // Add primary language if available
-    if (repo.language) {
-      tags.push(repo.language);
-    }
-
-    // Add topics if available
-    if (repo.topics && Array.isArray(repo.topics)) {
-      tags.push(...repo.topics.slice(0, 4)); // Limit topics
+    if (yamlMetadata?.stack) {
+      tags.push(...yamlMetadata.stack);
+    } else {
+      if (repo.language) {
+        tags.push(repo.language);
+      }
+      if (repo.topics && Array.isArray(repo.topics)) {
+        tags.push(...repo.topics.slice(0, 4));
+      }
     }
 
     return {
       ...basicProject,
+      title: yamlMetadata?.name !== undefined ? yamlMetadata.name : basicProject.title,
+      description: yamlMetadata?.description !== undefined ? yamlMetadata.description : basicProject.description,
+      liveUrl: yamlMetadata?.links?.live !== undefined ? yamlMetadata.links.live : basicProject.liveUrl,
+      githubUrl: yamlMetadata?.links?.github !== undefined ? yamlMetadata.links.github : basicProject.githubUrl,
+      status: yamlMetadata?.status,
+      featured: yamlMetadata?.featured,
       imageUrl,
       tags,
       isLoading: false,

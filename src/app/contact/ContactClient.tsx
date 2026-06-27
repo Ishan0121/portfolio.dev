@@ -4,21 +4,23 @@ import { motion } from "framer-motion";
 import { Icon } from "@iconify/react";
 import { ContactForm } from '@/components/sections/ContactForm';
 import SocialLinks from '@/components/shared/SocialLinks';
-import { GridBackground } from '@/components/layout/GridBackground';
 import { BackgroundGradient } from "@/components/effects/background-gradient";
 import { siteConfig } from "@/lib/config";
+import { containerVariants, fadeUp } from "@/lib/animations";
 
 export default function ContactClient() {
   return (
-    <div className="py-12 lg:pt-24 max-w-6xl mx-auto px-6 min-h-[80vh] flex items-center relative">
-      <GridBackground />
+    <motion.div 
+      className="py-12 lg:pt-24 max-w-6xl mx-auto px-6 min-h-[80vh] flex items-center relative"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
       <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24">
 
         {/* Left Column - Info */}
         <motion.div
-          initial={{ opacity: 0, x: -30 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6 }}
+          variants={fadeUp}
           className="space-y-8"
         >
           <div>
@@ -60,11 +62,9 @@ export default function ContactClient() {
 
         {/* Right Column - Form */}
         <motion.div
-          initial={{ opacity: 0, x: 30 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          variants={fadeUp}
         >
-          <BackgroundGradient className="rounded-[22px] p-0.5 sm:p-1 bg-card">
+          {/* <BackgroundGradient className="rounded-[22px] p-0.5 sm:p-1 bg-card"> */}
             <div className="glass shadow-2xl relative overflow-hidden bg-card/40 backdrop-blur-md rounded-[20px] h-full w-full">
               <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-primary/20 rounded-full blur-3xl pointer-events-none"></div>
               <div className="p-8 relative z-10">
@@ -75,10 +75,10 @@ export default function ContactClient() {
                 <ContactForm />
               </div>
             </div>
-          </BackgroundGradient>
+          {/* </BackgroundGradient> */}
         </motion.div>
 
       </div>
-    </div>
+    </motion.div>
   );
 }

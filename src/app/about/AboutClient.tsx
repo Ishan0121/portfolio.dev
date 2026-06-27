@@ -2,20 +2,22 @@
 
 import { Icon } from "@iconify/react";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SocialLinks from '@/components/shared/SocialLinks';
 import { ErrorBoundary } from '@/components/shared/ErrorBoundary';
 import { siteConfig } from "@/lib/config";
 import dynamic from "next/dynamic";
 import { useTheme } from "next-themes";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { motion } from "framer-motion";
+import { containerVariants, fadeUp } from "@/lib/animations";
 
 import type { Props as GitHubCalendarProps } from "react-github-calendar";
 const GitHubCalendar = dynamic<GitHubCalendarProps>(
   () => import("react-github-calendar").then((mod) => mod.GitHubCalendar as React.ComponentType<GitHubCalendarProps>), 
   { ssr: false }
 );
-import { TracingBeam } from "@/components/effects/tracing-beam";
+
 
 const { person, work, studies, technical } = siteConfig;
 
@@ -58,7 +60,15 @@ function TableOfContents() {
 export default function AboutClient() {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [githubYear, setGithubYear] = useState<number | "last">("last");
+  const [showCalendar, setShowCalendar] = useState(false);
   const { resolvedTheme } = useTheme();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowCalendar(true);
+    }, 1300); // Wait 1.5s to let entry animations finish smoothly
+    return () => clearTimeout(timer);
+  }, []);
 
   const currentYear = new Date().getFullYear();
   const years: (number | "last")[] = ["last"];
@@ -67,13 +77,18 @@ export default function AboutClient() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-6 py-7 pb-32 relative">
+    <motion.div 
+      className="max-w-6xl mx-auto px-6 py-7 pb-32 relative"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
       <TableOfContents />
-      <TracingBeam className="px-6">
+      <div className="px-6">
         <div className="flex flex-col md:flex-row gap-12 lg:gap-24 relative justify-center">
 
           {/* Avatar Sidebar (Left) */}
-          <div className="w-full md:w-1/3 lg:w-[30%] flex flex-col items-center md:items-start">
+          <motion.div variants={fadeUp} className="w-full md:w-1/3 lg:w-[30%] flex flex-col items-center md:items-start">
             <div className="md:sticky top-24 flex flex-col items-center gap-6 w-full py-8">
               <div className="relative w-40 h-40 rounded-full overflow-hidden border border-border shadow-sm bg-card">
                 {!imageLoaded && (
@@ -89,6 +104,7 @@ export default function AboutClient() {
                   width={400}
                   height={400}
                   onLoad={() => setImageLoaded(true)}
+                  priority={true}
                   className={`w-full h-full object-cover transition-opacity duration-500 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
                 />
               </div>
@@ -109,13 +125,13 @@ export default function AboutClient() {
                 )}
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Main Content (Right) */}
           <div className="w-full md:w-2/3 lg:w-[60%] flex flex-col gap-16">
 
             {/* Intro Section */}
-            <section id="introduction" className="flex flex-col items-center md:items-start text-center md:text-left">
+            <motion.section variants={fadeUp} id="introduction" className="flex flex-col items-center md:items-start text-center md:text-left">
               {/* "Schedule a call" — links to email as a fallback since no Calendly is configured */}
               <a
                 href={`mailto:${siteConfig.socials.email}?subject=Let's connect`}
@@ -140,11 +156,18 @@ export default function AboutClient() {
               <p className="text-lg text-muted-foreground leading-relaxed">
                 {person.intro}
               </p>
-            </section>
+            </motion.section>
 
             {/* Work Experience */}
             {work && work.length > 0 && (
-              <section id="work" className="space-y-8">
+              <motion.section 
+                variants={fadeUp} 
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-50px" }}
+                id="work" 
+                className="space-y-8"
+              >
                 <h2 className="text-3xl font-semibold text-foreground">Work Experience</h2>
                 <div className="flex flex-col gap-10">
                   {work.map((item, i) => (
@@ -164,12 +187,19 @@ export default function AboutClient() {
                     </div>
                   ))}
                 </div>
-              </section>
+              </motion.section>
             )}
 
             {/* Studies */}
             {studies && studies.length > 0 && (
-              <section id="studies" className="space-y-8">
+              <motion.section 
+                variants={fadeUp} 
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-50px" }}
+                id="studies" 
+                className="space-y-8"
+              >
                 <h2 className="text-3xl font-semibold text-foreground">Studies</h2>
                 <div className="flex flex-col gap-8">
                   {studies.map((item, i) => (
@@ -179,12 +209,19 @@ export default function AboutClient() {
                     </div>
                   ))}
                 </div>
-              </section>
+              </motion.section>
             )}
 
             {/* Technical Skills */}
             {technical && technical.length > 0 && (
-              <section id="technical" className="space-y-8">
+              <motion.section 
+                variants={fadeUp} 
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-50px" }}
+                id="technical" 
+                className="space-y-8"
+              >
                 <h2 className="text-3xl font-semibold text-foreground">Technical skills</h2>
                 <div className="flex flex-col gap-8">
                   {technical.map((skill, i) => (
@@ -204,14 +241,21 @@ export default function AboutClient() {
                     </div>
                   ))}
                 </div>
-              </section>
+              </motion.section>
             )}
 
           </div>
         </div>
 
         {/* GitHub Calendar (Open Source) */}
-        <section id="opensource" className="space-y-8 w-full mt-16 pt-8 border-t border-border/30">
+        <motion.section 
+          variants={fadeUp} 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          id="opensource" 
+          className="space-y-8 w-full mt-16 pt-8 border-t border-border/30"
+        >
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-2">
             <h2 className="text-3xl font-semibold text-foreground">Open Source Contributions</h2>
             <select
@@ -236,31 +280,40 @@ export default function AboutClient() {
                   }
                 >
                   <TooltipProvider delayDuration={50}>
-                    <GitHubCalendar
-                      username={siteConfig.githubUsername}
-                      colorScheme={resolvedTheme === "dark" ? "dark" : "light"}
-                      year={githubYear}
-                      theme={{
-                        light: ["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"],
-                        dark: ["#1f1f1f", "#444444", "#666666", "#aaaaaa", "#ffffff"]
-                      }}
-                      errorMessage="GitHub contributions are currently unavailable."
-                      renderBlock={(block, activity) => (
-                        <Tooltip key={activity.date}>
-                          <TooltipTrigger asChild>{block}</TooltipTrigger>
-                          <TooltipContent side="top" className="text-xs bg-card border border-border/50 px-2 py-1 rounded">
-                            {activity.count} contributions on {activity.date}
-                          </TooltipContent>
-                        </Tooltip>
-                      )}
-                    />
+                    {showCalendar ? (
+                      <GitHubCalendar
+                        username={siteConfig.githubUsername}
+                        colorScheme={resolvedTheme === "dark" ? "dark" : "light"}
+                        year={githubYear}
+                        theme={{
+                          light: ["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"],
+                          dark: ["#1f1f1f", "#444444", "#666666", "#aaaaaa", "#ffffff"]
+                        }}
+                        errorMessage="GitHub contributions are currently unavailable."
+                        renderBlock={(block, activity) => (
+                          <Tooltip key={activity.date}>
+                            <TooltipTrigger asChild>{block}</TooltipTrigger>
+                            <TooltipContent side="top" className="text-xs bg-card border border-border/50 px-2 py-1 rounded">
+                              {activity.count} contributions on {activity.date}
+                            </TooltipContent>
+                          </Tooltip>
+                        )}
+                      />
+                    ) : (
+                      <div className="w-full h-[150px] flex items-center justify-center animate-pulse">
+                        <div className="flex items-center gap-3 text-muted-foreground/60">
+                          <Icon icon="lucide:loader-2" className="w-5 h-5 animate-spin" />
+                          <span className="text-sm font-mono tracking-widest uppercase">Syncing GitHub...</span>
+                        </div>
+                      </div>
+                    )}
                   </TooltipProvider>
                 </ErrorBoundary>
             </div>
           </div>
-        </section>
+        </motion.section>
 
-      </TracingBeam>
-    </div>
+      </div>
+    </motion.div>
   );
 }

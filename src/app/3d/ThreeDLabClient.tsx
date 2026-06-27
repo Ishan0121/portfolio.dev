@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import dynamic from "next/dynamic";
 import { Icon } from "@iconify/react";
 import { Button } from "@/components/ui/button";
+import { containerVariants } from "@/lib/animations";
 
 const SceneWrapper = dynamic(
   () => import("@/components/3DScene/Scene").then((mod) => mod.SceneWrapper),
@@ -32,7 +33,12 @@ export default function ThreeDLabClient() {
   const [isInteracting, setIsInteracting] = useState(false);
 
   return (
-      <div className="relative w-full h-[calc(100vh-theme(spacing.24))] overflow-hidden bg-[#050505] rounded-3xl border border-border/50 mx-auto max-w-[95%]">
+      <motion.div 
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="relative w-full h-[calc(100vh-theme(spacing.24))] overflow-hidden bg-[#050505] rounded-3xl border border-border/50 mx-auto max-w-[95%]"
+      >
         <div className={`absolute inset-0 z-0 transition-opacity duration-700 ${!isInteracting ? 'pointer-events-none opacity-60 blur-[1px]' : 'opacity-100 blur-0'}`}>
           <SceneWrapper route={activeModel} />
         </div>
@@ -95,6 +101,6 @@ export default function ThreeDLabClient() {
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
+      </motion.div>
   );
 }

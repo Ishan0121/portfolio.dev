@@ -73,7 +73,7 @@ export default function HomeClient() {
             </div>
             <div className="relative w-28 h-28 sm:w-36 sm:h-36 shrink-0 z-10">
               <div className="absolute inset-0 rounded-full bg-linear-to-tr from-primary to-blue-500 blur-xl opacity-20 group-hover:opacity-40 transition-opacity"></div>
-              <Image src={siteConfig.person.avatar} width={400} height={400} className="relative w-full h-full object-cover rounded-full border-2 border-border/50 shadow-xl group-hover:scale-105 transition-transform duration-500 p-2" alt="Avatar" />
+              <Image src={siteConfig.person.avatar} priority={true} width={400} height={400} className="relative w-full h-full object-cover rounded-full border-2 border-border/50 shadow-xl group-hover:scale-105 transition-transform duration-500 p-2" alt="Avatar" />
             </div>
             <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-secondary/50 flex items-center justify-center backdrop-blur-md group-hover:bg-primary group-hover:text-primary-foreground transition-colors z-10">
               <Icon icon="lucide:arrow-up-right" className="w-5 h-5" />

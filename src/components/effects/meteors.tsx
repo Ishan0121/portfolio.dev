@@ -10,11 +10,14 @@ export const Meteors = ({
   className?: string;
 }) => {
   const [mounted, setMounted] = useState(false);
-  const meteors = new Array(number || 20).fill(true);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+    setIsMobile(window.innerWidth < 768);
   }, []);
+
+  const meteors = new Array(isMobile ? Math.min(number || 20, 5) : (number || 20)).fill(true);
 
   if (!mounted) return null;
 
