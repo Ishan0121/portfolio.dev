@@ -1,0 +1,17 @@
+name: Project Name
+
+description: A short description of the project.
+
+preview: preview.png
+
+links:
+  live: https://your-project-url.com
+
+status: deployed
+
+stack:
+  - Framework
+  - Language
+  - Database
+
+featured: false

@@ -52,7 +52,7 @@ const models = [
   { id: "/titan-gear", name: "Titan Gear", icon: <Icon icon="lucide:settings" width={18} height={18} /> },
   { id: "/energy-crystal", name: "Energy Crystal", icon: <Icon icon="lucide:gem" width={18} height={18} /> },
   { id: "/sonic-rings", name: "Sonic Rings", icon: <Icon icon="lucide:disc-3" width={18} height={18} /> },
-  { id: "/neon-rose", name: "Neon Rose", icon: <Icon icon="lucide:flower" width={18} height={18} /> },
+  // { id: "/neon-rose", name: "Neon Rose", icon: <Icon icon="lucide:flower" width={18} height={18} /> },
   { id: "/cyber-brain", name: "Cyber Brain", icon: <Icon icon="lucide:brain" width={18} height={18} /> }
 ];
 

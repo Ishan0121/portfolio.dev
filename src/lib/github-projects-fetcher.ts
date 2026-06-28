@@ -47,7 +47,6 @@ export const projectYamlSchema = z.object({
   preview: z.string().optional(),
   links: z.object({
     live: z.string().optional(),
-    github: z.string().optional(),
   }).optional(),
   status: z.string().optional(),
   stack: z.array(z.string()).optional(),
@@ -340,7 +339,7 @@ export async function enrichProject(
       title: yamlMetadata?.name !== undefined ? yamlMetadata.name : basicProject.title,
       description: yamlMetadata?.description !== undefined ? yamlMetadata.description : basicProject.description,
       liveUrl: yamlMetadata?.links?.live !== undefined ? yamlMetadata.links.live : basicProject.liveUrl,
-      githubUrl: yamlMetadata?.links?.github !== undefined ? yamlMetadata.links.github : basicProject.githubUrl,
+      githubUrl: basicProject.githubUrl,
       status: yamlMetadata?.status,
       featured: yamlMetadata?.featured,
       imageUrl,
