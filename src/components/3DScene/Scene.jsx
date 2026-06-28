@@ -39,8 +39,8 @@ const TitanGear = dynamic(() => import('./TitanGear').then(mod => mod.TitanGear)
 const NeonRose = dynamic(() => import('./NeonRose').then(mod => mod.NeonRose), { ssr: false });
 const CyberOrchid = dynamic(() => import('./CyberOrchid').then(mod => mod.CyberOrchid), { ssr: false });
 const QuantumLily = dynamic(() => import('./QuantumLily').then(mod => mod.QuantumLily), { ssr: false });
-
 import { useInteractStore } from '../../store/useInteractStore';
+import { useSettingsStore } from '../../store/useSettingsStore';
 import LoadingScreen from '@/components/core/LoadingScreen';
 
 function CanvasLoader() {
@@ -79,6 +79,7 @@ function GlobalClockController() {
 
 export function SceneWrapper({ route }) {
   const { isInteractMode, resetTrigger } = useInteractStore();
+  const { brightness, reflection, bloom, zoomSpeed, rotateSpeed } = useSettingsStore();
   const controlsRef = useRef();
 
   // Reset camera when the reset button is clicked or route changes
@@ -129,18 +130,15 @@ export function SceneWrapper({ route }) {
         <color attach="background" args={['#050505']} />
         
         {/* Custom lighting to replace the fetched HDR environment map */}
-        <ambientLight intensity={0.8} />
-        <directionalLight position={[10, 20, 10]} intensity={2} color="#ffffff" />
-        <directionalLight position={[-10, 10, -10]} intensity={1.5} color="#00f0ff" />
-        <directionalLight position={[0, -10, 5]} intensity={1} color="#222222" />
-        <pointLight position={[-5, 0, 5]} color="#00f0ff" intensity={2} />
+        <ambientLight intensity={0.8 * brightness} />
+        <directionalLight position={[10, 20, 10]} intensity={2 * brightness} color="#ffffff" />
+        <directionalLight position={[-10, 10, -10]} intensity={1.5 * brightness} color="#00f0ff" />
+        <directionalLight position={[0, -10, 5]} intensity={1 * brightness} color="#222222" />
+        <pointLight position={[-5, 0, 5]} color="#00f0ff" intensity={2 * brightness} />
         
         <Suspense fallback={<CanvasLoader />}>
           {/* Environment map ensures highly metallic materials have something to reflect, making their base colors visible */}
-          <Environment preset="city" />
-          
-          {/* Environment map ensures highly metallic materials have something to reflect, making their base colors visible */}
-          <Environment preset="city" />
+          <Environment preset="city" environmentIntensity={reflection} />
           
           {(!route || route === '/dna-engine') && <DNAEngine />}
           {route === '/neural-network' && <NeuralNetwork />}
@@ -184,7 +182,7 @@ export function SceneWrapper({ route }) {
               luminanceThreshold={0.2} 
               luminanceSmoothing={0.9} 
               height={300} 
-              intensity={1.5} 
+              intensity={bloom} 
             />
           </EffectComposer>
         )}
@@ -196,6 +194,8 @@ export function SceneWrapper({ route }) {
           enableZoom={true} 
           enablePan={true}
           enableRotate={true}
+          zoomSpeed={zoomSpeed}
+          rotateSpeed={rotateSpeed}
           maxPolarAngle={Math.PI}
           minPolarAngle={0}
         />

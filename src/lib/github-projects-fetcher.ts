@@ -275,7 +275,7 @@ export async function enrichProject(
       const state = repoMetadataState[repoName];
       if (!state.hasProjectMetadata && state.updated_at === repo.updated_at) {
         skipFetch = true;
-      }
+       }
     }
 
     if (!skipFetch) {

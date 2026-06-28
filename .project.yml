@@ -1,0 +1,12 @@
+name: Chakra - The Portfolio
+description: An immersive 3D interactive developer portfolio built with Next.js, Three.js, and Framer Motion. Features a dynamic 3D laboratory with interactable experimental models, real-time post-processing, and interactive settings.
+stack:
+  - Next.js
+  - React
+  - Three.js
+  - React Three Fiber
+  - Framer Motion
+  - Tailwind CSS
+  - Zustand
+featured: true
+status: Active
