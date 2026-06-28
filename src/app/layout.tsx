@@ -17,9 +17,9 @@ const nerdFont = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL ?? 'https://chakra-the-portfolio.vercel.app'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL ?? 'https://ishan0121.vercel.app'),
   title: {
-    template: "%s | Specter's Portfolio",
+    template: "%s | Ishan's Portfolio",
     default: "Identity Website | Ishan",
   },
   description: "A digital universe showcasing my work and experience.",
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     title: "Identity Website | Ishan",
     description: "A digital universe showcasing my work and experience.",
     url: "/",
-    siteName: "Specter's Portfolio",
+    siteName: "Ishan's Portfolio",
     locale: "en_US",
     type: "website",
     images: [{ url: '/preview.png', width: 1200, height: 630 }],

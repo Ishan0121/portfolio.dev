@@ -1,11 +1,12 @@
 import React, { Suspense, useRef, useEffect } from 'react';
-import { Canvas } from '@react-three/fiber';
+import { Canvas, useThree } from '@react-three/fiber';
 import { OrbitControls, Environment, Html, useProgress } from '@react-three/drei';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import dynamic from 'next/dynamic';
+
 const DNAEngine = dynamic(() => import('./DNAEngine').then(mod => mod.DNAEngine), { ssr: false });
 const NeuralNetwork = dynamic(() => import('./NeuralNetwork').then(mod => mod.NeuralNetwork), { ssr: false });
-const DataCore = dynamic(() => import('./DataCore').then(mod => mod.DataCore), { ssr: false });
+const CyberArm = dynamic(() => import('./CyberArm').then(mod => mod.CyberArm), { ssr: false });
 const CyberEye = dynamic(() => import('./CyberEye').then(mod => mod.CyberEye), { ssr: false });
 const BionicHeart = dynamic(() => import('./BionicHeart').then(mod => mod.BionicHeart), { ssr: false });
 const QuantumCore = dynamic(() => import('./QuantumCore').then(mod => mod.QuantumCore), { ssr: false });
@@ -19,6 +20,26 @@ const HoverDrone = dynamic(() => import('./HoverDrone').then(mod => mod.HoverDro
 const EnergyCrystal = dynamic(() => import('./EnergyCrystal').then(mod => mod.EnergyCrystal), { ssr: false });
 const CyberPlanet = dynamic(() => import('./CyberPlanet').then(mod => mod.CyberPlanet), { ssr: false });
 const SonicRings = dynamic(() => import('./SonicRings').then(mod => mod.SonicRings), { ssr: false });
+
+const NeuralCore = dynamic(() => import('./NeuralCore').then(mod => mod.NeuralCore), { ssr: false });
+const MemoryChip = dynamic(() => import('./MemoryChip').then(mod => mod.MemoryChip), { ssr: false });
+const AIOrb = dynamic(() => import('./AIOrb').then(mod => mod.AIOrb), { ssr: false });
+const HologramProjector = dynamic(() => import('./HologramProjector').then(mod => mod.HologramProjector), { ssr: false });
+const CyberBrain = dynamic(() => import('./CyberBrain').then(mod => mod.CyberBrain), { ssr: false });
+const DataVault = dynamic(() => import('./DataVault').then(mod => mod.DataVault), { ssr: false });
+const QuantumProcessor = dynamic(() => import('./QuantumProcessor').then(mod => mod.QuantumProcessor), { ssr: false });
+const CyberMask = dynamic(() => import('./CyberMask').then(mod => mod.CyberMask), { ssr: false });
+const LogicCube = dynamic(() => import('./LogicCube').then(mod => mod.LogicCube), { ssr: false });
+
+const MechaArm = dynamic(() => import('./MechaArm').then(mod => mod.MechaArm), { ssr: false });
+const AndroidHead = dynamic(() => import('./AndroidHead').then(mod => mod.AndroidHead), { ssr: false });
+const RobotCore = dynamic(() => import('./RobotCore').then(mod => mod.RobotCore), { ssr: false });
+const TitanGear = dynamic(() => import('./TitanGear').then(mod => mod.TitanGear), { ssr: false });
+
+const NeonRose = dynamic(() => import('./NeonRose').then(mod => mod.NeonRose), { ssr: false });
+const CyberOrchid = dynamic(() => import('./CyberOrchid').then(mod => mod.CyberOrchid), { ssr: false });
+const QuantumLily = dynamic(() => import('./QuantumLily').then(mod => mod.QuantumLily), { ssr: false });
+
 import { useInteractStore } from '../../store/useInteractStore';
 import LoadingScreen from '@/components/core/LoadingScreen';
 
@@ -41,39 +62,70 @@ function CanvasLoader() {
   );
 }
 
+function GlobalClockController() {
+  const { isInteractMode } = useInteractStore();
+  const clock = useThree((s) => s.clock);
+
+  useEffect(() => {
+    if (isInteractMode) {
+      clock.start();
+    } else {
+      clock.stop();
+    }
+  }, [isInteractMode, clock]);
+
+  return null;
+}
+
 export function SceneWrapper({ route }) {
   const { isInteractMode, resetTrigger } = useInteractStore();
   const controlsRef = useRef();
 
-  // Reset camera when the reset button is clicked
+  // Reset camera when the reset button is clicked or route changes
   useEffect(() => {
     if (controlsRef.current) {
       controlsRef.current.reset();
     }
-  }, [resetTrigger]);
+  }, [resetTrigger, route]);
 
   // Dynamically set the Orbit target to the exact center of the currently rendered model
-  let target = [0, 0, 0];
-  if (!route || route === '/') target = [0, 0, -8]; // DNAEngine
-  else if (route === '/about') target = [0, 0, -8]; // NeuralNetwork
-  else if (route === '/skills') target = [0, 1, -6]; // DataCore
-  else if (route === '/projects') target = [0, 0, -6]; // CyberEye
-  else if (route === '/contact') target = [0, 0, -6]; // BionicHeart
-  else if (route === '/quantum') target = [0, 0, -6]; // QuantumCore
-  else if (route === '/spine') target = [0, 0, -6]; // BioSpine
-  else if (route === '/nexus') target = [0, 0, -6]; // NexusGate
-  else if (route === '/dial') target = [0, 0, -6]; // ChronosDial
-  else if (route === '/lotus') target = [0, -1, -6]; // MechaLotus
-  else if (route === '/thruster') target = [0, 0, -6]; // PlasmaThruster
-  else if (route === '/void') target = [0, 0, -6]; // VoidCube
-  else if (route === '/drone') target = [0, 0, -6]; // HoverDrone
-  else if (route === '/crystal') target = [0, 0, -6]; // EnergyCrystal
-  else if (route === '/planet') target = [0, 0, -6]; // CyberPlanet
-  else if (route === '/sonic') target = [0, 0, -6]; // SonicRings
+    let target = [0, 0, 0];
+  if (!route || route === '/dna-engine') target = [0, 0, -8];
+  else if (route === '/neural-network') target = [0, 0, -8];
+  else if (route === '/cyber-arm') target = [0, 1, -6];
+  else if (route === '/cyber-eye') target = [0, 0, -6];
+  else if (route === '/bionic-heart') target = [0, 0, -6];
+  else if (route === '/quantum-core') target = [0, 0, -6];
+  else if (route === '/cyber-spine') target = [0, 0, -6];
+  else if (route === '/nexus-gate') target = [0, 0, -6];
+  else if (route === '/chronos-dial') target = [0, 0, -6];
+  else if (route === '/mecha-lotus') target = [0, -1, -6];
+  else if (route === '/plasma-thruster') target = [0, 0, -6];
+  else if (route === '/void-cube') target = [0, 0, -6];
+  else if (route === '/hover-drone') target = [0, 0, -6];
+  else if (route === '/energy-crystal') target = [0, 0, -6];
+  else if (route === '/cyber-planet') target = [0, 0, -6];
+  else if (route === '/sonic-rings') target = [0, 0, -6];
+  else if (route === '/neural-core') target = [0, 0, -6];
+  else if (route === '/memory-chip') target = [0, 0, -6];
+  else if (route === '/ai-orb') target = [0, 0, -6];
+  else if (route === '/hologram-projector') target = [0, 0, -6];
+  else if (route === '/cyber-brain') target = [0, 0, -6];
+  else if (route === '/data-vault') target = [0, 0, -6];
+  else if (route === '/quantum-processor') target = [0, 0, -6];
+  else if (route === '/cyber-mask') target = [0, 0, -6];
+  else if (route === '/logic-cube') target = [0, 0, -6];
+  else if (route === '/mecha-arm') target = [0, 0, -6];
+  else if (route === '/android-head') target = [0, 0, -6];
+  else if (route === '/robot-core') target = [0, 0, -6];
+  else if (route === '/titan-gear') target = [0, 0, -6];
+  else if (route === '/neon-rose') target = [0, 0, -6];
+  else if (route === '/cyber-orchid') target = [0, 0, -6];
+  else if (route === '/quantum-lily') target = [0, 0, -6];
 
   return (
-    <div className="w-full h-full" data-lenis-prevent="true">
-      <Canvas camera={{ position: [0, 0, 15], fov: 45 }} dpr={[1, 2]} gl={{ antialias: false }}>
+    <div className="w-full h-full" {...(isInteractMode ? { "data-lenis-prevent": "true" } : {})}>
+      <Canvas frameloop={isInteractMode ? 'always' : 'demand'} style={{ pointerEvents: isInteractMode ? 'auto' : 'none' }} camera={{ position: [0, 0, 15], fov: 45 }} dpr={[1, 2]} gl={{ antialias: false }}>
         <color attach="background" args={['#050505']} />
         
         {/* Custom lighting to replace the fetched HDR environment map */}
@@ -87,36 +139,60 @@ export function SceneWrapper({ route }) {
           {/* Environment map ensures highly metallic materials have something to reflect, making their base colors visible */}
           <Environment preset="city" />
           
-          {(!route || route === '/') && <DNAEngine />}
-          {route === '/about' && <NeuralNetwork />}
-          {route === '/skills' && <DataCore />}
-          {route === '/projects' && <CyberEye />}
-          {route === '/contact' && <BionicHeart />}
-          {route === '/quantum' && <QuantumCore />}
-          {route === '/spine' && <BioSpine />}
-          {route === '/nexus' && <NexusGate />}
-          {route === '/dial' && <ChronosDial />}
-          {route === '/lotus' && <MechaLotus />}
-          {route === '/thruster' && <PlasmaThruster />}
-          {route === '/void' && <VoidCube />}
-          {route === '/drone' && <HoverDrone />}
-          {route === '/crystal' && <EnergyCrystal />}
-          {route === '/planet' && <CyberPlanet />}
-          {route === '/sonic' && <SonicRings />}
+          {/* Environment map ensures highly metallic materials have something to reflect, making their base colors visible */}
+          <Environment preset="city" />
+          
+          {(!route || route === '/dna-engine') && <DNAEngine />}
+          {route === '/neural-network' && <NeuralNetwork />}
+          {route === '/cyber-arm' && <CyberArm />}
+          {route === '/cyber-eye' && <CyberEye />}
+          {route === '/bionic-heart' && <BionicHeart />}
+          {route === '/quantum-core' && <QuantumCore />}
+          {route === '/cyber-spine' && <BioSpine />}
+          {route === '/nexus-gate' && <NexusGate />}
+          {route === '/chronos-dial' && <ChronosDial />}
+          {route === '/mecha-lotus' && <MechaLotus />}
+          {route === '/plasma-thruster' && <PlasmaThruster />}
+          {route === '/void-cube' && <VoidCube />}
+          {route === '/hover-drone' && <HoverDrone />}
+          {route === '/energy-crystal' && <EnergyCrystal />}
+          {route === '/cyber-planet' && <CyberPlanet />}
+          {route === '/sonic-rings' && <SonicRings />}
+          {route === '/neural-core' && <NeuralCore />}
+          {route === '/memory-chip' && <MemoryChip />}
+          {route === '/ai-orb' && <AIOrb />}
+          {route === '/hologram-projector' && <HologramProjector />}
+          {route === '/cyber-brain' && <CyberBrain />}
+          {route === '/data-vault' && <DataVault />}
+          {route === '/quantum-processor' && <QuantumProcessor />}
+          {route === '/cyber-mask' && <CyberMask />}
+          {route === '/logic-cube' && <LogicCube />}
+          {route === '/mecha-arm' && <MechaArm />}
+          {route === '/android-head' && <AndroidHead />}
+          {route === '/robot-core' && <RobotCore />}
+          {route === '/titan-gear' && <TitanGear />}
+          {route === '/neon-rose' && <NeonRose />}
+          {route === '/cyber-orchid' && <CyberOrchid />}
+          {route === '/quantum-lily' && <QuantumLily />}
         </Suspense>
 
-        <EffectComposer>
-          <Bloom 
-            luminanceThreshold={0.2} 
-            luminanceSmoothing={0.9} 
-            height={300} 
-            intensity={1.5} 
-          />
-        </EffectComposer>
+        <GlobalClockController />
+
+        {isInteractMode && (
+          <EffectComposer>
+            <Bloom 
+              luminanceThreshold={0.2} 
+              luminanceSmoothing={0.9} 
+              height={300} 
+              intensity={1.5} 
+            />
+          </EffectComposer>
+        )}
 
         <OrbitControls 
           ref={controlsRef}
           target={target}
+          enabled={isInteractMode}
           enableZoom={true} 
           enablePan={true}
           enableRotate={true}

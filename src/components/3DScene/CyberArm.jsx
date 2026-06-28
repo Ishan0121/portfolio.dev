@@ -404,7 +404,7 @@ const WristJoint = () => (
 );
 
 // ─── MAIN EXPORT: BIONIC HAND ─────────────────────────────────────────────────
-export function DataCore() {
+export function CyberArm() {
   const groupRef  = useRef();
   const coreRef   = useRef();
   const coreLight = useRef();
