@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { FlipWords } from "@/components/effects/flip-words";
 import { InfiniteMovingCards } from "@/components/effects/infinite-moving-cards";
 import { Meteors } from "@/components/effects/meteors";
+import { Magnetic } from "@/components/effects/magnetic";
 import { containerVariants, fadeUp } from "@/lib/animations";
 
 export default function HomeClient() {
@@ -119,9 +120,9 @@ export default function HomeClient() {
                 <h3 className="text-3xl font-bold">Projects</h3>
                 <p className="text-sm text-muted-foreground mt-1">Explore my recent work</p>
               </div>
-              <Button variant="outline" className="w-full rounded-full gap-2 h-12" size="lg">
-                <Icon icon="lucide:arrow-up-right" className="w-5 h-5" /> View Portfolio
-              </Button>
+                <Button variant="outline" className="w-full rounded-full gap-2 h-12" size="lg">
+                  <Icon icon="lucide:arrow-up-right" className="w-5 h-5" /> View Portfolio
+                </Button>
             </div>
           </Link>
 
@@ -131,18 +132,19 @@ export default function HomeClient() {
             <div className="flex flex-col w-full gap-4">
               <Button asChild className="w-full rounded-full gap-2 h-12" size="lg">
                 <Link href="/contact">
-                  <Icon icon="lucide:mail" className="w-4 h-4" /> Get in Touch
-                </Link>
-              </Button>
+                    <Icon icon="lucide:mail" className="w-4 h-4" /> Get in Touch
+                  </Link>
+                </Button>
               <Button asChild variant="outline" className="w-full rounded-full gap-2 h-12 border-border/50 bg-secondary/30 hover:bg-secondary/60" size="lg">
-                <a
-                  href={siteConfig.resumePath}
-                  download={siteConfig.resumeName}
-                  onClick={() => notify("download_resume", { type: "info" })}
-                >
-                  <Icon icon="lucide:download" className="w-4 h-4" /> Download CV
-                </a>
-              </Button>
+                  <Link
+                    href={siteConfig.resumePath}
+                    download={siteConfig.resumeName}
+                    onClick={() => notify("download_resume", { type: "info" })}
+                    className="flex items-center justify-center gap-2"
+                  >
+                    <Icon icon="lucide:download" className="w-4 h-4" /> Download CV
+                  </Link>
+                </Button>
             </div>
           </div>
 
@@ -174,18 +176,22 @@ export default function HomeClient() {
             </p>
           </div>
           <div className="flex items-center gap-3 shrink-0 z-10">
-            <Button asChild size="lg" className="rounded-full gap-2 h-12 border-border/50 transition-all">
-              <Link href="/contact">
-                <Icon icon="lucide:mail" className="w-4 h-4" />
-                Connect
-              </Link>
-            </Button>
-            <Button asChild variant="outline" size="lg" className="rounded-full gap-2 h-12 border-border/50 bg-secondary/30 hover:bg-secondary/60">
-              <Link href="/projects">
-                <Icon icon="lucide:folder-dot" className="w-4 h-4" />
-                View Work
-              </Link>
-            </Button>
+            <Magnetic>
+              <Button asChild size="lg" className="rounded-full gap-2 h-12 border-border/50 transition-all block">
+                <Link href="/contact" className="flex items-center justify-center gap-2">
+                  <Icon icon="lucide:mail" className="w-4 h-4" />
+                  Connect
+                </Link>
+              </Button>
+            </Magnetic>
+            <Magnetic>
+              <Button asChild variant="outline" size="lg" className="rounded-full gap-2 h-12 border-border/50 bg-secondary/30 hover:bg-secondary/60 block">
+                <Link href="/projects" className="flex items-center justify-center gap-2">
+                  <Icon icon="lucide:folder-dot" className="w-4 h-4" />
+                  View Work
+                </Link>
+              </Button>
+            </Magnetic>
           </div>
         </motion.section>
 

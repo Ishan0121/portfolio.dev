@@ -92,6 +92,7 @@ export function Navigation() {
               <Link
                 key={link.href}
                 href={link.href}
+                aria-current={pathname === link.href ? "page" : undefined}
                 className={`text-sm font-medium hover:opacity-80 transition-colors px-4 py-1 rounded-2xl ${
                   pathname === link.href ? "glass" : "text-muted-foreground hover:text-foreground"
                 }`}

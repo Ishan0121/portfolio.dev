@@ -7,15 +7,17 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { useNotificationStore } from "@/store/useNotificationStore";
 import { Icon as IconifyIcon } from "@iconify/react";
 import { siteConfig } from "@/lib/config";
+import { Magnetic } from "@/components/effects/magnetic";
 
 interface SocialLinksProps {
   size?: "sm" | "md" | "lg";
   className?: string;
   showName?: boolean;
   showTooltip?: boolean;
+  magnetic?: boolean;
 }
 
-export default function SocialLinks({ size = "md", className, showName = false, showTooltip = false }: SocialLinksProps) {
+export default function SocialLinks({ size = "md", className, showName = false, showTooltip = false, magnetic = true }: SocialLinksProps) {
   const notify = useNotificationStore((state) => state.notify);
 
   return (
@@ -63,7 +65,13 @@ export default function SocialLinks({ size = "md", className, showName = false, 
           if (!showTooltip) {
             return (
               <React.Fragment key={id}>
-                {linkContent}
+                {magnetic ? (
+                  <Magnetic>
+                    {linkContent}
+                  </Magnetic>
+                ) : (
+                  linkContent
+                )}
               </React.Fragment>
             );
           }
@@ -71,7 +79,15 @@ export default function SocialLinks({ size = "md", className, showName = false, 
           return (
             <Tooltip key={id} delayDuration={300}>
               <TooltipTrigger asChild>
-                {linkContent}
+                <div>
+                  {magnetic ? (
+                    <Magnetic>
+                      {linkContent}
+                    </Magnetic>
+                  ) : (
+                    linkContent
+                  )}
+                </div>
               </TooltipTrigger>
               {!showName && (
                 <TooltipContent>

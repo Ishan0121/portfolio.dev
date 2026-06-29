@@ -14,13 +14,13 @@ interface NotificationState {
   lastShownIndexes: Record<string, number>;
   cooldowns: Record<string, number>;
   
-  // Actions
   notify: (
     category: NotificationCategory, 
     options?: { 
       force?: boolean; 
       cooldownMs?: number; 
       type?: 'info' | 'success' | 'warning' | 'error';
+      duration?: number;
     }
   ) => void;
 }
@@ -49,7 +49,7 @@ export const useNotificationStore = create<NotificationState>()(
       
       notify: (category, options = {}) => {
         const { isDndEnabled, lastShownIndexes, cooldowns } = get();
-        const { force = false, cooldownMs = DEFAULT_COOLDOWN_MS, type = 'info' } = options;
+        const { force = false, cooldownMs = DEFAULT_COOLDOWN_MS, type = 'info', duration = 3000 } = options;
         
         const now = Date.now();
         
@@ -76,7 +76,7 @@ export const useNotificationStore = create<NotificationState>()(
         const toastOptions = {
           icon: message.icon ? React.createElement(Icon, { icon: message.icon, className: "w-5 h-5 text-primary" }) : undefined,
           description: message.description,
-          duration: 7000,
+          duration: duration,
           className: "glass border-primary/20 ",
         };
 

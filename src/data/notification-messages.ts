@@ -4,6 +4,7 @@ export type NotificationCategory =
   | "network_offline"
   | "network_online"
   | "download_resume"
+  | "view_resume"
   | "github_fetch_success"
   | "github_fetch_error"
   | "welcome"
@@ -42,6 +43,11 @@ const messages: Record<NotificationCategory, MessageVariation[]> = {
     { title: "Preparing Download", description: "📄 Assembling your requested documents...", icon: "lucide:download" },
     { title: "Data Transfer", description: "📦 Compiling files for local extraction.", icon: "lucide:folder-down" },
     { title: "Extraction Initiated", description: "📥 Download sequence started. Stand by.", icon: "lucide:arrow-down-to-line" },
+  ],
+  view_resume: [
+    { title: "Document Viewer", description: "📄 Loading resume in viewer...", icon: "lucide:file-text" },
+    { title: "Fetching Profile", description: "👁️ Initializing document preview.", icon: "lucide:eye" },
+    { title: "Access Granted", description: "📑 Opening portfolio archives.", icon: "lucide:file-search" },
   ],
   github_fetch_success: [
     { title: "Data Synced", description: "✨ GitHub chronicles retrieved successfully.", icon: "lucide:github" },
