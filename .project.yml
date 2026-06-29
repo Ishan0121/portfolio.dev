@@ -1,7 +1,9 @@
-
-
 links:
   live: https://ishan0121.vercel.app
 
+stack:
+  - Next.js
+  - Tailwind CSS
+  - Typescript
 featured: true
-status: deployed
+status: Active

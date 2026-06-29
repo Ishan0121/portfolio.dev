@@ -15,7 +15,7 @@ interface SocialLinksProps {
   showTooltip?: boolean;
 }
 
-export default function SocialLinks({ size = "md", className, showName = false, showTooltip = true }: SocialLinksProps) {
+export default function SocialLinks({ size = "md", className, showName = false, showTooltip = false }: SocialLinksProps) {
   const notify = useNotificationStore((state) => state.notify);
 
   return (

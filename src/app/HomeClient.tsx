@@ -49,12 +49,12 @@ export default function HomeClient() {
           </div>
 
           <h1 className="text-5xl sm:text-7xl lg:text-[6rem] font-bold tracking-tight text-foreground max-w-4xl drop-shadow-2xl leading-[1.1]">
-            <span className="bg-clip-text text-transparent bg-gradient-to-br from-foreground to-foreground/50">
+            <span className="bg-clip-text text-transparent bg-linear-to-br from-foreground to-foreground/50">
               Creative Developer
             </span>
           </h1>
 
-          <div className="text-xl sm:text-2xl text-muted-foreground mt-8 min-h-[3.5rem] sm:min-h-[2.5rem] tracking-tight font-mono max-w-2xl text-balance flex items-center justify-center">
+          <div className="text-xl sm:text-2xl text-muted-foreground mt-8 min-h-14 sm:min-h-10 tracking-tight font-mono max-w-2xl text-balance flex items-center justify-center">
             <FlipWords words={siteConfig.messages} duration={3000} />
           </div>
         </motion.section>
@@ -106,7 +106,7 @@ export default function HomeClient() {
                 <div className="w-24 h-32 rounded-xl bg-background border border-border/50 shadow-md flex items-center justify-center -translate-y-4">
                   <Icon icon="lucide:layout" className="w-8 h-8 text-muted-foreground/30" />
                 </div>
-                <div className="w-24 h-32 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 shadow-lg flex items-center justify-center z-10 relative">
+                <div className="w-24 h-32 rounded-xl bg-linear-to-br from-primary/10 to-primary/5 border border-primary/20 shadow-lg flex items-center justify-center z-10 relative">
                   <Icon icon="lucide:folder-dot" className="w-10 h-10 text-primary" />
                 </div>
                 <div className="w-24 h-32 rounded-xl bg-background border border-border/50 shadow-md flex items-center justify-center translate-y-4">
@@ -126,12 +126,12 @@ export default function HomeClient() {
           </Link>
 
           {/* Connect / Resume Card */}
-          <div className="lg:col-span-1 row-span-1 glass rounded-[2rem] p-8 border border-border/50 transition-all overflow-hidden relative flex flex-col justify-center items-center shadow-sm hover:border-primary/50">
-            <SocialLinks size="lg" className="gap-1" />
-            <div className="flex flex-col w-full gap-3 mt-auto">
+          <div className="lg:col-span-1 row-span-1 glass rounded-[2rem] p-4 border border-border/50 transition-all overflow-hidden relative flex flex-col justify-center items-center gap-4 shadow-sm hover:border-primary/50">
+            <SocialLinks size="lg" className="gap-2"/>
+            <div className="flex flex-col w-full gap-4">
               <Button asChild className="w-full rounded-full gap-2 h-12" size="lg">
                 <Link href="/contact">
-                  <Icon icon="lucide:mail" className="w-4 h-4" /> Email Me
+                  <Icon icon="lucide:mail" className="w-4 h-4" /> Get in Touch
                 </Link>
               </Button>
               <Button asChild variant="outline" className="w-full rounded-full gap-2 h-12 border-border/50 bg-secondary/30 hover:bg-secondary/60" size="lg">
@@ -164,7 +164,7 @@ export default function HomeClient() {
           className="glass rounded-[2rem] p-10 border border-border/50 flex flex-col sm:flex-row items-center justify-between gap-8 relative overflow-hidden"
         >
           {/* Background glow */}
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-blue-500/5 pointer-events-none" />
+          <div className="absolute inset-0 bg-linear-to-r from-primary/5 via-transparent to-blue-500/5 pointer-events-none" />
           <div className="flex flex-col gap-2 z-10">
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">
               Ready to build something great?
@@ -174,10 +174,10 @@ export default function HomeClient() {
             </p>
           </div>
           <div className="flex items-center gap-3 shrink-0 z-10">
-            <Button asChild size="lg" className="rounded-full gap-2 h-12 shadow-lg shadow-primary/20">
+            <Button asChild size="lg" className="rounded-full gap-2 h-12 border-border/50 transition-all">
               <Link href="/contact">
                 <Icon icon="lucide:mail" className="w-4 h-4" />
-                Get in Touch
+                Connect
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="rounded-full gap-2 h-12 border-border/50 bg-secondary/30 hover:bg-secondary/60">
