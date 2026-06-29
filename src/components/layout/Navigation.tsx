@@ -78,7 +78,7 @@ export function Navigation() {
         animate={hidden ? "hidden" : "visible"}
         transition={{ duration: 0.35, ease: "easeInOut" }}
         className={cn(
-          "fixed top-4 left-0 right-0 z-[100] mx-auto w-full px-4 sm:px-6 lg:px-8 transition-all duration-300",
+          "fixed top-4 left-0 right-0 z-100 mx-auto w-full px-4 sm:px-6 lg:px-8 transition-all duration-300",
           scrolled ? "w-[95%] sm:w-[90%] md:w-[95%] lg:w-[95%] px-0" : "w-full"
         )}
       >

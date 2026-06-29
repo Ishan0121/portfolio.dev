@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { Icon } from "@iconify/react";
 import { ContactForm } from '@/components/sections/ContactForm';
 import SocialLinks from '@/components/shared/SocialLinks';
-import { BackgroundGradient } from "@/components/effects/background-gradient";
 import { siteConfig } from "@/lib/config";
 import { containerVariants, fadeUp } from "@/lib/animations";
 

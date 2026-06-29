@@ -3,7 +3,7 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 import { toast } from 'sonner';
 import { NotificationCategory, getRandomMessage } from '@/data/notification-messages';
 import React from 'react';
-import { Icon } from '@iconify/react';
+import { CustomToast } from '@/components/core/CustomToast';
 
 interface NotificationState {
   isDndEnabled: boolean;
@@ -21,6 +21,7 @@ interface NotificationState {
       cooldownMs?: number; 
       type?: 'info' | 'success' | 'warning' | 'error';
       duration?: number;
+      priority?: 'normal' | 'high' | 'critical';
     }
   ) => void;
 }
@@ -34,9 +35,9 @@ export const useNotificationStore = create<NotificationState>()(
       setDnd: (enabled) => {
         set({ isDndEnabled: enabled });
         if (enabled) {
-          get().notify('dnd_enabled', { force: true, type: 'info' });
+          get().notify('dnd_enabled', { force: true, type: 'info', priority: 'high' });
         } else {
-          get().notify('dnd_disabled', { force: true, type: 'info' });
+          get().notify('dnd_disabled', { force: true, type: 'info', priority: 'high' });
         }
       },
       toggleDnd: () => {
@@ -49,17 +50,23 @@ export const useNotificationStore = create<NotificationState>()(
       
       notify: (category, options = {}) => {
         const { isDndEnabled, lastShownIndexes, cooldowns } = get();
-        const { force = false, cooldownMs = DEFAULT_COOLDOWN_MS, type = 'info', duration = 3000 } = options;
+        const { 
+          force = false, 
+          cooldownMs = DEFAULT_COOLDOWN_MS, 
+          type = 'info', 
+          duration = 3000,
+          priority = 'normal'
+        } = options;
         
         const now = Date.now();
         
-        // Check DND
-        if (isDndEnabled && !force) {
+        // Check DND (critical overrides DND)
+        if (isDndEnabled && !force && priority !== 'critical') {
           return;
         }
         
-        // Check cooldown
-        if (!force && cooldowns[category] && now - cooldowns[category] < cooldownMs) {
+        // Check cooldown (high and critical override cooldown)
+        if (!force && priority !== 'high' && priority !== 'critical' && cooldowns[category] && now - cooldowns[category] < cooldownMs) {
           return; // Still in cooldown
         }
         
@@ -73,28 +80,22 @@ export const useNotificationStore = create<NotificationState>()(
           cooldowns: { ...state.cooldowns, [category]: now },
         }));
         
-        const toastOptions = {
-          icon: message.icon ? React.createElement(Icon, { icon: message.icon, className: "w-5 h-5 text-primary" }) : undefined,
-          description: message.description,
-          duration: duration,
-          className: "glass border-primary/20 ",
-        };
-
-        switch (type) {
-          case 'success':
-            toast.success(message.title, toastOptions);
-            break;
-          case 'warning':
-            toast.warning(message.title, toastOptions);
-            break;
-          case 'error':
-            toast.error(message.title, toastOptions);
-            break;
-          case 'info':
-          default:
-            toast(message.title, toastOptions);
-            break;
+        // If critical, dismiss all existing toasts to overwrite order
+        if (priority === 'critical') {
+          toast.dismiss();
         }
+
+        // Render custom toast to enable progress bar, hover reset, and accurate alert styles
+        toast.custom((t) => React.createElement(CustomToast, {
+          t,
+          title: message.title,
+          description: message.description,
+          icon: message.icon,
+          type,
+          duration
+        }), {
+          duration: Number.POSITIVE_INFINITY, // the CustomToast handles its own dismissal
+        });
       },
     }),
     {
@@ -104,3 +105,4 @@ export const useNotificationStore = create<NotificationState>()(
     }
   )
 );
+
