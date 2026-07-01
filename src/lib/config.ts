@@ -75,6 +75,7 @@ export const siteConfig = {
     linkedin: "https://www.linkedin.com/in/ishan-maiti-785212297",
     twitter: "https://x.com/maiti_ishan",
     email: "ishanmaiti1234@gmail.com",
+    calcom: "https://cal.com/ishan-maiti",
   },
   socialLinks: [
     {

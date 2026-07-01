@@ -40,7 +40,26 @@ export function PortfolioGrid({ projects }: { projects: Project[] }) {
 
   const filterTags = ["All", ...topTags];
 
-  const filteredProjects = projects.filter((project) =>
+  const sortedProjects = [...projects].sort((a, b) => {
+    const pinA = a.isPinned;
+    const pinB = b.isPinned;
+
+    if (pinA !== undefined && pinB !== undefined) {
+      if (pinA !== pinB) {
+        return pinA - pinB;
+      }
+    } else if (pinA !== undefined) {
+      return -1;
+    } else if (pinB !== undefined) {
+      return 1;
+    }
+
+    const dateA = a.updatedAt ? new Date(a.updatedAt).getTime() : 0;
+    const dateB = b.updatedAt ? new Date(b.updatedAt).getTime() : 0;
+    return dateB - dateA;
+  });
+
+  const filteredProjects = sortedProjects.filter((project) =>
     activeTag === "All" ? true : project.tags.includes(activeTag)
   );
 

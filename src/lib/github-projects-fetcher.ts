@@ -39,6 +39,8 @@ export interface Project {
   isLoading?: boolean;
   status?: string;
   featured?: boolean;
+  isPinned?: number;
+  updatedAt?: string;
 }
 
 export const projectYamlSchema = z.object({
@@ -51,6 +53,7 @@ export const projectYamlSchema = z.object({
   status: z.string().optional(),
   stack: z.array(z.string()).optional(),
   featured: z.boolean().optional(),
+  isPinned: z.number().min(1).max(6).optional(),
 });
 
 export type ProjectYamlMetadata = z.infer<typeof projectYamlSchema>;
@@ -245,6 +248,7 @@ export async function fetchGitHubRepos(
         githubUrl: repo.html_url,
         tags: [],
         isLoading: true,
+        updatedAt: repo.updated_at,
       };
       return { repo, project };
     });
@@ -342,6 +346,7 @@ export async function enrichProject(
       githubUrl: basicProject.githubUrl,
       status: yamlMetadata?.status,
       featured: yamlMetadata?.featured,
+      isPinned: yamlMetadata?.isPinned,
       imageUrl,
       tags,
       isLoading: false,

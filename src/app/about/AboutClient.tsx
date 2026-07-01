@@ -196,9 +196,11 @@ export default function AboutClient() {
               id="introduction"
               className="flex flex-col items-center md:items-start text-center md:text-left"
             >
-              {/* "Schedule a call" — links to email as a fallback since no Calendly is configured */}
+              {/* "Schedule a call" — links to cal.com */}
               <a
-                href={`mailto:${siteConfig.socials.email}?subject=Let's connect`}
+                href={siteConfig.socials.calcom}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-4 py-1.5 bg-secondary/30 border border-border/50 rounded-full text-sm font-medium backdrop-blur-md cursor-pointer hover:bg-secondary/50 transition-colors mb-8"
               >
                 <Icon

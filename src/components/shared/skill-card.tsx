@@ -1,4 +1,5 @@
 import { Icon } from "@iconify/react";
+import Image from "next/image";
 
 type SkillCardProps = {
   name: string;
@@ -15,7 +16,7 @@ export function SkillCard({ name, level, description, icon }: SkillCardProps) {
           <div className="flex items-center gap-2">
             {icon && (
               icon.startsWith('/') 
-                ? <img src={icon} alt={name} className="w-5 h-5 object-contain" />
+                ? <Image src={icon} alt={name} width={20} height={20} className="w-5 h-5 object-contain" />
                 : <Icon icon={icon} className="w-5 h-5" />
             )}
             <h3 className="font-semibold">{name}</h3>
