@@ -2,10 +2,15 @@
 
 import { useEffect, useRef, useState } from "react";
 
-const GRID = 20;
-const DURATION = 1400; // ms
-const MAX_R = 14;   // max ripple radius in cells
-const BAND = 2.5;   // ring thickness in cells
+// ─── Change only this value to resize the grid ───────────────────────────
+const GRID = 20;        // cell size in px (grid line spacing)
+// ───────────────────────────────────────────────────────────────────────────
+const MARGIN = 1;       // offset to skip the 1px grid line
+const CELL = GRID - 1;  // perfect fit: 20px cell - 1px grid line = 19px
+
+const DURATION = 1400;  // ripple duration in ms
+const MAX_R = 14;       // max ripple radius in cells
+const BAND = 2.5;       // ring thickness in cells
 
 export function GridBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -24,8 +29,10 @@ export function GridBackground() {
     const ripples: { x: number; y: number; t0: number }[] = [];
 
     const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      // Use the actual DOM element dimensions (excluding scrollbars) 
+      // instead of window.inner* to prevent automatic browser scaling.
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
     };
     resize();
     window.addEventListener("resize", resize);
@@ -69,14 +76,15 @@ export function GridBackground() {
             const alpha = (1 - distFromFront / BAND) * (1 - t) * 0.85;
             if (alpha <= 0) continue;
 
+            // Matches Tailwind gray-400 for dark mode, gray-600 for light mode
             ctx.fillStyle = dark
-              ? `rgba(160, 190, 255, ${alpha})`
-              : `rgba(60, 90, 180, ${alpha})`;
+              ? `rgba(156, 163, 175, ${alpha})`
+              : `rgba(75, 85, 99, ${alpha})`;
             ctx.fillRect(
-              (col0 + dc) * GRID + 1,
-              (row0 + dr) * GRID + 1,
-              GRID - 2,
-              GRID - 2
+              (col0 + dc) * GRID + MARGIN,
+              (row0 + dr) * GRID + MARGIN,
+              CELL,
+              CELL
             );
           }
         }
@@ -126,14 +134,14 @@ export function GridBackground() {
       />
 
       {/* SVG twinkle sparkles */}
-      <svg className="absolute inset-0 w-full h-full">
+      <svg className="absolute inset-0 w-full h-full opacity-30">
         {blocks.map((block) => (
           <rect
             key={block.id}
-            width={GRID - 1}
-            height={GRID - 1}
-            x={block.x * GRID + 1}
-            y={block.y * GRID + 1}
+            width={CELL}
+            height={CELL}
+            x={block.x * GRID + MARGIN}
+            y={block.y * GRID + MARGIN}
             className="fill-gray-600 dark:fill-gray-400 animate-twinkle opacity-0"
             style={{
               animationDelay: `${block.delay}s`,
