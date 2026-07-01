@@ -1,7 +1,22 @@
 export const siteConfig = {
-  name: "Ishan Maiti",
-  description: "Personal portfolio showcasing my work and experience",
   title: "Portfolio | Creative Developer",
+  description: "Personal portfolio showcasing my work and experience",
+  web3formsAccessKey: process.env.NEXT_PUBLIC_WEB3FORMS_KEY ?? "", // Set NEXT_PUBLIC_WEB3FORMS_KEY in .env.local
+  navLinks: [
+    { title: "Home", href: "/", icon: "lucide:home", keywords: "Home" },
+    { title: "About", href: "/about", icon: "lucide:user", keywords: "About me resume contact" },
+    { title: "Projects", href: "/projects", icon: "lucide:folder-dot", keywords: "Projects portfolio work" },
+    { title: "Skills", href: "/skills", icon: "lucide:code-2", keywords: "Skills technologies" },
+    { title: "3D Lab", href: "/3d", icon: "lucide:box", keywords: "3D Lab experimental" },
+    { title: "Contact", href: "/contact", icon: "lucide:mail", keywords: "Contact email message" },
+  ],
+  github: {
+    excludeRepos: ["Ishan0121", "portfolio", "Portfolio-dna", "Portfolio3.0"],
+  },
+};
+
+export const portfolioInfo = {
+  name: "Ishan Maiti",
   bio: "Passionate about crafting seamless digital experiences through \nclean code and \ninnovative solutions.",
   messages: [
     "Welcome to my Portfolio!",
@@ -13,15 +28,6 @@ export const siteConfig = {
   resumePath: "./docs/ISHAN MAITI_CV2.pdf",
   resumeName: "My Resume.pdf",
   githubUsername: "Ishan0121",
-  web3formsAccessKey: process.env.NEXT_PUBLIC_WEB3FORMS_KEY ?? "", // Set NEXT_PUBLIC_WEB3FORMS_KEY in .env.local
-  navLinks: [
-    { title: "Home", href: "/", icon: "lucide:home", keywords: "Home" },
-    { title: "About", href: "/about", icon: "lucide:user", keywords: "About me resume contact" },
-    { title: "Projects", href: "/projects", icon: "lucide:folder-dot", keywords: "Projects portfolio work" },
-    { title: "Skills", href: "/skills", icon: "lucide:code-2", keywords: "Skills technologies" },
-    { title: "3D Lab", href: "/3d", icon: "lucide:box", keywords: "3D Lab experimental" },
-    { title: "Contact", href: "/contact", icon: "lucide:mail", keywords: "Contact email message" },
-  ],
   person: {
     role: "Computer Science Student & Developer",
     location: "Kolkata, India",
@@ -67,9 +73,6 @@ export const siteConfig = {
       ]
     }
   ],
-  github: {
-    excludeRepos: ["Ishan0121", "portfolio", "Portfolio-dna", "Portfolio3.0"],
-  },
   socials: {
     github: "https://github.com/Ishan0121",
     linkedin: "https://www.linkedin.com/in/ishan-maiti-785212297",

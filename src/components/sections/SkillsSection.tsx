@@ -1,8 +1,8 @@
-import { SkillCard } from "@/components/shared/skill-card";
+import { SkillCard } from "@/components/shared/SkillCard";
 import { motion, useInView } from "framer-motion";
 import type { Transition } from "framer-motion";
 import { useRef } from "react";
-import type { SkillCategory } from '@/data/skills-data';
+import type { SkillCategory } from '@/data/skills';
 
 type SkillsSectionProps = {
   category: SkillCategory;

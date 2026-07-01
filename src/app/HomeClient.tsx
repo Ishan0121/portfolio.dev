@@ -5,8 +5,8 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { Icon } from "@iconify/react";
-import { siteConfig } from "@/lib/config";
-import { skillsData } from '@/data/skills-data';
+import { portfolioInfo } from "@/lib/config";
+import { skillsData } from '@/data/skills';
 import SocialLinks from '@/components/shared/SocialLinks';
 import { useNotificationStore } from "@/store/useNotificationStore";
 import { Button } from "@/components/ui/button";
@@ -56,7 +56,7 @@ export default function HomeClient() {
           </h1>
 
           <div className="text-xl sm:text-2xl text-muted-foreground mt-8 min-h-14 sm:min-h-10 tracking-tight font-mono max-w-2xl text-balance flex items-center justify-center">
-            <FlipWords words={siteConfig.messages} duration={3000} />
+            <FlipWords words={portfolioInfo.messages} duration={3000} />
           </div>
         </motion.section>
 
@@ -67,14 +67,14 @@ export default function HomeClient() {
           <Link href="/about" className="md:col-span-2 lg:col-span-2 row-span-1 glass rounded-[2rem] p-6 px-20 sm:py-8 sm:px-12 border border-border/50 hover:border-primary/50 transition-all group relative flex flex-col-reverse sm:flex-row items-center justify-center sm:justify-start shadow-sm hover:shadow-md">
             <div className="flex-1 flex flex-col gap-2 z-10 text-center sm:text-left">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary/60 text-xs font-semibold w-fit border border-border/30 my-2 mx-auto sm:mx-0">
-                <Icon icon="lucide:map-pin" className="w-3.5 h-3.5 text-primary" /> {siteConfig.person.location}
+                <Icon icon="lucide:map-pin" className="w-3.5 h-3.5 text-primary" /> {portfolioInfo.person.location}
               </div>
-              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">{siteConfig.name}</h2>
-              <p className="text-muted-foreground font-medium text-balance">{siteConfig.person.role}</p>
+              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">{portfolioInfo.name}</h2>
+              <p className="text-muted-foreground font-medium text-balance">{portfolioInfo.person.role}</p>
             </div>
             <div className="relative w-28 h-28 sm:w-36 sm:h-36 shrink-0 z-10">
               <div className="absolute inset-0 rounded-full bg-linear-to-tr from-primary to-blue-500 blur-xl opacity-20 group-hover:opacity-40 transition-opacity"></div>
-              <Image unoptimized={true} src={siteConfig.person.avatar} priority={true} width={400} height={400} className="relative w-full h-full object-cover rounded-full border-2 border-border/50 shadow-xl group-hover:scale-105 transition-transform duration-500 p-2" alt="Avatar" />
+              <Image unoptimized={true} src={portfolioInfo.person.avatar} priority={true} width={400} height={400} className="relative w-full h-full object-cover rounded-full border-2 border-border/50 shadow-xl group-hover:scale-105 transition-transform duration-500 p-2" alt="Avatar" />
             </div>
             <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-secondary/50 flex items-center justify-center backdrop-blur-md group-hover:bg-primary group-hover:text-primary-foreground transition-colors z-10">
               <Icon icon="lucide:arrow-up-right" className="w-5 h-5" />
@@ -137,8 +137,8 @@ export default function HomeClient() {
                 </Button>
               <Button asChild variant="outline" className="w-full rounded-full gap-2 h-12 border-border/50 bg-secondary/30 hover:bg-secondary/60" size="lg">
                   <Link
-                    href={siteConfig.resumePath}
-                    download={siteConfig.resumeName}
+                    href={portfolioInfo.resumePath}
+                    download={portfolioInfo.resumeName}
                     onClick={() => notify("download_resume", { type: "info" })}
                     className="flex items-center justify-center gap-2"
                   >

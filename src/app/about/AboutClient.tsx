@@ -5,7 +5,7 @@ import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import SocialLinks from '@/components/shared/SocialLinks';
 import { ErrorBoundary } from '@/components/shared/ErrorBoundary';
-import { siteConfig } from "@/lib/config";
+import { portfolioInfo } from "@/lib/config";
 import dynamic from "next/dynamic";
 import { useTheme } from "next-themes";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -22,7 +22,7 @@ const GitHubCalendar = dynamic<GitHubCalendarProps>(
 );
 
 
-const { person, work, studies, technical } = siteConfig;
+const { person, work, studies, technical } = portfolioInfo;
 
 const structure = [
   { title: "Introduction", id: "introduction" },
@@ -141,14 +141,14 @@ export default function AboutClient() {
                 {!imageLoaded && (
                   <div className="absolute inset-0 bg-muted animate-pulse flex items-center justify-center">
                     <span className="text-6xl font-bold font-heading text-muted-foreground/30">
-                      {siteConfig.name.charAt(0).toUpperCase()}
+                      {portfolioInfo.name.charAt(0).toUpperCase()}
                     </span>
                   </div>
                 )}
                 <Image
                   unoptimized={true}
                   src={person.avatar}
-                  alt={siteConfig.name}
+                  alt={portfolioInfo.name}
                   width={400}
                   height={400}
                   onLoad={() => setImageLoaded(true)}
@@ -198,7 +198,7 @@ export default function AboutClient() {
             >
               {/* "Schedule a call" — links to cal.com */}
               <a
-                href={siteConfig.socials.calcom}
+                href={portfolioInfo.socials.calcom}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-4 py-1.5 bg-secondary/30 border border-border/50 rounded-full text-sm font-medium backdrop-blur-md cursor-pointer hover:bg-secondary/50 transition-colors mb-8"
@@ -214,7 +214,7 @@ export default function AboutClient() {
               </a>
 
               <h1 className="text-5xl md:text-6xl font-bold text-foreground tracking-tight mb-2">
-                {siteConfig.name}
+                {portfolioInfo.name}
               </h1>
               <h2 className="text-xl text-muted-foreground font-medium mb-6">
                 {person.role}
@@ -393,7 +393,7 @@ export default function AboutClient() {
                 <TooltipProvider delayDuration={50}>
                   {showCalendar ? (
                     <GitHubCalendar
-                      username={siteConfig.githubUsername}
+                      username={portfolioInfo.githubUsername}
                       colorScheme={resolvedTheme === "dark" ? "dark" : "light"}
                       year={githubYear}
                       theme={{
@@ -472,7 +472,7 @@ export default function AboutClient() {
                 <Image
                   unoptimized={true}
                   src={person.avatar}
-                  alt={siteConfig.name}
+                  alt={portfolioInfo.name}
                   width={1000}
                   height={1000}
                   className="w-full h-full object-contain max-h-[85vh] rounded-xl"
@@ -506,8 +506,8 @@ export default function AboutClient() {
                 </h3>
                 <div className="flex items-center gap-2">
                   <a
-                    href={siteConfig.resumePath}
-                    download={siteConfig.resumeName}
+                    href={portfolioInfo.resumePath}
+                    download={portfolioInfo.resumeName}
                     onClick={() => notify("download_resume", { type: "info" })}
                     className="p-2.5 bg-secondary/50 hover:bg-secondary/80 rounded-full transition-colors border border-border/50 text-foreground"
                     title="Download"
@@ -524,7 +524,7 @@ export default function AboutClient() {
               </div>
               <div className="flex-1 w-full bg-muted/20 relative">
                 <iframe
-                  src={siteConfig.resumePath}
+                  src={portfolioInfo.resumePath}
                   className="w-full h-full border-0"
                   title="Resume"
                 />

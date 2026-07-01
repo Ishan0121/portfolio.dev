@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ProjectCard } from "@/components/shared/project-card";
-import { ProjectDrawer } from "@/components/shared/project-drawer";
+import { ProjectCard } from "@/components/shared/ProjectCard";
+import { ProjectDrawer } from "@/components/shared/ProjectDrawer";
 import { Project } from "@/lib/github-projects-fetcher";
 import { Icon } from "@iconify/react";
 import { Button } from "@/components/ui/button";

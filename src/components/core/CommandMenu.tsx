@@ -13,9 +13,9 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 import { Icon } from "@iconify/react";
-import { siteConfig } from "@/lib/config";
+import { siteConfig, portfolioInfo } from "@/lib/config";
 import { Project, fetchProjectsWithCache } from "@/lib/github-projects-fetcher";
-import { skillsData } from '@/data/skills-data';
+import { skillsData } from '@/data/skills';
 import { useNotificationStore } from "@/store/useNotificationStore";
 
 interface CommandMenuProps {
@@ -33,7 +33,7 @@ export function CommandMenu({ open, setOpen }: CommandMenuProps) {
     async function loadProjects() {
       if (!open || projects.length > 0) return;
       const data = await fetchProjectsWithCache({
-        username: siteConfig.githubUsername,
+        username: portfolioInfo.githubUsername,
         maxProjects: 30,
         sortBy: "updated",
         excludeRepos: siteConfig.github.excludeRepos,
@@ -143,8 +143,8 @@ export function CommandMenu({ open, setOpen }: CommandMenuProps) {
               onSelect={() => {
                 runCommand(() => {
                   const link = document.createElement('a');
-                  link.href = siteConfig.resumePath;
-                  link.download = siteConfig.resumeName;
+                  link.href = portfolioInfo.resumePath;
+                  link.download = portfolioInfo.resumeName;
                   link.click();
                 });
               }}

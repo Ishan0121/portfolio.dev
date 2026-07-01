@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useNotificationStore } from "@/store/useNotificationStore";
 import { Icon as IconifyIcon } from "@iconify/react";
-import { siteConfig } from "@/lib/config";
+import { portfolioInfo } from "@/lib/config";
 import { Magnetic } from "@/components/effects/magnetic";
 
 interface SocialLinksProps {
@@ -23,7 +23,7 @@ export default function SocialLinks({ size = "md", className, showName = false, 
   return (
     <TooltipProvider>
       <div className={cn("flex flex-wrap items-center justify-center gap-3", className)}>
-        {siteConfig.socialLinks.map(({ id, label, url, icon }) => {
+        {portfolioInfo.socialLinks.map(({ id, label, url, icon }) => {
           const linkContent = (
             <Button 
               variant="outline" 

@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Icon } from "@iconify/react";
 import { ContactForm } from '@/components/sections/ContactForm';
 import SocialLinks from '@/components/shared/SocialLinks';
-import { siteConfig } from "@/lib/config";
+import { portfolioInfo } from "@/lib/config";
 import { containerVariants, fadeUp } from "@/lib/animations";
 
 export default function ContactClient() {
@@ -32,13 +32,13 @@ export default function ContactClient() {
           </div>
 
           <div className="space-y-6 pt-4">
-            <a href={`mailto:${siteConfig.socials.email}`} className="flex items-center gap-4 group cursor-pointer">
+            <a href={`mailto:${portfolioInfo.socials.email}`} className="flex items-center gap-4 group cursor-pointer">
               <div className="w-12 h-12 rounded-full glass bg-card/40 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300">
                 <Icon icon="lucide:mail" className="w-5 h-5" />
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Email</p>
-                <p className="font-medium group-hover:text-primary transition-colors">{siteConfig.socials.email}</p>
+                <p className="font-medium group-hover:text-primary transition-colors">{portfolioInfo.socials.email}</p>
               </div>
             </a>
 
@@ -48,7 +48,7 @@ export default function ContactClient() {
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Location</p>
-                <p className="font-medium">{siteConfig.person.location}</p>
+                <p className="font-medium">{portfolioInfo.person.location}</p>
               </div>
             </div>
           </div>

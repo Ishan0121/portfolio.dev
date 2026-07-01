@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { toast } from 'sonner';
-import { NotificationCategory, getRandomMessage } from '@/data/notification-messages';
+import { NotificationCategory, getRandomMessage } from '@/data/notifications';
 import React from 'react';
 import { CustomToast } from '@/components/core/CustomToast';
 

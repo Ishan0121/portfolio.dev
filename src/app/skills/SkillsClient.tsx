@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { SectionHeading } from '@/components/shared/section-heading';
-import { SkillsSection } from '@/components/sections/skills-section';
-import { TechTree } from '@/components/sections/tech-tree';
+import { SectionHeading } from '@/components/shared/SectionHeading';
+import { SkillsSection } from '@/components/sections/SkillsSection';
+import { TechTree } from '@/components/sections/TechTree';
 import { Button } from "@/components/ui/button";
-import { skillsData } from '@/data/skills-data';
+import { skillsData } from '@/data/skills';
 import { containerVariants, fadeInUpVariants } from "@/lib/animations";
 
 export default function SkillsClient() {

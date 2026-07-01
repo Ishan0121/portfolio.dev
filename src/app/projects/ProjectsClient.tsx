@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Project } from "@/lib/github-projects-fetcher";
-import { PortfolioGrid } from '@/components/sections/portfolio-grid';
+import { PortfolioGrid } from '@/components/sections/PortfolioGrid';
 import { Icon } from "@iconify/react";
-import { siteConfig } from "@/lib/config";
+import { siteConfig, portfolioInfo } from "@/lib/config";
 import { containerVariants, fadeUp } from "@/lib/animations";
 
 export default function ProjectsClient() {
@@ -14,7 +14,7 @@ export default function ProjectsClient() {
 
   useEffect(() => {
     async function loadProjects() {
-      const username = siteConfig.githubUsername;
+      const username = portfolioInfo.githubUsername;
       const CACHE_KEY = `github_projects_v2_${username}`;
       const CACHE_FINGERPRINT_KEY = `github_projects_fingerprint_v2_${username}`;
       
