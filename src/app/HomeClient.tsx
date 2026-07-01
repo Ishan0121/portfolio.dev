@@ -32,7 +32,6 @@ export default function HomeClient() {
 
   return (
     <div className="relative min-h-screen lg:pt-24 pb-16 px-4 sm:px-6 lg:px-8 flex flex-col items-center">
-
       <motion.div
         variants={containerVariants}
         initial="hidden"

@@ -53,7 +53,7 @@ export const projectYamlSchema = z.object({
   status: z.string().optional(),
   stack: z.array(z.string()).optional(),
   featured: z.boolean().optional(),
-  isPinned: z.number().min(1).max(6).optional(),
+  isPinned: z.number().min(1).optional(),
 });
 
 export type ProjectYamlMetadata = z.infer<typeof projectYamlSchema>;
