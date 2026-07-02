@@ -1,6 +1,5 @@
-import React, { useRef, useMemo } from 'react';
+import React, { useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
-import * as THREE from 'three';
 
 const orbColor = "#0055ff"; 
 const coreColor = "#ffffff"; 
@@ -10,11 +9,7 @@ export function AIOrb() {
   const groupRef = useRef();
   const innerCoreRef = useRef();
   const outerSphereRef = useRef();
-  const ringsRef = useRef([]);
-
-  if (ringsRef.current.length === 0) {
-    ringsRef.current = Array(3).fill().map(() => React.createRef());
-  }
+  const ringsRefs = React.useMemo(() => Array(3).fill().map(() => React.createRef()), []);
 
   useFrame((state, delta) => {
     const t = state.clock.elapsedTime;
@@ -38,7 +33,7 @@ export function AIOrb() {
     }
 
     // Spin rings at different speeds and axes
-    ringsRef.current.forEach((ref, i) => {
+    ringsRefs.forEach((ref, i) => {
       if (ref.current) {
         ref.current.rotation.x += delta * (0.5 + i * 0.2);
         ref.current.rotation.y += delta * (0.3 + i * 0.4);
@@ -84,7 +79,7 @@ export function AIOrb() {
 
         {/* === ORBITING DATA RINGS === */}
         {[1.8, 2.1, 2.4].map((radius, i) => (
-          <group key={`ring-${i}`} ref={ringsRef.current[i]}>
+          <group key={`ring-${i}`} ref={ringsRefs[i]}>
             {/* Ring path */}
             <mesh rotation={[Math.PI / 2, 0, 0]}>
               <torusGeometry args={[radius, 0.01, 16, 64]} />

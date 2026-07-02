@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { Icon } from "@iconify/react";
 import dynamic from "next/dynamic";
@@ -61,7 +61,6 @@ export default function ThreeDLabClient() {
   const { isInteractMode: isInteracting, setIsInteractMode: setIsInteracting } = useInteractStore();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [containerHeight, setContainerHeight] = useState("80vh");
   
   const { brightness, setBrightness, reflection, setReflection, bloom, setBloom, zoomSpeed, setZoomSpeed, rotateSpeed, setRotateSpeed, resetSettings } = useSettingsStore();
   const activeModelData = models.find(m => m.id === activeModel) || models[0];

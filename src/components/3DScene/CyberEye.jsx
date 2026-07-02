@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
-import * as THREE from 'three';
 
 // Hydraulic piston representing an extraocular muscle
 function HydraulicMuscle({ position, rotation, length = 6 }) {

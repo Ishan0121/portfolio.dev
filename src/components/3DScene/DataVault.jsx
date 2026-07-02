@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
-import * as THREE from 'three';
 
 const armorProps = { color: "#1a1a1a", metalness: 0.8, roughness: 0.3 };
 const lockProps = { color: "#ffcc00", metalness: 1, roughness: 0.2 };
@@ -9,10 +8,13 @@ const vaultGlow = "#ff3300";
 export function DataVault() {
   const groupRef = useRef();
   const coreRef = useRef();
-  const platesRef = useRef([]);
-  if (platesRef.current.length === 0) {
-    platesRef.current = Array(6).fill().map(() => React.createRef());
-  }
+  
+  const plate0 = useRef();
+  const plate1 = useRef();
+  const plate2 = useRef();
+  const plate3 = useRef();
+  const plate4 = useRef();
+  const plate5 = useRef();
 
   useFrame((state, delta) => {
     const t = state.clock.elapsedTime;
@@ -30,58 +32,54 @@ export function DataVault() {
       coreRef.current.scale.set(pulse, pulse, pulse);
     }
 
-    // Expanding and contracting armor plates
+    // Vault expanding/breathing effect
     const expansion = Math.sin(t * 1.2) * 0.5 + 0.5; // 0 to 1
     const offset = 1.0 + expansion * 0.3;
 
-    if (platesRef.current[0]?.current) platesRef.current[0].current.position.z = offset;
-    if (platesRef.current[1]?.current) platesRef.current[1].current.position.z = -offset;
-    if (platesRef.current[2]?.current) platesRef.current[2].current.position.x = offset;
-    if (platesRef.current[3]?.current) platesRef.current[3].current.position.x = -offset;
-    if (platesRef.current[4]?.current) platesRef.current[4].current.position.y = offset;
-    if (platesRef.current[5]?.current) platesRef.current[5].current.position.y = -offset;
+    if (plate0.current) plate0.current.position.z = offset;
+    if (plate1.current) plate1.current.position.z = -offset;
+    if (plate2.current) plate2.current.position.x = offset;
+    if (plate3.current) plate3.current.position.x = -offset;
+    if (plate4.current) plate4.current.position.y = offset;
+    if (plate5.current) plate5.current.position.y = -offset;
   });
 
   const { viewport } = useThree();
   const isMobile = viewport.aspect < 1;
-  const baseScale = isMobile ? 0.7 : 0.9;
+  const baseScale = isMobile ? 0.7 : 1;
 
   return (
-    <group position={[0, 0, -6]} scale={[baseScale, baseScale, baseScale]}>
+    <group position={[0, -0.5, -4]} scale={[baseScale, baseScale, baseScale]}>
       <group ref={groupRef}>
         
-        {/* Core Data Drive */}
+        {/* Core Energy */}
         <mesh ref={coreRef}>
-          <boxGeometry args={[1, 1, 1]} />
-          <meshStandardMaterial color={vaultGlow} emissive={vaultGlow} emissiveIntensity={3} toneMapped={false} />
-        </mesh>
-        <mesh>
-           <boxGeometry args={[1.2, 1.2, 1.2]} />
-           <meshBasicMaterial color={vaultGlow} wireframe transparent opacity={0.3} />
+          <octahedronGeometry args={[0.6, 1]} />
+          <meshStandardMaterial color={vaultGlow} emissive={vaultGlow} emissiveIntensity={2} wireframe />
         </mesh>
 
         {/* Armor Plates */}
         {/* Front & Back */}
-        <group ref={platesRef.current[0]} rotation={[0, 0, 0]}>
+        <group ref={plate0} rotation={[0, 0, 0]}>
           <VaultPlate />
         </group>
-        <group ref={platesRef.current[1]} rotation={[0, Math.PI, 0]}>
+        <group ref={plate1} rotation={[0, Math.PI, 0]}>
           <VaultPlate />
         </group>
         
         {/* Right & Left */}
-        <group ref={platesRef.current[2]} rotation={[0, Math.PI / 2, 0]}>
+        <group ref={plate2} rotation={[0, Math.PI / 2, 0]}>
           <VaultPlate />
         </group>
-        <group ref={platesRef.current[3]} rotation={[0, -Math.PI / 2, 0]}>
+        <group ref={plate3} rotation={[0, -Math.PI / 2, 0]}>
           <VaultPlate />
         </group>
 
         {/* Top & Bottom */}
-        <group ref={platesRef.current[4]} rotation={[-Math.PI / 2, 0, 0]}>
+        <group ref={plate4} rotation={[-Math.PI / 2, 0, 0]}>
           <VaultPlate />
         </group>
-        <group ref={platesRef.current[5]} rotation={[Math.PI / 2, 0, 0]}>
+        <group ref={plate5} rotation={[Math.PI / 2, 0, 0]}>
           <VaultPlate />
         </group>
 

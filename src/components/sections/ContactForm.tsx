@@ -86,6 +86,7 @@ export function ContactForm() {
 
       if (response.status === 200) {
         notify("form_success", { type: "success" });
+        // eslint-disable-next-line react-hooks/purity
         localStorage.setItem("lastContactSubmission", Date.now().toString());
         setCooldownRemaining(COOLDOWN_MINUTES);
         reset();

@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
-import * as THREE from 'three';
 
 const darkSteelProps = { color: "#1a1a1a", metalness: 0.9, roughness: 0.6 };
 const silverMatProps = { color: "#cccccc", metalness: 1, roughness: 0.3 };

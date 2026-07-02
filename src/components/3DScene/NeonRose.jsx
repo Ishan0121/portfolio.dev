@@ -1,6 +1,5 @@
 import React, { useRef, useMemo } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
-import * as THREE from 'three';
 
 const petalColor = "#ff0077"; // Deep neon pink/red
 const stemColor = "#00ff66"; // Neon green

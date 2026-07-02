@@ -26,7 +26,7 @@ export default function ProjectsClient() {
         try {
           setProjects(JSON.parse(cachedData));
           setIsLoading(false); // Stop loading skeleton instantly if we have cache
-        } catch (e) {
+        } catch {
           console.error("Failed to parse cached projects");
           setIsLoading(true);
         }

@@ -1,6 +1,5 @@
-import React, { useRef, useMemo } from 'react';
+import React, { useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
-import * as THREE from 'three';
 
 const darkSteelProps = { color: "#1a1a1a", metalness: 0.9, roughness: 0.5 };
 const goldMatProps = { color: "#ffd700", metalness: 1, roughness: 0.2 };
@@ -10,14 +9,10 @@ const powerColor = "#ff3300";
 
 export function MemoryChip() {
   const groupRef = useRef();
-  const dataLinesRef = useRef([]);
+  const dataLinesRefs = React.useMemo(() => Array(5).fill().map(() => React.createRef()), []);
   const holoLayerRef = useRef();
-  
-  if (dataLinesRef.current.length === 0) {
-    dataLinesRef.current = Array(5).fill().map(() => React.createRef());
-  }
 
-  useFrame((state, delta) => {
+  useFrame((state) => {
     const t = state.clock.elapsedTime;
     
     // Float the memory chip
@@ -28,7 +23,7 @@ export function MemoryChip() {
     }
     
     // Pulse the data lines randomly
-    dataLinesRef.current.forEach((ref, i) => {
+    dataLinesRefs.forEach((ref, i) => {
       if (ref.current) {
         const pulse = Math.max(0, Math.sin(t * (3 + i) + i * 1.5));
         ref.current.material.emissiveIntensity = pulse * 4;
@@ -102,7 +97,7 @@ export function MemoryChip() {
             { pos: [0.5, 0, 0.7], args: [0.02, 0.02, 0.4] },
             { pos: [0, 0, -0.7], args: [1.5, 0.02, 0.02] },
           ].map((line, i) => (
-            <mesh key={`line-${i}`} position={line.pos} ref={dataLinesRef.current[i]}>
+            <mesh key={`line-${i}`} position={line.pos} ref={dataLinesRefs[i]}>
               <boxGeometry args={line.args} />
               <meshStandardMaterial color={dataColor} emissive={dataColor} emissiveIntensity={0} toneMapped={false} />
             </mesh>

@@ -14,7 +14,9 @@ const backdropVariants = {
 
 const panelVariants = {
   hidden: { x: "100%", opacity: 0 },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   visible: { x: 0, opacity: 1, transition: { type: "spring" as any, stiffness: 320, damping: 32 } },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   exit: { x: "100%", opacity: 0, transition: { duration: 0.25, ease: "easeIn" as any } },
 };
 
@@ -24,6 +26,7 @@ const itemVariants = {
     x: 0,
     opacity: 1,
     filter: "blur(0px)",
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     transition: { delay: i * 0.1, duration: 0.5, ease: [0.16, 1, 0.3, 1] as any },
   }),
 };

@@ -3,6 +3,7 @@
 import { cn } from "@/lib/utils";
 import React, { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
+import Image from "next/image";
 
 export const InfiniteMovingCards = ({
   items,
@@ -23,47 +24,47 @@ export const InfiniteMovingCards = ({
   const containerRef = React.useRef<HTMLDivElement>(null);
   const scrollerRef = React.useRef<HTMLUListElement>(null);
 
-  useEffect(() => {
-    addAnimation();
-  }, []);
-
   const [start, setStart] = useState(false);
 
-  function addAnimation() {
-    if (containerRef.current && scrollerRef.current) {
-      getDirection();
-      getSpeed();
-      setStart(true);
-    }
-  }
-
-  const getDirection = () => {
-    if (containerRef.current) {
-      if (direction === "left") {
-        containerRef.current.style.setProperty(
-          "--animation-direction",
-          "forwards"
-        );
-      } else {
-        containerRef.current.style.setProperty(
-          "--animation-direction",
-          "reverse"
-        );
+  useEffect(() => {
+    function getDirection() {
+      if (containerRef.current) {
+        if (direction === "left") {
+          containerRef.current.style.setProperty(
+            "--animation-direction",
+            "forwards"
+          );
+        } else {
+          containerRef.current.style.setProperty(
+            "--animation-direction",
+            "reverse"
+          );
+        }
       }
     }
-  };
 
-  const getSpeed = () => {
-    if (containerRef.current) {
-      if (speed === "fast") {
-        containerRef.current.style.setProperty("--animation-duration", "20s");
-      } else if (speed === "normal") {
-        containerRef.current.style.setProperty("--animation-duration", "40s");
-      } else {
-        containerRef.current.style.setProperty("--animation-duration", "80s");
+    function getSpeed() {
+      if (containerRef.current) {
+        if (speed === "fast") {
+          containerRef.current.style.setProperty("--animation-duration", "20s");
+        } else if (speed === "normal") {
+          containerRef.current.style.setProperty("--animation-duration", "40s");
+        } else {
+          containerRef.current.style.setProperty("--animation-duration", "80s");
+        }
       }
     }
-  };
+
+    function addAnimation() {
+      if (containerRef.current && scrollerRef.current) {
+        getDirection();
+        getSpeed();
+        setStart(true);
+      }
+    }
+
+    addAnimation();
+  }, [direction, speed]);
 
   return (
     <div
@@ -89,7 +90,7 @@ export const InfiniteMovingCards = ({
           >
             {item.icon && (
               item.icon.startsWith('/') 
-                ? <img src={item.icon} alt={item.name} className="w-4 h-4 object-contain" /> 
+                ? <Image src={item.icon} alt={item.name} width={16} height={16} className="w-4 h-4 object-contain" /> 
                 : <Icon icon={item.icon} className="w-4 h-4" />
             )}
             {item.name}

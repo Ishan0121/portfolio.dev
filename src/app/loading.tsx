@@ -15,7 +15,8 @@ export default function GlobalLoading() {
   const [currentStep, setCurrentStep] = useState(0);
 
   useEffect(() => {
-    let currentProg = 10;
+    const currentProg = 10;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setProgress(currentProg);
 
     const updateProgress = (target: number, stepIndex: number) => {

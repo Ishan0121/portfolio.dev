@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
-import * as THREE from 'three';
 
 const darkArmorProps = { color: "#222222", metalness: 0.8, roughness: 0.4 };
 const whiteArmorProps = { color: "#f0f0f0", metalness: 0.4, roughness: 0.3 };
@@ -11,11 +10,7 @@ export function HoverDrone() {
   const groupRef = useRef();
   const eyeRef = useRef();
   
-  // Create refs for the 4 props
-  const propsRef = useRef([]);
-  if (propsRef.current.length === 0) {
-    propsRef.current = Array(4).fill().map(() => React.createRef());
-  }
+  const propsRefs = React.useMemo(() => Array(4).fill().map(() => React.createRef()), []);
 
   useFrame((state, delta) => {
     const t = state.clock.elapsedTime;
@@ -34,7 +29,7 @@ export function HoverDrone() {
     }
 
     // Spin props
-    propsRef.current.forEach((ref, index) => {
+    propsRefs.forEach((ref, index) => {
       if (ref.current) {
         // Alternate spin direction
         const dir = index % 2 === 0 ? 1 : -1;
@@ -101,7 +96,7 @@ export function HoverDrone() {
                  <meshStandardMaterial {...darkArmorProps} />
               </mesh>
               {/* Propeller */}
-              <group position={[1.8, 0.2, 0]} ref={propsRef.current[i]}>
+              <group position={[1.8, 0.2, 0]} ref={propsRefs[i]}>
                  <mesh>
                    <boxGeometry args={[1.4, 0.02, 0.15]} />
                    <meshStandardMaterial color={propColor} />

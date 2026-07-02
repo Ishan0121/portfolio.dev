@@ -9,11 +9,13 @@ export const HoverEffect = ({
   className,
   renderItem
 }: {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   items: any[];
   className?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   renderItem: (item: any, index: number) => React.ReactNode;
 }) => {
-  let [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
     <div

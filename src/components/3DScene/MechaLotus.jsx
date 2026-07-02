@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/purity */
 import React, { useRef, useMemo } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
@@ -10,16 +11,11 @@ const coreColor = "#ff2a6d"; // Neon pink/red
 export function MechaLotus() {
   const groupRef = useRef();
   
-  const outerPetalsRef = useRef([]);
-  const innerPetalsRef = useRef([]);
+  const outerPetalsRefs = React.useMemo(() => Array(8).fill().map(() => React.createRef()), []);
+  const innerPetalsRefs = React.useMemo(() => Array(8).fill().map(() => React.createRef()), []);
   const coreRef = useRef();
   const ringRef = useRef();
   const particlesRef = useRef();
-
-  if (outerPetalsRef.current.length === 0) {
-    outerPetalsRef.current = Array(8).fill().map(() => React.createRef());
-    innerPetalsRef.current = Array(8).fill().map(() => React.createRef());
-  }
 
   // Generate pollen/spore particles
   const numParticles = 150;
@@ -47,7 +43,7 @@ export function MechaLotus() {
     const openFactorOuter = (Math.sin(t * 0.8) + 1) / 2;
     const openFactorInner = (Math.sin(t * 0.8 - 0.8) + 1) / 2; // Delayed by phase
 
-    outerPetalsRef.current.forEach((ref) => {
+    outerPetalsRefs.forEach((ref) => {
       if (ref.current) {
         // Bend the petal outwards. 
         // X-axis rotation: 0 is standing straight up. Math.PI/2 is lying flat.
@@ -57,7 +53,7 @@ export function MechaLotus() {
       }
     });
 
-    innerPetalsRef.current.forEach((ref) => {
+    innerPetalsRefs.forEach((ref) => {
       if (ref.current) {
         const baseAngle = 0.1;
         const maxAngle = 1.0;
@@ -131,7 +127,7 @@ export function MechaLotus() {
 
         {/* === OUTER PETALS === */}
         <group position={[0, 0, 0]}>
-          {outerPetalsRef.current.map((ref, i) => {
+          {outerPetalsRefs.map((ref, i) => {
             const num = 8;
             const angle = (i / num) * Math.PI * 2;
             return (
@@ -161,7 +157,7 @@ export function MechaLotus() {
 
         {/* === INNER PETALS === */}
         <group position={[0, 0.2, 0]}>
-          {innerPetalsRef.current.map((ref, i) => {
+          {innerPetalsRefs.map((ref, i) => {
             const num = 8;
             // Offset rotation so inner petals fit tightly between outer petals
             const angle = (i / num) * Math.PI * 2 + (Math.PI / num);

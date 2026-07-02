@@ -13,6 +13,7 @@ export const Meteors = ({
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
     setIsMobile(window.innerWidth < 768);
   }, []);
@@ -33,8 +34,11 @@ export const Meteors = ({
           )}
           style={{
             top: 0,
+            // eslint-disable-next-line react-hooks/purity
             left: Math.floor(Math.random() * (400 - -400) + -400) + "px",
+            // eslint-disable-next-line react-hooks/purity
             animationDelay: Math.random() * (0.8 - 0.2) + 0.2 + "s",
+            // eslint-disable-next-line react-hooks/purity
             animationDuration: Math.floor(Math.random() * (10 - 2) + 2) + "s",
           }}
         ></span>

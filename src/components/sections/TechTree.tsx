@@ -18,16 +18,9 @@ import { useTheme } from "next-themes";
 
 // ── Sizes & gaps ──────────────────────────────────────────────────────────────
 const ROOT_W      = 240;
-const ROOT_H      = 56;
 const CAT_W       = 180;
 const SKILL_W     = 155;
 const SKILL_H     = 56;
-
-const COL_W       = 190;   // column slot width (≥ CAT_W ≥ SKILL_W)
-const COL_GAP     = 45;    // horizontal gap between columns
-const ROOT_CAT_V  = 80;    // root → category vertical gap
-const CAT_SKILL_V = 55;    // category → first skill vertical gap
-const SKILL_ROW_V = 12;    // gap between skill rows in the same column
 
 // ── Custom nodes ──────────────────────────────────────────────────────────────
 function RootNode({ data }: NodeProps) {

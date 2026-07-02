@@ -10,10 +10,7 @@ export function SonicRings() {
   
   // We'll have 30 rings in a tunnel
   const numRings = 30;
-  const ringsRef = useRef([]);
-  if (ringsRef.current.length === 0) {
-    ringsRef.current = Array(numRings).fill().map(() => React.createRef());
-  }
+  const ringsRefs = useMemo(() => Array(numRings).fill().map(() => React.createRef()), [numRings]);
   
   // Pre-calculate colors so we don't do it every frame
   const ringColors = useMemo(() => {
@@ -32,7 +29,7 @@ export function SonicRings() {
       groupRef.current.rotation.z = t * 0.15; // Slow spin of the whole tunnel
     }
     
-    ringsRef.current.forEach((ref, i) => {
+    ringsRefs.forEach((ref, i) => {
       if (ref.current) {
         // Create an audio-visualizer wave effect down the tunnel
         // The radius expands and contracts based on its Z position and time
@@ -57,7 +54,7 @@ export function SonicRings() {
     <group position={[0, 0, -4]} scale={[baseScale, baseScale, baseScale]} rotation={[Math.PI/8, -Math.PI/6, 0]}>
       <group ref={groupRef}>
         
-        {ringsRef.current.map((ref, i) => {
+        {ringsRefs.map((ref, i) => {
           // Calculate Z position to form a tunnel
           // i=0 is front, i=30 is deep back
           const zPos = -i * 0.35;

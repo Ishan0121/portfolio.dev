@@ -4,7 +4,6 @@ import * as THREE from 'three';
 
 // ── Palette ────────────────────────────────────────────────────────────────
 const PETAL_BASE   = '#f2a05a';   // warm apricot-orange at base
-const PETAL_TIP    = '#fcebd5';   // creamy ivory at tips
 const PETAL_VEIN   = '#e06030';   // deep burnt-orange vein stripe
 const STAMEN_STEM  = '#b8d96e';   // chartreuse filament
 const ANTHER_COL   = '#4a2800';   // dark brown anther head
@@ -162,7 +161,6 @@ function Leaf({ angle, height, lean }) {
       pts.push(new THREE.Vector3(w, y, z));
     }
     // Mirror
-    const mirroredPts = [...pts, ...[...pts].reverse().map(p => new THREE.Vector3(-p.x, p.y, p.z))];
     const shape = new THREE.Shape();
     shape.moveTo(0, 0);
     for (let i = 0; i <= N; i++) {

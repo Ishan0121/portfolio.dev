@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
-import * as THREE from 'three';
 
 const planetColor = "#000a14";
 const gridColor = "#00f0ff"; // Cyan

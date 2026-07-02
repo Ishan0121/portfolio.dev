@@ -6,11 +6,7 @@ const glowColor = "#00ff88"; // Neon green
 
 export function LogicCube() {
   const groupRef = useRef();
-  const blocksRef = useRef([]);
-
-  if (blocksRef.current.length === 0) {
-    blocksRef.current = Array(27).fill().map(() => React.createRef());
-  }
+  const blocksRefs = React.useMemo(() => Array(27).fill().map(() => React.createRef()), []);
 
   useFrame((state, delta) => {
     const t = state.clock.elapsedTime;
@@ -21,7 +17,7 @@ export function LogicCube() {
       groupRef.current.position.y = Math.sin(t * 1.5) * 0.2;
     }
 
-    blocksRef.current.forEach((ref, i) => {
+    blocksRefs.forEach((ref, i) => {
       if (ref.current) {
         // Create an expanding/contracting effect for the puzzle
         const x = (i % 3) - 1;
@@ -51,7 +47,7 @@ export function LogicCube() {
     <group position={[0, 0, -6]} scale={[baseScale, baseScale, baseScale]}>
       <group ref={groupRef}>
         
-        {blocksRef.current.map((ref, i) => (
+        {blocksRefs.map((ref, i) => (
           <group key={i} ref={ref}>
             <mesh>
               <boxGeometry args={[0.8, 0.8, 0.8]} />

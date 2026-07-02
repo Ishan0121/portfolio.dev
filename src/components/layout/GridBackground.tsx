@@ -100,7 +100,7 @@ export function GridBackground() {
       window.removeEventListener("resize", resize);
       window.removeEventListener("click", onClick, true);
     };
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   // Sparkle blocks — needs window, so run client-side only
   useEffect(() => {
@@ -108,6 +108,7 @@ export function GridBackground() {
     const rows = Math.floor(window.innerHeight / GRID);
     const maxBlocks = Math.min(100, Math.floor(cols * rows * 0.02));
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setBlocks(
       Array.from({ length: maxBlocks }, () => ({
         id: Math.random().toString(36).substring(2, 9),

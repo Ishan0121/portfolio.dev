@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { useNotificationStore } from "@/store/useNotificationStore";
 import { Icon } from "@iconify/react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 export function SystemMonitor() {
   const notify = useNotificationStore((state) => state.notify);
@@ -20,6 +20,7 @@ export function SystemMonitor() {
     window.addEventListener("offline", handleOffline);
 
     // Network connection quality tracking (if supported)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const connection = (navigator as any).connection || (navigator as any).mozConnection || (navigator as any).webkitConnection;
     
     if (connection) {

@@ -15,10 +15,7 @@ export function BioSpine() {
   const spacing = 0.55;
   
   // Array of refs for each vertebra
-  const vertebraeRefs = useRef([]);
-  if (vertebraeRefs.current.length !== numVertebrae) {
-    vertebraeRefs.current = Array(numVertebrae).fill().map((_, i) => vertebraeRefs.current[i] || React.createRef());
-  }
+  const vertebraeRefs = React.useMemo(() => Array(numVertebrae).fill().map(() => React.createRef()), []);
   
   useFrame((state) => {
     const t = state.clock.elapsedTime;
@@ -30,7 +27,7 @@ export function BioSpine() {
     }
     
     // Undulate each vertebra like a cyber-snake
-    vertebraeRefs.current.forEach((ref, index) => {
+    vertebraeRefs.forEach((ref, index) => {
       if (ref.current) {
         // Snake-like sine wave delay based on height (index)
         const offset = index * 0.4;
@@ -57,7 +54,7 @@ export function BioSpine() {
       <group ref={groupRef}>
         
         {Array.from({ length: numVertebrae }).map((_, i) => (
-          <group key={i} position={[0, i * spacing, 0]} ref={vertebraeRefs.current[i]}>
+          <group key={i} position={[0, i * spacing, 0]} ref={vertebraeRefs[i]}>
             
             {/* Main Bone Block */}
             <RoundedBox args={[1.2, 0.35, 1.2]} radius={0.1} smoothness={4}>

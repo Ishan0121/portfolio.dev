@@ -3,9 +3,8 @@ import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 
 // Material presets for an aggressive, shiny mechanical/silver aesthetic
-const silverMatProps = { color: "#e8e8e8", metalness: 1, roughness: 0.15 };
-const darkSteelProps = { color: "#444444", metalness: 0.9, roughness: 0.5 };
-const brushedAlloyProps = { color: "#aaaaaa", metalness: 0.8, roughness: 0.3 };
+const darkSteelProps = { color: "#111111", metalness: 0.8, roughness: 0.6 };
+const silverMatProps = { color: "#ffffff", metalness: 1, roughness: 0.1 };
 
 // A flexible ribbed pipe using TubeGeometry for the Aorta
 function RibbedPipe({ curve, radius = 0.4, tubularSegments = 64 }) {
@@ -63,7 +62,7 @@ export function BionicHeart() {
     ]);
   }, []);
 
-  useFrame((state, delta) => {
+  useFrame((state) => {
     const t = state.clock.elapsedTime;
     
     // Heartbeat logic

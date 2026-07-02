@@ -14,7 +14,6 @@ import { containerVariants, fadeUp } from "@/lib/animations";
 
 import type { Props as GitHubCalendarProps } from "react-github-calendar";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { useNotificationStore } from "@/store/useNotificationStore";
 const GitHubCalendar = dynamic<GitHubCalendarProps>(
   () => import("react-github-calendar").then((mod) => mod.GitHubCalendar as React.ComponentType<GitHubCalendarProps>), 

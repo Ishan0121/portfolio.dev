@@ -32,6 +32,7 @@ export default function LoadingScreen({
       const timer = setTimeout(() => setShow(false), 500); // give it half a sec to show 100%
       return () => clearTimeout(timer);
     } else {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setShow(true);
     }
   }, [isComplete]);

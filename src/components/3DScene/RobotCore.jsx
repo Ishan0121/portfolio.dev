@@ -6,11 +6,7 @@ const coreColor = "#ff5500"; // Intense orange/red
 
 export function RobotCore() {
   const groupRef = useRef();
-  const ringsRef = useRef([]);
-
-  if (ringsRef.current.length === 0) {
-    ringsRef.current = Array(3).fill().map(() => React.createRef());
-  }
+  const ringsRefs = React.useMemo(() => Array(3).fill().map(() => React.createRef()), []);
 
   useFrame((state, delta) => {
     const t = state.clock.elapsedTime;
@@ -21,7 +17,7 @@ export function RobotCore() {
       groupRef.current.position.y = Math.sin(t * 1.5) * 0.1;
     }
     
-    ringsRef.current.forEach((ref, i) => {
+    ringsRefs.forEach((ref, i) => {
        if (ref.current) {
           const speed = (i + 1) * 0.5;
           ref.current.rotation.x += delta * speed * (i % 2 === 0 ? 1 : -1);
@@ -51,7 +47,7 @@ export function RobotCore() {
         </mesh>
 
         {/* Mechanical Rings */}
-        {ringsRef.current.map((ref, i) => (
+        {ringsRefs.map((ref, i) => (
           <group key={i} ref={ref}>
             <mesh rotation={[Math.PI / 2, 0, 0]}>
                <torusGeometry args={[1.3 + (i * 0.3), 0.1, 16, 64]} />

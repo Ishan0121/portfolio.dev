@@ -1,6 +1,6 @@
+/* eslint-disable react-hooks/purity */
 import React, { useRef, useMemo } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
-import * as THREE from 'three';
 
 const darkSteelProps = { color: "#151515", metalness: 0.9, roughness: 0.8 };
 const silverMatProps = { color: "#e0e0e0", metalness: 1, roughness: 0.2 };

@@ -11,7 +11,7 @@ export function MechaArm() {
   const elbowRef = useRef();
   const wristRef = useRef();
   
-  useFrame((state, delta) => {
+  useFrame((state) => {
     const t = state.clock.elapsedTime;
     
     if (groupRef.current) {
