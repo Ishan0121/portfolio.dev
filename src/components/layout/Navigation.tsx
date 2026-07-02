@@ -84,7 +84,7 @@ export function Navigation() {
         )}
       >
         <div className="glass backdrop-blur-sm bg-background/60 shadow-lg transition-all duration-500 border border-border/50 rounded-full h-14 flex items-center justify-between px-6">
-          <Link href="/" className="text-xl font-bold">
+          <Link href="/" className="text-xl font-bold select-none">
             <code>चक्र</code>
           </Link>
 
@@ -94,7 +94,7 @@ export function Navigation() {
                 key={link.href}
                 href={link.href}
                 aria-current={pathname === link.href ? "page" : undefined}
-                className={`text-sm font-medium hover:opacity-80 transition-colors px-4 py-1 rounded-2xl ${
+                className={`text-sm font-medium hover:opacity-80 transition-colors px-4 py-1 rounded-2xl select-none ${
                   pathname === link.href ? "glass" : "text-muted-foreground hover:text-foreground"
                 }`}
               >

@@ -113,7 +113,7 @@ export function PortfolioGrid({ projects }: { projects: Project[] }) {
         initial="hidden"
         animate="visible"
         layout
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 min-h-[500px]" // Min height prevents huge layout shifts when paginating
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 min-h-125" // Min height prevents huge layout shifts when paginating
       >
         <AnimatePresence mode="popLayout">
           {currentProjects.map((project, index) => (    
@@ -125,7 +125,7 @@ export function PortfolioGrid({ projects }: { projects: Project[] }) {
               transition={{ duration: 0.2 }}
               key={`${project.githubUrl || project.title}-${currentPage}-${index}`}
             >
-              <ProjectCard {...project} tags={[...project.tags]} onClick={() => {
+              <ProjectCard {...project} tags={[...project.tags]} priority={index < 6} onClick={() => {
                 setSelectedProject(project);
                 setIsDrawerOpen(true);
               }} />
@@ -138,7 +138,7 @@ export function PortfolioGrid({ projects }: { projects: Project[] }) {
         <motion.div 
           initial={{ opacity: 0 }} 
           animate={{ opacity: 1 }} 
-          className="text-center py-16 text-muted-foreground bg-card rounded-xl border border-border/50 flex flex-col justify-center min-h-[300px]"
+          className="text-center py-16 text-muted-foreground bg-card rounded-xl border border-border/50 flex flex-col justify-center min-h-75"
         >
           <p className="text-xl font-medium mb-2">No projects found</p>
           <p>Try selecting a different filter option.</p>

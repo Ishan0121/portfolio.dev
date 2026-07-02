@@ -152,7 +152,8 @@ export default function AboutClient() {
                   height={400}
                   onLoad={() => setImageLoaded(true)}
                   priority={true}
-                  className={`w-full h-full object-cover transition-opacity duration-500 ${imageLoaded ? "opacity-100" : "opacity-0"}`}
+                  draggable={false}
+                  className={`w-full h-full object-cover select-none pointer-events-none transition-opacity duration-500 ${imageLoaded ? "opacity-100" : "opacity-0"}`}
                 />
               </div>
 
@@ -474,7 +475,8 @@ export default function AboutClient() {
                   alt={portfolioInfo.name}
                   width={1000}
                   height={1000}
-                  className="w-full h-full object-contain max-h-[85vh] rounded-xl"
+                  className="w-full h-full object-contain max-h-[85vh] rounded-xl select-none pointer-events-none"
+                  draggable={false}
                   priority={true}
                 />
               </div>

@@ -40,7 +40,7 @@ export default function HomeClient() {
       >
         {/* Hero Section */}
         <motion.section variants={fadeUp} className="flex flex-col items-center text-center pt-10 lg:pt-16">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-secondary/30 border border-border/50 rounded-full text-sm font-medium backdrop-blur-md mb-8 hover:bg-secondary/50 transition-colors cursor-default">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-secondary/30 border border-border/50 rounded-full text-sm font-medium backdrop-blur-md mb-8 hover:bg-secondary/50 transition-colors cursor-default select-none">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
@@ -48,7 +48,7 @@ export default function HomeClient() {
             <span>Available for new opportunities</span>
           </div>
 
-          <h1 className="text-5xl sm:text-7xl lg:text-[6rem] font-bold tracking-tight text-foreground max-w-4xl drop-shadow-2xl leading-[1.1]">
+          <h1 className="text-[clamp(3rem,8vw,6rem)] font-bold tracking-tight text-foreground max-w-4xl drop-shadow-2xl leading-[1.1] select-none">
             <span className="bg-clip-text text-transparent bg-linear-to-br from-foreground to-foreground/50">
               Creative Developer
             </span>
@@ -73,7 +73,7 @@ export default function HomeClient() {
             </div>
             <div className="relative w-28 h-28 sm:w-36 sm:h-36 shrink-0 z-10">
               <div className="absolute inset-0 rounded-full bg-linear-to-tr from-primary to-blue-500 blur-xl opacity-20 group-hover:opacity-40 transition-opacity"></div>
-              <Image unoptimized={true} src={portfolioInfo.person.avatar} priority={true} width={400} height={400} className="relative w-full h-full object-cover rounded-full border-2 border-border/50 shadow-xl group-hover:scale-105 transition-transform duration-500 p-2" alt="Avatar" />
+              <Image unoptimized={true} src={portfolioInfo.person.avatar} priority={true} width={400} height={400} className="relative w-full h-full object-cover rounded-full border-2 border-border/50 shadow-xl group-hover:scale-105 transition-transform duration-500 p-2 select-none pointer-events-none" alt="Avatar" draggable={false} />
             </div>
             <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-secondary/50 flex items-center justify-center backdrop-blur-md group-hover:bg-primary group-hover:text-primary-foreground transition-colors z-10">
               <Icon icon="lucide:arrow-up-right" className="w-5 h-5" />

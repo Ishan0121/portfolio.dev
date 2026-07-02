@@ -11,6 +11,7 @@ type ProjectCardProps = {
   tags: string[];
   isLoading?: boolean;
   onClick?: () => void;
+  priority?: boolean;
 };
 
 export function ProjectCard({
@@ -22,6 +23,7 @@ export function ProjectCard({
   tags,
   isLoading,
   onClick,
+  priority = false,
 }: ProjectCardProps) {
   if (isLoading) {
     return (
@@ -63,7 +65,7 @@ export function ProjectCard({
               alt={title}
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              priority
+              priority={priority}
               className="object-cover transition-transform duration-500 group-hover:scale-110 group-hover/card:scale-110"
             />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
