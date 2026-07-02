@@ -80,12 +80,21 @@ export function Navigation() {
         transition={{ duration: 0.35, ease: "easeInOut" }}
         className={cn(
           "fixed top-4 left-0 right-0 z-100 mx-auto w-full px-4 sm:px-6 lg:px-8 transition-all duration-300",
-          scrolled ? "w-[95%] sm:w-[90%] md:w-[95%] lg:w-[95%] px-0" : "w-full"
+          scrolled ? "w-[95%] sm:w-[90%] md:w-[95%] lg:w-[95%] px-0" : "w-full",
         )}
       >
         <div className="glass backdrop-blur-sm bg-background/60 shadow-lg transition-all duration-500 border border-border/50 rounded-full h-14 flex items-center justify-between px-6">
-          <Link href="/" className="text-xl font-bold select-none">
-            <code>चक्र</code>
+          <Link
+            href="/"
+            className="text-xl font-bold select-none relative flex items-center justify-center group"
+          >
+            <span className="relative flex items-center justify-center transition-all duration-500 ease-in-out group-hover:rotate-180 group-hover:opacity-0 group-hover:scale-75">
+              <code>विद्</code>
+              {/*चक्र*/}
+            </span>
+            <span className="absolute inset-0 flex items-center justify-center transition-all duration-500 ease-in-out -rotate-180 opacity-0 scale-75 group-hover:rotate-0 group-hover:opacity-100 group-hover:scale-100">
+              <code>dev</code>
+            </span>
           </Link>
 
           <div className="hidden md:flex items-center">
@@ -95,7 +104,9 @@ export function Navigation() {
                 href={link.href}
                 aria-current={pathname === link.href ? "page" : undefined}
                 className={`text-sm font-medium hover:opacity-80 transition-colors px-4 py-1 rounded-2xl select-none ${
-                  pathname === link.href ? "glass" : "text-muted-foreground hover:text-foreground"
+                  pathname === link.href
+                    ? "glass"
+                    : "text-muted-foreground hover:text-foreground"
                 }`}
               >
                 {link.title}
@@ -107,7 +118,9 @@ export function Navigation() {
                 className="hidden lg:flex w-full justify-start text-sm text-muted-foreground sm:pr-12 md:w-40 lg:w-64 glass rounded-full relative"
                 onClick={() => setCommandOpen(true)}
               >
-                <span className="hidden lg:inline-flex">Search portfolio...</span>
+                <span className="hidden lg:inline-flex">
+                  Search portfolio...
+                </span>
                 <span className="inline-flex lg:hidden">Search...</span>
                 <kbd className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 hidden h-5 select-none items-center gap-1 rounded-full border border-white/20 bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex text-foreground glass">
                   <span className="text-xs">⌘</span>K
@@ -141,13 +154,12 @@ export function Navigation() {
             </Button>
           </div>
         </div>
-
       </motion.nav>
 
-      <MobileMenu 
-        open={isMenuOpen} 
-        onClose={() => setIsMenuOpen(false)} 
-        pathname={pathname} 
+      <MobileMenu
+        open={isMenuOpen}
+        onClose={() => setIsMenuOpen(false)}
+        pathname={pathname}
       />
       <CommandMenu open={commandOpen} setOpen={setCommandOpen} />
     </>

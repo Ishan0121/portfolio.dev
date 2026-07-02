@@ -28,7 +28,7 @@ export function ProjectCard({
   if (isLoading) {
     return (
       <div className="glass p-2 space-y-2 animate-pulse">
-        <div className="h-[220px] w-full rounded-lg bg-muted" />
+        <div className="h-55 w-full rounded-lg bg-muted" />
         <div className="p-4 space-y-4">
           <div className="h-6 w-3/4 bg-muted rounded" />
           <div className="h-4 w-full bg-muted rounded" />
@@ -58,7 +58,7 @@ export function ProjectCard({
             onClick?.();
           }}
         >
-      <div className="relative h-[220px] w-full overflow-hidden rounded-lg">
+      <div className="relative h-55 w-full overflow-hidden rounded-lg">
             <Image
               unoptimized={true}
               src={imageUrl}
@@ -68,10 +68,10 @@ export function ProjectCard({
               priority={priority}
               className="object-cover transition-transform duration-500 group-hover:scale-110 group-hover/card:scale-110"
             />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+        <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
       </div>
           
-          <div className="flex flex-col flex-grow p-4 space-y-4">
+          <div className="flex flex-col grow p-4 space-y-4">
         <div className="space-y-2">
           <h3 className="font-bold text-xl tracking-tight transition-colors duration-300 line-clamp-1 group-hover:text-primary">{title}</h3>
               <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">{description}</p>
