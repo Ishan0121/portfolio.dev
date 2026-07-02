@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { Icon } from "@iconify/react";
 import dynamic from "next/dynamic";
@@ -61,6 +61,18 @@ export default function ThreeDLabClient() {
   const { isInteractMode: isInteracting, setIsInteractMode: setIsInteracting } = useInteractStore();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isEntering, setIsEntering] = useState(false);
+  const [containerHeight, setContainerHeight] = useState("calc(100vh - 7rem)");
+
+  useEffect(() => {
+    // Capture the initial available height once to prevent the 3D canvas from 
+    // resizing lag when mobile browser top bars hide/show on scroll.
+    if (typeof window !== 'undefined') {
+      const availableHeight = window.innerHeight;
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setContainerHeight(`${availableHeight - 112}px`); // 112px = 7rem (spacing.28)
+    }
+  }, []);
   
   const { brightness, setBrightness, reflection, setReflection, bloom, setBloom, zoomSpeed, setZoomSpeed, rotateSpeed, setRotateSpeed, resetSettings } = useSettingsStore();
   const activeModelData = models.find(m => m.id === activeModel) || models[0];
@@ -80,7 +92,8 @@ export default function ThreeDLabClient() {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="relative w-full h-[calc(100vh-theme(spacing.28))] overflow-hidden bg-[#050505] rounded-3xl border border-border/50 mx-auto mb-6"
+        style={{ height: containerHeight }}
+        className="relative w-full overflow-hidden bg-[#050505] rounded-3xl border border-border/50 mx-auto mb-6"
       >
         <div className={`absolute inset-0 z-0 transition-all duration-700 ${!isInteracting ? 'pointer-events-none opacity-60 blur-[2px]' : 'opacity-100 blur-0 cursor-move'}`}>
           <SceneWrapper route={activeModel} />
@@ -235,18 +248,35 @@ export default function ThreeDLabClient() {
         <AnimatePresence>
           {!isInteracting ? (
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, scale: 0.9, y: 0 }}
+              animate={
+                isEntering 
+                  ? { scale: 1.1, opacity: 0, filter: "blur(10px)", y: -10 } 
+                  : { opacity: 1, scale: 1, filter: "blur(0px)", y: 0 }
+              }
               exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: isEntering ? 0.6 : 0.3, ease: [0.22, 1, 0.36, 1] }}
               className="absolute inset-0 z-[5] flex items-center justify-center pointer-events-none"
             >
               <Button 
-                onClick={() => setIsInteracting(true)}
+                onClick={() => {
+                  setIsEntering(true);
+                  // Allow animation to play smoothly before the main thread gets blocked by WebGL compilation
+                  setTimeout(() => {
+                    setIsInteracting(true);
+                    setIsEntering(false);
+                  }, 600);
+                }}
                 size="lg"
-                className="rounded-full shadow-[0_0_30px_rgba(var(--color-primary),0.3)] gap-2 sm:gap-3 font-mono tracking-widest uppercase px-6 sm:px-8 h-12 sm:h-14 text-[10px] sm:text-sm pointer-events-auto"
+                className={`rounded-full shadow-[0_0_30px_rgba(var(--color-primary),0.3)] gap-2 sm:gap-3 font-mono uppercase px-6 sm:px-8 h-12 sm:h-14 text-[10px] sm:text-sm pointer-events-auto transition-all duration-500 overflow-hidden relative
+                  ${isEntering ? 'tracking-[0.3em] bg-primary text-primary-foreground scale-110 shadow-[0_0_50px_rgba(var(--color-primary),0.6)]' : 'tracking-widest'}
+                `}
               >
-                <Icon icon="lucide:mouse-pointer-click" className="w-4 h-4 sm:w-5 sm:h-5" />
-                Click to Interact
+                <Icon 
+                  icon={isEntering ? "lucide:loader-2" : "lucide:mouse-pointer-click"} 
+                  className={`w-4 h-4 sm:w-5 sm:h-5 ${isEntering ? 'animate-spin' : ''}`} 
+                />
+                {isEntering ? "Initializing..." : "Click to Interact"}
               </Button>
             </motion.div>
           ) : (
