@@ -224,7 +224,7 @@ export default function AboutClient() {
                 <SocialLinks size="md" className="gap-3" showName />
               </div>
 
-              <p className="text-lg text-muted-foreground leading-relaxed">
+              <p className="text-lg text-muted-foreground leading-relaxed text-justify">
                 {person.intro}
               </p>
             </motion.section>
@@ -261,7 +261,7 @@ export default function AboutClient() {
                         {item.achievements.map((ach, j) => (
                           <li
                             key={j}
-                            className="text-muted-foreground flex gap-3 text-base leading-relaxed"
+                            className="text-muted-foreground flex gap-3 text-base leading-relaxed text-justify"
                           >
                             <span>{ach}</span>
                           </li>
@@ -293,7 +293,7 @@ export default function AboutClient() {
                       <h3 className="text-2xl font-bold text-foreground">
                         {item.name}
                       </h3>
-                      <p className="text-muted-foreground text-base leading-relaxed">
+                      <p className="text-muted-foreground text-base leading-relaxed text-justify">
                         {item.description}
                       </p>
                     </div>
@@ -322,7 +322,7 @@ export default function AboutClient() {
                       <h3 className="text-2xl font-bold text-foreground">
                         {skill.title}
                       </h3>
-                      <p className="text-muted-foreground text-base leading-relaxed">
+                      <p className="text-muted-foreground text-base leading-relaxed text-justify">
                         {skill.description}
                       </p>
                       {skill.tags && skill.tags.length > 0 && (
