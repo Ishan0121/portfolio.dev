@@ -149,7 +149,7 @@ export default function ThreeDLabClient() {
                               : 'text-foreground/80 hover:bg-primary/10 border border-transparent hover:border-primary/20'
                           }`}
                         >
-                          <div className={`shrink-0 p-1.5 sm:p-2 rounded-md ${activeModel === model.id ? 'bg-primary/20 text-primary' : 'bg-background/50'}`}>
+                          <div className={`shrink-0 p-1.5 sm:p-1 rounded-md ${activeModel === model.id ? 'bg-primary/20 text-primary' : 'bg-background/50'}`}>
                             {model.icon}
                           </div>
                           <span className="text-left truncate">{model.name}</span>

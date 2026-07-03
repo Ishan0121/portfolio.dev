@@ -30,7 +30,7 @@ export default function Footer() {
                 {portfolioInfo.name}
               </span>
             </Link>
-            <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">
+            <p className="text-sm text-muted-foreground max-w-xs leading-relaxed text-justify">
               {portfolioInfo.bio}
             </p>
           </div>

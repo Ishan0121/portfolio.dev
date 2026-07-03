@@ -26,7 +26,7 @@ export default function ContactClient() {
             <h1 className="text-4xl md:text-5xl font-heading font-bold mb-4 tracking-tight">
               <span className="bg-clip-text text-transparent bg-gradient-to-b from-primary to-secondary">Let&apos;s create something amazing</span> together.
             </h1>
-            <p className="text-lg text-muted-foreground">
+            <p className="text-lg text-muted-foreground text-justify">
               Whether you have a project in mind, a question about my work, or just want to say hi, I&apos;m always open to chatting.
             </p>
           </div>
@@ -63,7 +63,6 @@ export default function ContactClient() {
         <motion.div
           variants={fadeUp}
         >
-          {/* <BackgroundGradient className="rounded-[22px] p-0.5 sm:p-1 bg-card"> */}
             <div className="glass shadow-2xl relative overflow-hidden bg-card/40 backdrop-blur-md rounded-[20px] h-full w-full">
               <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-primary/20 rounded-full blur-3xl pointer-events-none"></div>
               <div className="p-8 relative z-10">
@@ -74,7 +73,6 @@ export default function ContactClient() {
                 <ContactForm />
               </div>
             </div>
-          {/* </BackgroundGradient> */}
         </motion.div>
 
       </div>

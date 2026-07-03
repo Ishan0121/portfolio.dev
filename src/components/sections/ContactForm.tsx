@@ -106,7 +106,7 @@ export function ContactForm() {
         <div className="space-y-2">
           <label className="text-sm font-medium">First Name</label>
           <input
-            className={`glass flex h-12 w-full px-4 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-50 bg-transparent placeholder:text-muted-foreground transition-shadow ${errors.first_name ? 'focus-visible:ring-destructive border-destructive/50' : 'focus-visible:ring-primary/50'}`}
+            className={`glass h-12 w-full px-4 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-50 bg-transparent placeholder:text-muted-foreground transition-shadow ${errors.first_name ? 'focus-visible:ring-destructive border-destructive/50' : 'focus-visible:ring-primary/50'}`}
             id="first_name"
             type="text"
             placeholder="John"
@@ -118,7 +118,7 @@ export function ContactForm() {
         <div className="space-y-2">
           <label className="text-sm font-medium">Last Name</label>
           <input
-            className={`glass flex h-12 w-full px-4 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-50 bg-transparent placeholder:text-muted-foreground transition-shadow ${errors.last_name ? 'focus-visible:ring-destructive border-destructive/50' : 'focus-visible:ring-primary/50'}`}
+            className={`glass h-12 w-full px-4 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-50 bg-transparent placeholder:text-muted-foreground transition-shadow ${errors.last_name ? 'focus-visible:ring-destructive border-destructive/50' : 'focus-visible:ring-primary/50'}`}
             id="last_name"
             type="text"
             placeholder="Doe"
@@ -132,7 +132,7 @@ export function ContactForm() {
       <div className="space-y-2">
         <label className="text-sm font-medium">Email</label>
         <input
-          className={`glass flex h-12 w-full px-4 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-50 bg-transparent placeholder:text-muted-foreground transition-shadow ${errors.email ? 'focus-visible:ring-destructive border-destructive/50' : 'focus-visible:ring-primary/50'}`}
+          className={`glass h-12 w-full px-4 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-50 bg-transparent placeholder:text-muted-foreground transition-shadow ${errors.email ? 'focus-visible:ring-destructive border-destructive/50' : 'focus-visible:ring-primary/50'}`}
           id="email"
           type="email"
           placeholder="john@example.com"
@@ -148,7 +148,7 @@ export function ContactForm() {
           id="message"
           placeholder="Tell me about your project..."
           disabled={isSubmitting}
-          className={`glass flex min-h-[150px] w-full px-4 py-3 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-50 resize-y bg-transparent placeholder:text-muted-foreground transition-shadow ${errors.message ? 'focus-visible:ring-destructive border-destructive/50' : 'focus-visible:ring-primary/50'}`}
+          className={`glass min-h-[150px] w-full px-4 py-3 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-50 resize-y bg-transparent placeholder:text-muted-foreground transition-shadow ${errors.message ? 'focus-visible:ring-destructive border-destructive/50' : 'focus-visible:ring-primary/50'}`}
           {...register("message")}
         />
         {errors.message && <p className="text-xs text-destructive mt-1">{errors.message.message}</p>}
@@ -157,7 +157,7 @@ export function ContactForm() {
       <Button
         type="submit"
         variant="outline"
-        className="flex items-center justify-center gap-2 h-12 w-full transition-all duration-300 group bg-card/40 hover:bg-primary hover:text-primary-foreground border-border/50 disabled:opacity-50 disabled:hover:bg-card/40 disabled:hover:text-foreground"
+        className="flex gap-2 h-12 w-full transition-all duration-300 group bg-card/40 hover:bg-primary hover:text-primary-foreground border-border/50 disabled:opacity-50 disabled:hover:bg-card/40 disabled:hover:text-foreground"
         disabled={isSubmitting || (cooldownRemaining !== null && cooldownRemaining > 0)}
       >
         {isSubmitting ? (
