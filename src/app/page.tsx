@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: "Identity Website | Ishan Maiti",
   description:
     "Creative developer building systems — portfolio of Ishan Maiti.",
+  verification: {
+    google: "mb816ScIIgwp3_pAT4228WxqE9xSk0yW01PLkPiDARg",
+  },
 };
 
 export default function HomePage() {
