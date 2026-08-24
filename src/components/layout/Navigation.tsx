@@ -89,7 +89,7 @@ export function Navigation() {
             className="text-xl font-bold select-none relative flex items-center justify-center group"
           >
             <span className="relative flex items-center justify-center transition-all duration-500 ease-in-out group-hover:rotate-180 group-hover:opacity-0 group-hover:scale-75">
-              <code>विद्</code>
+              <code>Dev</code>
               {/*चक्र*/}
             </span>
             <span className="absolute inset-0 flex items-center justify-center transition-all duration-500 ease-in-out -rotate-180 opacity-0 scale-75 group-hover:rotate-0 group-hover:opacity-100 group-hover:scale-100">
