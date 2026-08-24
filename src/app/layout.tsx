@@ -22,11 +22,11 @@ export const metadata: Metadata = {
   ),
   title: {
     template: "%s | Ishan's Portfolio",
-    default: "Identity Website | Ishan Maiti",
+    default: "Ishan Maiti | Developer Portfolio",
   },
   description: "A digital universe showcasing my work and experience.",
   openGraph: {
-    title: "Identity Website | Ishan Maiti",
+    title: "Ishan Maiti | Developer Portfolio",
     description: "A digital universe showcasing my work and experience.",
     url: "/",
     siteName: "Ishan's Portfolio",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Identity Website | Ishan Maiti",
+    title: "Ishan Maiti | Developer Portfolio",
     description: "A digital universe showcasing my work and experience.",
     images: ["/preview.png"],
   },

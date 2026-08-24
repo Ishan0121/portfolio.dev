@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import HomeClient from "./HomeClient";
 
 export const metadata: Metadata = {
-  title: "Identity Website | Ishan Maiti",
+  title: "Ishan Maiti | Developer Portfolio",
   description:
     "Creative developer building systems — portfolio of Ishan Maiti.",
   verification: {
