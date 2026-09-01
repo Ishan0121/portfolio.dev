@@ -245,7 +245,7 @@ export default function AboutClient() {
                   {timeline.map((item) => (
                     <div key={item.id} className="relative pl-8 md:pl-10 group">
                       {/* Timeline Node/Icon */}
-                      <div className="absolute -left-[17px] top-1 h-8 w-8 rounded-full bg-background border-2 border-primary/50 flex items-center justify-center shadow-[0_0_10px_rgba(var(--primary),0.2)] group-hover:border-primary group-hover:shadow-[0_0_15px_rgba(var(--primary),0.5)] transition-all duration-300">
+                      <div className="absolute -left-4.25 top-1 h-8 w-8 rounded-full bg-background border-2 border-primary/50 flex items-center justify-center shadow-[0_0_10px_rgba(var(--primary),0.2)] group-hover:border-primary group-hover:shadow-[0_0_15px_rgba(var(--primary),0.5)] transition-all duration-300">
                         {item.icon ? (
                           <Icon icon={item.icon} className="w-4 h-4 text-primary" />
                         ) : (
@@ -327,12 +327,12 @@ export default function AboutClient() {
             </select>
           </div>
 
-          <div className="glass p-6 w-full overflow-x-auto min-h-[160px] flex items-center justify-start md:justify-center rounded-xl border border-border/50">
+          <div className="glass p-6 w-full overflow-x-auto min-h-40 flex items-center justify-start md:justify-center rounded-xl border border-border/50">
             <div className="min-w-max">
               <ErrorBoundary
                 resetKey={githubYear}
                 fallback={
-                  <div className="text-muted-foreground flex items-center justify-center h-full min-h-[120px]">
+                  <div className="text-muted-foreground flex items-center justify-center h-full min-h-30">
                     No contributions found for{" "}
                     {githubYear === "last" ? "the last year" : githubYear}.
                   </div>
@@ -438,7 +438,7 @@ export default function AboutClient() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-sm p-4 sm:p-6 lg:p-8"
+            className="fixed inset-0 z-100 flex items-center justify-center bg-background/80 backdrop-blur-sm p-4 sm:p-6 lg:p-8"
             onClick={() => setIsResumeModalOpen(false)}
           >
             <motion.div
