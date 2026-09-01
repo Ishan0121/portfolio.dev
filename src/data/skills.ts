@@ -247,6 +247,12 @@ export const skillsData: SkillCategory[] = [
         description: "Knowledge management and note-taking using markdown",
         icon: "simple-icons:obsidian",
       },
+      {
+        name: "LibreOffice",
+        level: "Intermediate",
+        description: "Open-source office productivity suite",
+        icon: "simple-icons:libreoffice",
+      },
     ],
   },
   {
