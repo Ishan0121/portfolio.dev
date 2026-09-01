@@ -21,13 +21,11 @@ const GitHubCalendar = dynamic<GitHubCalendarProps>(
 );
 
 
-const { person, work, studies, technical } = portfolioInfo;
+const { person, timeline } = portfolioInfo;
 
 const structure = [
   { title: "Introduction", id: "introduction" },
-  { title: "Work Experience", id: "work" },
-  { title: "Studies", id: "studies" },
-  { title: "Technical skills", id: "technical" },
+  { title: "The Journey", id: "journey" },
   { title: "Open Source", id: "opensource" },
 ];
 
@@ -229,117 +227,67 @@ export default function AboutClient() {
               </p>
             </motion.section>
 
-            {/* Work Experience */}
-            {work && work.length > 0 && (
+            {/* The Journey (Timeline) */}
+            {timeline && timeline.length > 0 && (
               <motion.section
                 variants={fadeUp}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, margin: "-50px" }}
-                id="work"
-                className="space-y-8"
+                id="journey"
+                className="space-y-12"
               >
                 <h2 className="text-3xl font-semibold text-foreground flex items-center gap-4">
-                  <Icon icon="lucide:briefcase-business" className="w-6 h-6" />
-                  Work Experience
+                  <Icon icon="lucide:milestone" className="w-6 h-6" />
+                  The Journey
                 </h2>
-                <div className="flex flex-col gap-10">
-                  {work.map((item, i) => (
-                    <div key={i} className="flex flex-col gap-2">
-                      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 mb-1">
-                        <h3 className="text-2xl font-bold text-foreground">
-                          {item.company}
-                        </h3>
-                        <span className="text-sm font-medium text-muted-foreground">
-                          {item.timeframe}
-                        </span>
+                <div className="relative border-l-2 border-primary/20 ml-3 md:ml-4 space-y-12 pb-4">
+                  {timeline.map((item) => (
+                    <div key={item.id} className="relative pl-8 md:pl-10 group">
+                      {/* Timeline Node/Icon */}
+                      <div className="absolute -left-[17px] top-1 h-8 w-8 rounded-full bg-background border-2 border-primary/50 flex items-center justify-center shadow-[0_0_10px_rgba(var(--primary),0.2)] group-hover:border-primary group-hover:shadow-[0_0_15px_rgba(var(--primary),0.5)] transition-all duration-300">
+                        {item.icon ? (
+                          <Icon icon={item.icon} className="w-4 h-4 text-primary" />
+                        ) : (
+                          <div className="w-2 h-2 rounded-full bg-primary" />
+                        )}
                       </div>
-                      <h4 className="text-base font-medium text-primary/80 mb-3">
-                        {item.role}
-                      </h4>
-                      <ul className="space-y-3">
-                        {item.achievements.map((ach, j) => (
-                          <li
-                            key={j}
-                            className="text-muted-foreground flex gap-3 text-base leading-relaxed text-justify"
-                          >
-                            <span>{ach}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
-                </div>
-              </motion.section>
-            )}
-
-            {/* Studies */}
-            {studies && studies.length > 0 && (
-              <motion.section
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-50px" }}
-                id="studies"
-                className="space-y-8"
-              >
-                <h2 className="text-3xl font-semibold text-foreground flex items-center gap-4">
-                  <Icon icon="lucide:graduation-cap" className="w-6 h-6" />
-                  Studies
-                </h2>
-                <div className="flex flex-col gap-8">
-                  {studies.map((item, i) => (
-                    <div key={i} className="flex flex-col gap-1.5">
-                      <h3 className="text-2xl font-bold text-foreground">
-                        {item.name}
-                      </h3>
-                      <p className="text-muted-foreground text-base leading-relaxed text-justify">
-                        {item.description}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </motion.section>
-            )}
-
-            {/* Technical Skills */}
-            {technical && technical.length > 0 && (
-              <motion.section
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-50px" }}
-                id="technical"
-                className="space-y-8"
-              >
-                <h2 className="text-3xl font-semibold text-foreground flex items-center gap-4">
-                  <Icon icon="lucide:bug" className="w-6 h-6" />
-                  Technical skills
-                </h2>
-                <div className="flex flex-col gap-8">
-                  {technical.map((skill, i) => (
-                    <div key={i} className="flex flex-col gap-3">
-                      <h3 className="text-2xl font-bold text-foreground">
-                        {skill.title}
-                      </h3>
-                      <p className="text-muted-foreground text-base leading-relaxed text-justify">
-                        {skill.description}
-                      </p>
-                      {skill.tags && skill.tags.length > 0 && (
-                        <div className="flex flex-wrap gap-3 mt-2">
-                          {skill.tags.map((tag, j) => (
-                            <span
-                              key={j}
-                              className="flex items-center gap-2 px-4 py-2 bg-secondary/20 text-secondary-foreground text-sm font-medium rounded-lg border border-border/50"
-                            >
-                              {tag.icon && (
-                                <Icon icon={tag.icon} width={18} height={18} />
-                              )}
-                              {tag.name}
-                            </span>
-                          ))}
+                      
+                      {/* Content Card */}
+                      <div className="flex flex-col gap-3 p-5 rounded-xl border border-border/50 bg-card/30 glass hover:bg-card/50 transition-all duration-300 hover:shadow-lg">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-1">
+                          <h3 className="text-xl font-bold text-foreground">
+                            {item.title}
+                          </h3>
+                          <span className="text-xs font-mono font-medium text-primary/80 bg-primary/10 px-2 py-1 rounded-full whitespace-nowrap w-fit">
+                            {item.period}
+                          </span>
                         </div>
-                      )}
+                        <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+                          {item.type}
+                        </h4>
+                        <p className="text-foreground/90 text-base font-medium leading-relaxed">
+                          {item.summary}
+                        </p>
+                        <p className="text-muted-foreground text-sm leading-relaxed text-justify">
+                          {item.description}
+                        </p>
+                        {item.tags && item.tags.length > 0 && (
+                          <div className="flex flex-wrap gap-2 mt-3">
+                            {item.tags.map((tag: { name: string, icon?: string }, j: number) => (
+                              <span
+                                key={j}
+                                className="flex items-center gap-1.5 px-3 py-1 bg-secondary/30 text-secondary-foreground text-xs font-medium rounded-full border border-border/50 transition-colors hover:bg-secondary/50"
+                              >
+                                {tag.icon && (
+                                  <Icon icon={tag.icon} className="w-3.5 h-3.5" />
+                                )}
+                                {tag.name}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
                     </div>
                   ))}
                 </div>

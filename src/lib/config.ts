@@ -30,46 +30,160 @@ export const portfolioInfo = {
   githubUsername: "Ishan0121",
   person: {
     role: "Computer Science Student & Developer",
-    location: "Kolkata, India",
+    location: "West Bengal, India",
     languages: ["English", "Hindi", "Bengali"],
     avatar: "https://github.com/Ishan0121.png",
-    intro: "I am a developer driven by the desire to understand how systems work from the ground up. Over the years, I've evolved from creating simple web interfaces to developing complex systems that bridge the gap between software, hardware, and creative technologies. My focus is always on performance, clean architecture, and delivering a premium user experience.",
+    intro: "I like knowing what happens under the hood. I learn by building, breaking, debugging, and rebuilding. My interests naturally connect software, operating systems, AI, networking, self-hosting, and hardware. From writing code to understanding the machine it runs on, I prefer understanding, customizing, and building systems instead of simply using them.",
   },
-  work: [
+  timeline: [
     {
-      company: "Freelance Developer",
-      timeframe: "2023 - Present",
-      role: "Full Stack Engineer",
-      achievements: [
-        "Built multiple Next.js applications with complex state management and animations.",
-        "Integrated hardware and IoT systems using C++ and WebSockets for real-time data.",
-        "Optimized 3D web experiences using React Three Fiber.",
-      ],
-    },
-  ],
-  studies: [
-    {
-      name: "Computer Science & Engineering",
-      description: "Bachelor of Technology - Focusing on System Architecture, Data Structures, and Modern Web Technologies.",
-    },
-  ],
-  technical: [
-    {
-      title: "Web Development",
-      description: "Building next gen apps with Next.js, Tailwind CSS, and Framer Motion.",
+      id: "education-foundation",
+      title: "Computer Science — Where It Started",
+      period: "Undergraduate / ongoing",
+      type: "Education",
+      summary: "Started a 4-year B.Sc. Computer Science programme at Vidyasagar University, West Bengal, under the NEP/CCFUP curriculum.",
+      description: "The degree provided the formal foundation: programming, algorithms, computer architecture, operating systems, databases, networking, software engineering, compiler design, artificial intelligence, mathematics and related areas.",
+      icon: "lucide:graduation-cap",
       tags: [
-        { name: "JavaScript", icon: "logos:javascript" },
-        { name: "Next.js", icon: "logos:nextjs-icon" },
-        { name: "React", icon: "logos:react" },
-        { name: "Tailwind CSS", icon: "logos:tailwindcss-icon" },
+        { name: "C", icon: "logos:c" },
+        { name: "Java", icon: "logos:java" }
       ]
     },
     {
-      title: "Hardware & IoT",
-      description: "Integrating hardware systems using C++ and WebSockets.",
+      id: "linux-journey",
+      title: "Linux — Learning the Machine",
+      period: "3+ years",
+      type: "Technical Journey",
+      summary: "Linux became more than an operating system I used for programming. It became a system I wanted to understand, customize and control.",
+      description: "Over 3+ years, I experimented with different Linux distributions and environments, learning through installation, customization, troubleshooting and breaking/fixing systems.",
+      icon: "lucide:terminal",
       tags: [
+        { name: "Linux", icon: "logos:linux-tux" },
+        { name: "Arch Linux", icon: "logos:archlinux" },
+        { name: "Bash", icon: "logos:bash-icon" }
+      ]
+    },
+    {
+      id: "programming-evolution",
+      title: "Programming — From Coursework to Building",
+      period: "Ongoing",
+      type: "Development",
+      summary: "Expanded from foundational programming into multiple languages and practical software development.",
+      description: "Programming gradually shifted from solving academic exercises toward building complete applications, tools, automation and experimental systems.",
+      icon: "lucide:code-2",
+      tags: [
+        { name: "Python", icon: "logos:python" },
         { name: "C++", icon: "logos:c-plusplus" },
-        { name: "Arduino", icon: "logos:arduino" },
+        { name: "TypeScript", icon: "logos:typescript-icon" }
+      ]
+    },
+    {
+      id: "web-development",
+      title: "Web Development — Building Interfaces",
+      period: "Ongoing",
+      type: "Development",
+      summary: "Moved into modern web development and started building complete frontend/backend applications.",
+      description: "I became interested not just in programming individual pieces but in connecting interfaces, application logic, APIs and databases into complete systems.",
+      icon: "lucide:layout-template",
+      tags: [
+        { name: "React", icon: "logos:react" },
+        { name: "Next.js", icon: "logos:nextjs-icon" },
+        { name: "Tailwind CSS", icon: "logos:tailwindcss-icon" },
+        { name: "Node.js", icon: "logos:nodejs-icon" }
+      ]
+    },
+    {
+      id: "ai-exploration",
+      title: "AI — From Coursework to Local Intelligence",
+      period: "Ongoing",
+      type: "AI / Research / Experimentation",
+      summary: "Academic exposure to AI, machine learning and NLP developed into hands-on experimentation with local AI systems.",
+      description: "Instead of treating AI only as a cloud API, I became interested in running models locally and understanding the infrastructure around them.",
+      icon: "lucide:brain-circuit",
+      tags: [
+        { name: "Python", icon: "logos:python" },
+        { name: "NumPy", icon: "logos:numpy" },
+        { name: "Pandas", icon: "logos:pandas-icon" }
+      ]
+    },
+    {
+      id: "voice-ai",
+      title: "Voice AI — Building Aisha",
+      period: "Ongoing project",
+      type: "Personal Project",
+      summary: "A local-first voice assistant concept designed around privacy, modularity and low-latency local processing.",
+      description: "Aisha grew from experimenting with speech recognition, local language models and text-to-speech into a broader assistant architecture.",
+      icon: "lucide:mic",
+      tags: [
+        { name: "Python", icon: "logos:python" },
+        { name: "Ollama", icon: "lucide:brain-circuit" },
+        { name: "Docker", icon: "logos:docker-icon" }
+      ]
+    },
+    {
+      id: "containers-self-hosting",
+      title: "Self-Hosting — Running My Own Systems",
+      period: "Ongoing",
+      type: "Systems / Infrastructure",
+      summary: "The next step was learning to run and connect my own services rather than only writing applications.",
+      description: "Worked on a self-hosted Immich deployment involving containerized services, persistent storage, user/library configuration and remote access.",
+      icon: "lucide:server",
+      tags: [
+        { name: "Docker", icon: "logos:docker-icon" },
+        { name: "Podman", icon: "logos:podman" }
+      ]
+    },
+    {
+      id: "networking-security",
+      title: "Networking & Security — Understanding the Connections",
+      period: "Ongoing",
+      type: "Systems / Security",
+      summary: "Working with self-hosted systems naturally pushed me deeper into networking, remote access and cybersecurity.",
+      description: "Explored threat/vulnerability analysis, cryptography, network security, web security, authentication, secure communication and digital forensics concepts.",
+      icon: "lucide:shield-check",
+      tags: [
+        { name: "Networking", icon: "lucide:network" },
+        { name: "Security", icon: "lucide:lock" }
+      ]
+    },
+    {
+      id: "embedded-electronics",
+      title: "Electronics — Making Software Physical",
+      period: "Ongoing",
+      type: "Hardware / Embedded",
+      summary: "Started combining software with physical electronics through ESP32-S3 experiments.",
+      description: "Electronics became another layer of the same curiosity: instead of stopping at software, I wanted to understand how software interacts with physical devices.",
+      icon: "lucide:cpu",
+      tags: [
+        { name: "ESP32", icon: "lucide:cpu" },
+        { name: "C++", icon: "logos:c-plusplus" }
+      ]
+    },
+    {
+      id: "ai-hardware-convergence",
+      title: "AI + Hardware — Connecting the Layers",
+      period: "Ongoing",
+      type: "Personal Research / Experimentation",
+      summary: "The separate interests in Linux, AI and electronics started converging.",
+      description: "This is the direction represented most strongly by Aisha. It demonstrates the type of systems I enjoy building: not just an interface, not just a model, and not just a circuit, but the connection between all of them.",
+      icon: "lucide:network",
+      tags: [
+        { name: "Linux", icon: "logos:linux-tux" },
+        { name: "AI", icon: "lucide:bot" },
+        { name: "Hardware", icon: "lucide:microchip" }
+      ]
+    },
+    {
+      id: "current-state",
+      title: "Today — Building Beyond the Syllabus",
+      period: "Present / ongoing",
+      type: "Current Identity",
+      summary: "I am still a Computer Science student, but my learning now extends well beyond coursework.",
+      description: "Still learning. Still building. Still figuring out what happens under the hood.",
+      icon: "lucide:rocket",
+      tags: [
+        { name: "Full Stack", icon: "lucide:layers" },
+        { name: "Systems", icon: "lucide:server" }
       ]
     }
   ],
