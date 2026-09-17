@@ -2,6 +2,7 @@
 const nextConfig = {
   /* config options here */
   reactCompiler: true,
+  allowedDevOrigins: ['10.65.122.203'],
   images: {
     remotePatterns: [
       {
@@ -25,7 +26,3 @@ const nextConfig = {
 };
 
 module.exports = nextConfig;
-
-module.exports = {
-  allowedDevOrigins: ['10.65.122.203'],
-}

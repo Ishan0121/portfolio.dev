@@ -109,7 +109,7 @@
 @layer components {
   .glass {
     @apply relative border border-white/10
-          bg-zinc-950/20 backdrop-blur-md
+          bg-zinc-950/20 backdrop-blur-sm
           transition-all duration-300 ease-in-out
           shadow-sm shadow-black/20 
           rounded-xl;
@@ -207,6 +207,9 @@ html.lenis, html.lenis body {
 
 .animate-scroll {
   animation: scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite;
+  /* Promote to its own GPU compositing layer so the browser can animate
+     the list via the compositor thread without triggering layout or paint. */
+  will-change: transform;
 }
 
 .lenis.lenis-smooth {

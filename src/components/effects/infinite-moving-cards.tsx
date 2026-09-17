@@ -81,6 +81,7 @@ export const InfiniteMovingCards = ({
           start && "animate-scroll",
           pauseOnHover && "hover:[animation-play-state:paused]"
         )}
+        style={start ? { willChange: "transform" } : undefined}
       >
         {/* Duplicate the items once for seamless infinite scroll — CSS animation loops at 50% */}
         {[...items, ...items].map((item, idx) => (

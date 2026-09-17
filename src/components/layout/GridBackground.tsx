@@ -18,7 +18,7 @@ export function GridBackground() {
     { id: string; x: number; y: number; delay: number; duration: number }[]
   >([]);
 
-  // Canvas ripple — runs once after the canvas element is in the DOM.
+  // Canvas ripple — demand-driven: the rAF loop only runs while ripples are active.
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -27,9 +27,17 @@ export function GridBackground() {
 
     // ripple origin stored as clicked pixel coords, startTime in ms (Date.now)
     const ripples: { x: number; y: number; t0: number }[] = [];
+    let rafId = 0; // 0 = loop is stopped
+
+    // Only schedule if the loop is not already running and the tab is visible
+    const scheduleRaf = () => {
+      if (!rafId && !document.hidden) {
+        rafId = requestAnimationFrame(tick);
+      }
+    };
 
     const resize = () => {
-      // Use the actual DOM element dimensions (excluding scrollbars) 
+      // Use the actual DOM element dimensions (excluding scrollbars)
       // instead of window.inner* to prevent automatic browser scaling.
       canvas.width = canvas.offsetWidth;
       canvas.height = canvas.offsetHeight;
@@ -39,12 +47,22 @@ export function GridBackground() {
 
     const onClick = (e: MouseEvent) => {
       ripples.push({ x: e.clientX, y: e.clientY, t0: Date.now() });
+      scheduleRaf(); // start the loop only when there is work to do
     };
     window.addEventListener("click", onClick, true);
 
+    // Pause when tab is hidden, resume when it becomes visible again
+    const onVisibility = () => {
+      if (document.hidden) {
+        if (rafId) { cancelAnimationFrame(rafId); rafId = 0; }
+      } else if (ripples.length > 0) {
+        scheduleRaf();
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+
     const isDark = () => document.documentElement.classList.contains("dark");
 
-    let rafId: number;
     const tick = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const now = Date.now();
@@ -90,23 +108,35 @@ export function GridBackground() {
         }
       }
 
-      rafId = requestAnimationFrame(tick);
+      // Keep looping only while there are active ripples; otherwise stop entirely
+      if (ripples.length > 0) {
+        rafId = requestAnimationFrame(tick);
+      } else {
+        rafId = 0; // nothing left to draw — let the CPU rest
+      }
     };
 
-    rafId = requestAnimationFrame(tick);
+    // Do NOT start rAF on mount — wait for the first click to spawn work
 
     return () => {
-      cancelAnimationFrame(rafId);
+      if (rafId) cancelAnimationFrame(rafId);
       window.removeEventListener("resize", resize);
       window.removeEventListener("click", onClick, true);
+      document.removeEventListener("visibilitychange", onVisibility);
     };
   }, []);
 
-  // Sparkle blocks — needs window, so run client-side only
+  // Sparkle blocks — needs window, so run client-side only.
+  // Disabled on mobile to avoid ~100 simultaneous CSS animations on low-end devices.
   useEffect(() => {
+    const isMobileDevice = window.innerWidth < 768;
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (isMobileDevice || prefersReduced) return; // skip entirely on mobile / reduced-motion
+
     const cols = Math.floor(window.innerWidth / GRID);
     const rows = Math.floor(window.innerHeight / GRID);
-    const maxBlocks = Math.min(100, Math.floor(cols * rows * 0.02));
+    // Reduced cap: 40 max (was 100) and lower density (0.015 vs 0.02)
+    const maxBlocks = Math.min(40, Math.floor(cols * rows * 0.015));
 
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setBlocks(

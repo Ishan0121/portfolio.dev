@@ -25,24 +25,41 @@ export const CardContainer = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const [isMouseEntered, setIsMouseEntered] = useState(false);
 
+  // Cache the bounding rect once per hover — avoids a forced layout read on every mousemove
+  const rectRef = useRef<DOMRect | null>(null);
+  // Throttle transform updates to one per animation frame
+  const rafRef = useRef<number>(0);
+
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return;
-    const { left, top, width, height } =
-      containerRef.current.getBoundingClientRect();
-    const x = (e.clientX - left - width / 2) / 25;
-    const y = (e.clientY - top - height / 2) / 25;
-    containerRef.current.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
+    if (!containerRef.current || !rectRef.current) return;
+    // Capture coordinates immediately — synthetic events may be recycled
+    const clientX = e.clientX;
+    const clientY = e.clientY;
+
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    rafRef.current = requestAnimationFrame(() => {
+      if (!containerRef.current || !rectRef.current) return;
+      const { left, top, width, height } = rectRef.current;
+      const x = (clientX - left - width / 2) / 25;
+      const y = (clientY - top - height / 2) / 25;
+      containerRef.current.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
+    });
   };
 
   const handleMouseEnter = () => {
     setIsMouseEntered(true);
-    if (!containerRef.current) return;
+    if (containerRef.current) {
+      // Read layout once here instead of on every mousemove event
+      rectRef.current = containerRef.current.getBoundingClientRect();
+    }
   };
 
   const handleMouseLeave = () => {
     if (!containerRef.current) return;
+    if (rafRef.current) { cancelAnimationFrame(rafRef.current); rafRef.current = 0; }
     setIsMouseEntered(false);
     containerRef.current.style.transform = `rotateY(0deg) rotateX(0deg)`;
+    rectRef.current = null;
   };
   return (
     <MouseEnterContext.Provider value={[isMouseEntered, setIsMouseEntered]}>

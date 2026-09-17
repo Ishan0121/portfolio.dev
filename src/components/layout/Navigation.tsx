@@ -26,16 +26,12 @@ export function Navigation() {
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     const previous = scrollY.getPrevious() ?? 0;
-    
-    // Apply styling changes when scrolled past 20px
-    setScrolled(latest > 20);
+    const newScrolled = latest > 20;
+    const newHidden = latest > previous && latest > 150;
 
-    // Hide navbar when scrolling down, show when scrolling up
-    if (latest > previous && latest > 150) {
-      setHidden(true);
-    } else {
-      setHidden(false);
-    }
+    // Single batched update — avoids two React re-renders per scroll tick
+    setScrolled(newScrolled);
+    setHidden(newHidden);
   });
 
   useEffect(() => {

@@ -10,17 +10,29 @@ export const Meteors = ({
   className?: string;
 }) => {
   const [mounted, setMounted] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const [shouldRender, setShouldRender] = useState(true);
+  const [count, setCount] = useState(0);
 
   useEffect(() => {
+    const isMobile = window.innerWidth < 768;
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (isMobile || prefersReduced) {
+      // Skip meteors entirely on mobile / reduced-motion — saves all animation overhead
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setShouldRender(false);
+    } else {
+      // Cap at 10 on desktop (was up to 20) to ease GPU load
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setCount(Math.min(number || 10, 10));
+    }
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
-    setIsMobile(window.innerWidth < 768);
-  }, []);
+  }, [number]);
 
-  const meteors = new Array(isMobile ? Math.min(number || 20, 5) : (number || 20)).fill(true);
+  const meteors = new Array(count).fill(true);
 
-  if (!mounted) return null;
+  if (!mounted || !shouldRender) return null;
 
   return (
     <>
