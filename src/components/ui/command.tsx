@@ -34,7 +34,7 @@ type CommandDialogProps = DialogProps;
 const CommandDialog = ({ children, ...props }: CommandDialogProps) => {
   return (
     <Dialog {...props}>
-      <DialogContent className="overflow-hidden p-0 shadow-2xl glass bg-blue-900/10 border-white/10 sm:rounded-2xl">
+      <DialogContent className="overflow-hidden p-0 shadow-2xl glass bg-background/60 border-border/50 sm:rounded-2xl">
         <DialogTitle className="sr-only">Command Palette</DialogTitle>
         <Command className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5 bg-transparent">
           {children}
@@ -48,7 +48,7 @@ const CommandInput = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Input>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>
 >(({ className, ...props }, ref) => (
-  <div className="flex items-center border-b border-white/10 px-3" cmdk-input-wrapper="">
+  <div className="flex items-center border-b border-border/50 px-3" cmdk-input-wrapper="">
     <Icon icon="lucide:search" className="mr-2 h-4 w-4 shrink-0 text-muted-foreground opacity-50" />
     <CommandPrimitive.Input
       ref={ref}
@@ -112,7 +112,7 @@ const CommandSeparator = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <CommandPrimitive.Separator
     ref={ref}
-    className={cn('-mx-1 h-px bg-white/10', className)}
+    className={cn('-mx-1 h-px bg-border/50', className)}
     {...props}
   />
 ));
@@ -125,7 +125,7 @@ const CommandItem = React.forwardRef<
   <CommandPrimitive.Item
     ref={ref}
     className={cn(
-      "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-blue-900/30 data-[selected=true]:text-primary data-[selected=true]:backdrop-blur-md data-[disabled=true]:opacity-50 transition-all duration-200",
+      "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-primary/20 data-[selected=true]:text-primary data-[selected=true]:backdrop-blur-md data-[disabled=true]:opacity-50 transition-all duration-200",
       className
     )}
     {...props}

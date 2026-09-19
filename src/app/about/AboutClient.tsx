@@ -222,9 +222,11 @@ export default function AboutClient() {
                 <SocialLinks size="md" className="gap-3" showName />
               </div>
 
-              <p className="text-lg text-muted-foreground leading-relaxed text-justify">
-                {person.intro}
-              </p>
+              {person.intro.split("\n\n").map((paragraph, i) => (
+                <p key={i} className="text-lg text-muted-foreground leading-relaxed text-justify">
+                  {paragraph}
+                </p>
+              ))}
             </motion.section>
 
             {/* The Journey (Timeline) */}

@@ -10,7 +10,7 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="relative mt-24 overflow-hidden">
+    <footer className="relative mt-24 overflow-hidden select-none">
       {/* Top fade line */}
       <div className="h-px w-full bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
 
@@ -68,7 +68,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="max-w-6xl mx-auto mt-10 pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="max-w-6xl mx-auto mt-10 pt-6 border-t border-border/10 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-muted-foreground">
             © {year} {portfolioInfo.name}. All rights reserved.
           </p>

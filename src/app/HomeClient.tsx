@@ -31,7 +31,7 @@ export default function HomeClient() {
   }, []);
 
   return (
-    <div className="relative min-h-screen lg:pt-24 pb-16 px-4 sm:px-6 lg:px-8 flex flex-col items-center">
+    <div className="relative min-h-screen lg:pt-24 pb-16 px-4 sm:px-6 lg:px-8 flex flex-col items-center ">
       <motion.div
         variants={containerVariants}
         initial="hidden"
@@ -39,7 +39,7 @@ export default function HomeClient() {
         className="w-full max-w-5xl space-y-16"
       >
         {/* Hero Section */}
-        <motion.section variants={fadeUp} className="flex flex-col items-center text-center pt-10 lg:pt-16">
+        <motion.section variants={fadeUp} className="flex flex-col items-center text-center pt-10 lg:pt-16 ">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-secondary/30 border border-border/50 rounded-full text-sm font-medium backdrop-blur-md mb-8 hover:bg-secondary/50 transition-colors cursor-default select-none">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>

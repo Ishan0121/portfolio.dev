@@ -39,7 +39,7 @@ function CategoryNode({ data }: NodeProps) {
   return (
     <div
       style={{ width: CAT_W }}
-      className="rounded-xl glass border border-white/25 text-foreground font-semibold text-xs shadow-lg flex items-center justify-center px-3 py-2.5 text-center leading-snug"
+      className="rounded-xl glass border border-border/50 text-foreground font-semibold text-xs shadow-lg flex items-center justify-center px-3 py-2.5 text-center leading-snug"
     >
       <Handle type="target" position={Position.Top}    style={{ opacity: 0 }} />
       {data.label as string}
@@ -56,7 +56,7 @@ function SkillNode({ data }: NodeProps) {
   return (
     <div
       style={{ width: SKILL_W, height: SKILL_H }}
-      className="rounded-lg glass border border-white/10 hover:border-primary/40 flex flex-col items-center justify-center px-2 text-center cursor-pointer transition-colors"
+      className="rounded-lg glass border border-border/30 hover:border-primary/40 flex flex-col items-center justify-center px-2 text-center cursor-pointer transition-colors"
     >
       <Handle type="target" position={Position.Top} style={{ opacity: 0 }} />
       <span className="font-medium text-[11px] text-foreground leading-tight">{data.label as string}</span>
@@ -100,14 +100,14 @@ function ScatterControls() {
         <Button
           variant="outline"
           onClick={scatter}
-          className="rounded-full gap-2 shadow-lg border-white/20 hover:border-primary/50 hover:text-primary bg-background/40 backdrop-blur-md text-xs h-9"
+          className="rounded-full gap-2 shadow-lg border-border/50 hover:border-primary/50 hover:text-primary bg-background/40 backdrop-blur-md text-xs h-9"
         >
           <span className="text-base">🌪️</span> Scatter
         </Button>
         <Button
           variant="outline"
           onClick={reset}
-          className="rounded-full gap-2 shadow-lg border-white/20 text-muted-foreground hover:text-foreground hover:border-white/40 bg-background/40 backdrop-blur-md text-xs h-9"
+          className="rounded-full gap-2 shadow-lg border-border/50 text-muted-foreground hover:text-foreground hover:border-border/70 bg-background/40 backdrop-blur-md text-xs h-9"
         >
           <span className="text-base">🔁</span> Reset
         </Button>
@@ -121,7 +121,7 @@ export function TechTree() {
   const { resolvedTheme } = useTheme();
 
   return (
-    <div className="w-full glass rounded-2xl border border-white/10 overflow-hidden shadow-2xl"
+    <div className="w-full glass rounded-2xl border border-border/30 overflow-hidden shadow-2xl"
          style={{ height: 'calc(100vh - 220px)', minHeight: 600 }}>
       <ReactFlow
         nodes={nodes}

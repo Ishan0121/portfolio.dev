@@ -24,10 +24,10 @@ export const metadata: Metadata = {
     template: "%s | Ishan's Portfolio",
     default: "Ishan Maiti | Developer Portfolio",
   },
-  description: "A digital universe showcasing my work and experience.",
+  description: "Ishan Maiti — CS student from West Bengal building AI, Linux, web, and hardware projects with a focus on local-first and self-hosted systems.",
   openGraph: {
     title: "Ishan Maiti | Developer Portfolio",
-    description: "A digital universe showcasing my work and experience.",
+    description: "Ishan Maiti — CS student from West Bengal building AI, Linux, web, and hardware projects with a focus on local-first and self-hosted systems.",
     url: "/",
     siteName: "Ishan's Portfolio",
     locale: "en_US",
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Ishan Maiti | Developer Portfolio",
-    description: "A digital universe showcasing my work and experience.",
+    description: "Ishan Maiti — CS student from West Bengal building AI, Linux, web, and hardware projects with a focus on local-first and self-hosted systems.",
     images: ["/preview.png"],
   },
   alternates: {

@@ -28,7 +28,7 @@ export default function SkillsClient() {
 
       {/* View toggle */}
       <motion.div variants={fadeInUpVariants} className="flex justify-center mb-10 w-full z-20">
-        <div className="glass p-1 rounded-full flex items-center gap-1 border border-white/10 shadow-lg relative bg-blue-900/10">
+        <div className="glass p-1 rounded-full flex items-center gap-1 border border-border/30 shadow-lg relative bg-primary/5">
           <Button
             variant="ghost"
             onClick={() => setView("grid")}

@@ -79,7 +79,7 @@ export function Navigation() {
           scrolled ? "w-[95%] sm:w-[90%] md:w-[95%] lg:w-[95%] px-0" : "w-full",
         )}
       >
-        <div className="glass backdrop-blur-sm bg-background/60 shadow-lg transition-all duration-500 border border-border/50 rounded-full h-14 flex items-center justify-between px-6">
+        <div className="glass backdrop-blur-sm bg-background/60 shadow-lg transition-all duration-500 border border-border/50 rounded-full h-14 flex items-center justify-between px-6 select-none">
           <Link
             href="/"
             className="text-xl font-bold select-none relative flex items-center justify-center group"
@@ -89,7 +89,7 @@ export function Navigation() {
               {/*चक्र*/}
             </span>
             <span className="absolute inset-0 flex items-center justify-center transition-all duration-500 ease-in-out -rotate-180 opacity-0 scale-75 group-hover:rotate-0 group-hover:opacity-100 group-hover:scale-100">
-              <code>dev</code>
+              <code>IM</code>
             </span>
           </Link>
 
@@ -102,23 +102,23 @@ export function Navigation() {
                 className={`text-sm font-medium hover:opacity-80 transition-colors px-4 py-1 rounded-2xl select-none ${
                   pathname === link.href
                     ? "glass"
-                    : "text-muted-foreground hover:text-foreground"
+                    : "text-foreground/70 hover:text-foreground"
                 }`}
               >
                 {link.title}
               </Link>
             ))}
-            <div className="flex items-center ml-2 border-l border-white/10 pl-2 space-x-2">
+            <div className="flex items-center ml-2 border-l border-border/50 pl-2 space-x-2">
               <Button
                 variant="outline"
-                className="hidden lg:flex w-full justify-start text-sm text-muted-foreground sm:pr-12 md:w-40 lg:w-64 glass rounded-full relative"
+                className="hidden lg:flex w-full justify-start text-sm text-foreground/70 sm:pr-12 md:w-40 lg:w-64 glass rounded-full relative"
                 onClick={() => setCommandOpen(true)}
               >
                 <span className="hidden lg:inline-flex">
                   Search portfolio...
                 </span>
                 <span className="inline-flex lg:hidden">Search...</span>
-                <kbd className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 hidden h-5 select-none items-center gap-1 rounded-full border border-white/20 bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex text-foreground glass">
+                <kbd className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 hidden h-5 select-none items-center gap-1 rounded-full border border-border/50 bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex text-foreground glass">
                   <span className="text-xs">⌘</span>K
                 </kbd>
               </Button>

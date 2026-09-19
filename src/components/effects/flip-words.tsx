@@ -47,11 +47,12 @@ export const FlipWords = ({
         exit={{ opacity: 0, y: -20, position: "absolute" }}
         transition={{ duration: 0.25, ease: "easeOut" }}
         className={cn(
-          "z-10 inline-block relative text-left text-neutral-900 dark:text-neutral-100 px-2",
+          "z-10 inline-block relative text-center text-neutral-900 dark:text-neutral-100",
           className
         )}
         key={currentWord}
       >
+        <span className="inline-block">&nbsp;</span>
         {currentWord.split(" ").map((word, wordIndex) => (
           <motion.span
             key={word + wordIndex}

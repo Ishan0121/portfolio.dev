@@ -17,15 +17,22 @@ export const siteConfig = {
 
 export const portfolioInfo = {
   name: "Ishan Maiti",
-  bio: "Passionate about crafting seamless digital experiences through \nclean code and \ninnovative solutions.",
+  bio: "CS student from West Bengal building AI, Linux, web, and hardware projects with a focus on local-first and self-hosted systems.",
   messages: [
-    "Welcome to my Portfolio!",
-    "I am a Developer.",
-    "I Love Coding.",
-    "Exploring Technologies.",
-    "A Programmer.",
+    "I build things I can't leave alone.",
+    "Curious about what's happening underneath.",
+    "Linux, AI, hardware, and everything between.",
+    "I tinker until it feels right.",
+    "Building beyond the tutorial.",
+    "I like knowing how things actually work.",
+    "From ESP32s to AI assistants.",
+    "I build, break, learn, rebuild.",
+    "I turn curiosity into little experiments.",
+    "Not just using tools\u2014taking them apart.",
+    "I make software talk to hardware.",
+    "If it works, I might still change it.",
   ],
-  resumePath: "./docs/ISHAN MAITI_CV2.pdf",
+  resumePath: "./docs/ISHAN MAITI_CV.pdf",
   resumeName: "My Resume.pdf",
   githubUsername: "Ishan0121",
   person: {
@@ -33,7 +40,7 @@ export const portfolioInfo = {
     location: "West Bengal, India",
     languages: ["English", "Hindi", "Bengali"],
     avatar: "https://github.com/Ishan0121.png",
-    intro: "I like knowing what happens under the hood. I learn by building, breaking, debugging, and rebuilding. My interests naturally connect software, operating systems, AI, networking, self-hosting, and hardware. From writing code to understanding the machine it runs on, I prefer understanding, customizing, and building systems instead of simply using them.",
+    intro: "I\u2019m a computer science student from West Bengal, India. I like building things that sit somewhere between software, hardware, and experimentation\u2014and I\u2019m usually more interested in how something works than in just making it work.\n\nFor me, a project isn\u2019t finished when it runs. If it doesn\u2019t feel right, I\u2019ll keep tinkering with it. Still learning, still experimenting, and usually have another idea waiting.",
   },
   timeline: [
     {
