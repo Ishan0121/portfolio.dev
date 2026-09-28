@@ -43,7 +43,7 @@ export default function MobileMenu({ open, onClose, pathname }: { open: boolean,
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="fixed inset-0 z-40 bg-black/60 backdrop-blur-md md:hidden"
+            className="fixed inset-0 z-40 bg-black/10 backdrop-blur-md md:hidden"
             onClick={onClose}
           />
 
@@ -63,26 +63,34 @@ export default function MobileMenu({ open, onClose, pathname }: { open: boolean,
             }}
           >
             {/* Top accent line */}
-            <div className="h-[2px] w-full bg-gradient-to-r from-primary via-primary/60 to-transparent" />
+            <div className="h-0.5 w-full bg-linear-to-r from-primary via-primary/60 to-transparent" />
 
             {/* Nav links */}
             <nav className="flex flex-col gap-1 flex-1 px-5 pt-24 pb-8">
               {siteConfig.navLinks.map(({ title, href }, i) => {
                 const isActive = pathname === href;
                 return (
-                  <motion.div key={title} custom={i} variants={itemVariants} initial="hidden" animate="visible">
+                  <motion.div
+                    key={title}
+                    custom={i}
+                    variants={itemVariants}
+                    initial="hidden"
+                    animate="visible"
+                  >
                     <Link
                       href={href}
                       onClick={onClose}
                       aria-current={isActive ? "page" : undefined}
-                      className={`flex items-center gap-3 px-4 py-3 rounded-2xl text-base font-medium transition-all duration-200 ${isActive
+                      className={`flex items-center gap-3 px-4 py-3 rounded-2xl text-base font-medium transition-all duration-200 ${
+                        isActive
                           ? "bg-primary/15 text-primary shadow-[0_0_16px_hsl(var(--primary)/0.15)]"
-                          : "text-background/70 hover:text-background hover:bg-background/5"
-                        }`}
+                          : "text-muted-foreground hover:text-foreground hover:bg-white/5"
+                      }`}
                     >
                       <span
-                        className={`w-1.5 h-1.5 rounded-full transition-colors duration-200 ${isActive ? "bg-primary" : "bg-muted-background/30"
-                          }`}
+                        className={`w-1.5 h-1.5 rounded-full transition-colors duration-200 ${
+                          isActive ? "bg-primary" : "bg-muted-foreground/30"
+                        }`}
                       />
                       {title}
                     </Link>
@@ -90,20 +98,41 @@ export default function MobileMenu({ open, onClose, pathname }: { open: boolean,
                 );
               })}
 
-              <motion.div custom={siteConfig.navLinks.length} variants={itemVariants} initial="hidden" animate="visible" className="mt-4">
+              <motion.div
+                custom={siteConfig.navLinks.length}
+                variants={itemVariants}
+                initial="hidden"
+                animate="visible"
+                className="mt-4"
+              >
                 <Button
                   variant="outline"
                   onClick={() => {
-                    document.dispatchEvent(new CustomEvent("toggle-command-menu"));
+                    document.dispatchEvent(
+                      new CustomEvent("toggle-command-menu"),
+                    );
                     onClose();
                   }}
-                  className="flex items-center justify-between w-full rounded-2xl text-base h-12 text-foreground/70 hover:text-background border-border/50 bg-background/40 backdrop-blur-md px-4 text-xs"
+                  className="flex items-center justify-between w-full rounded-2xl h-12 text-muted-foreground hover:text-foreground border-border/50 bg-background/40 backdrop-blur-md px-4 text-xs"
                 >
                   <div className="flex items-center gap-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" /></svg>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <circle cx="11" cy="11" r="8" />
+                      <path d="m21 21-4.3-4.3" />
+                    </svg>
                     Search Portfolio
                   </div>
-                  <kbd className="pointer-events-none flex h-5 select-none items-center gap-1 rounded-full border border-border/50 bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 text-foreground glass">
+                  <kbd className="pointer-events-none flex h-5 select-none items-center gap-1 rounded-full border border-white/20 bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 text-foreground glass">
                     <span>⌘</span>K
                   </kbd>
                 </Button>
@@ -115,11 +144,13 @@ export default function MobileMenu({ open, onClose, pathname }: { open: boolean,
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.35, duration: 0.4 }}
-              className="px-5 pb-8 border-t border-border/10 pt-6 space-y-3"
+              className="px-5 pb-8 border-t border-white/5 pt-6 space-y-3"
             >
-              <p className="text-xs font-mono text-background/70 uppercase tracking-widest">Connect</p>
+              <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest">
+                Connect
+              </p>
               <div className="flex gap-4">
-                <SocialLinks size="lg" className="text-background/70"/>
+                <SocialLinks size="lg" />
               </div>
             </motion.div>
           </motion.div>
