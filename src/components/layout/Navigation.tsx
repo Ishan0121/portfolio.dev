@@ -72,7 +72,7 @@ export function Navigation() {
           hidden: { y: "-150%" },
         }}
         initial="visible"
-        animate={hidden ? "hidden" : "visible"}
+        animate={hidden || isMenuOpen ? "hidden" : "visible"}
         transition={{ duration: 0.35, ease: "easeInOut" }}
         className={cn(
           "fixed top-4 left-0 right-0 z-100 mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-300",

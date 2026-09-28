@@ -3,6 +3,7 @@
 import { Navigation } from "./Navigation";
 import Footer from "./Footer";
 import { GridBackground } from "./GridBackground";
+import { BackToTop } from "@/components/shared/BackToTop";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -14,6 +15,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           {children}
         </main>
         <Footer />
+        <BackToTop />
       </div>
     </>
   );
